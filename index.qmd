@@ -1,0 +1,21 @@
+---
+title: "Welcome"
+---
+
+I'm a first-year CS & Stats student at Penn State University. This site documents my adventures in quantitative finance.
+
+## Recent Analysis
+
+Here is a sample of Python code running directly on this page:
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+plt.plot(x, y)
+plt.title("Sine Wave (Rendered by Quarto)")
+plt.show()
+```

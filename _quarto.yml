@@ -1,0 +1,22 @@
+project:
+  type: website
+  output-dir: docs # Important for GitHub Pages later!
+
+website:
+  title: "Jeremy Hsu | Portfolio"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About Me
+    right:
+      - icon: github
+        href: https://github.com/mrjerm
+      - icon: linkedin
+        href: https://linkedin.com/in/jerm04
+
+format:
+  html:
+    theme: cosmo # Options: cosmo, darkly, flatly, journal, litera
+    toc: true

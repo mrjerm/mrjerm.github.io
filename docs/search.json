@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "I’m a first-year CS & Stats student at Penn State University. This site documents my adventures in quantitative finance."
+  },
+  {
+    "objectID": "index.html#recent-analysis",
+    "href": "index.html#recent-analysis",
+    "title": "Welcome",
+    "section": "Recent Analysis",
+    "text": "Recent Analysis\nHere is a sample of Python code running directly on this page:\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nx = np.linspace(0, 10, 100)\ny = np.sin(x)\n\nplt.plot(x, y)\nplt.title(\"Sine Wave (Rendered by Quarto)\")\nplt.show()"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  }
+]
