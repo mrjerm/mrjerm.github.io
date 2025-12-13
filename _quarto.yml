@@ -10,6 +10,8 @@ website:
         text: Home
       - href: about.qmd
         text: About Me
+      - href: project_kintoun.ipynb
+        text: Project Kintoun
     right:
       - icon: github
         href: https://github.com/mrjerm
@@ -20,3 +22,6 @@ format:
   html:
     theme: cosmo # Options: cosmo, darkly, flatly, journal, litera
     toc: true
+
+execute:
+  frozen: true 
