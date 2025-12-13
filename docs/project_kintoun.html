@@ -270,7 +270,9 @@ window.Quarto = {
 </section>
 <section id="data-engineering-challenges" class="level2">
 <h2 class="anchored" data-anchor-id="data-engineering-challenges"><strong>2. Data Engineering Challenges</strong></h2>
-<p>One of the most critical aspects of this backtest was ensuring data integrity. Financial time series data often contains gaps or timezone inconsistencies that can ruin a backtest. ### <strong>Timezone Alignment</strong> Futures data often comes in UTC or CST. To accurately capture the 9:30 AM NY Open, I implemented robust timezone handling to account for Daylight Savings Time shifts automatically.</p>
+<p>One of the most critical aspects of this backtest was ensuring data integrity. Financial time series data often contains gaps or timezone inconsistencies that can ruin a backtest.<br>
+### <strong>Timezone Alignment</strong><br>
+Futures data often comes in UTC or CST. To accurately capture the 9:30 AM NY Open, I implemented robust timezone handling to account for Daylight Savings Time shifts automatically.</p>
 <section id="voided-dates" class="level3">
 <h3 class="anchored" data-anchor-id="voided-dates"><strong>Voided Dates</strong></h3>
 <p>Real-world data is rarely perfect. I sourced my data from DataBento, and while it was excellent for the most part, I identified specific dates where data feed degradation occured (e.g.&nbsp;gaps in time, outages) and voided those from the simulation.</p>
@@ -286,7 +288,10 @@ window.Quarto = {
 </section>
 <section id="event-driven-simulation" class="level3">
 <h3 class="anchored" data-anchor-id="event-driven-simulation"><strong>Event Driven Simulation</strong></h3>
-<p>While vectorization is preferred for indicators, I utilized an Event-Driven Loop for the trade execution logic. This allows for more accurate state management of: 1. <strong>Breakout Status</strong> (<code>broke_up</code> / <code>broke_down</code>) 2. <strong>Retest Validation</strong> (<code>retest_ok</code>) 3. <strong>Dynamic Position Sizing</strong> (Scaling risk based on Equity)</p>
+<p>While vectorization is preferred for indicators, I utilized an Event-Driven Loop for the trade execution logic. This allows for more accurate state management of:<br>
+1. <strong>Breakout Status</strong> (<code>broke_up</code> / <code>broke_down</code>)<br>
+2. <strong>Retest Validation</strong> (<code>retest_ok</code>)<br>
+3. <strong>Dynamic Position Sizing</strong> (Scaling risk based on Equity)</p>
 </section>
 </section>
 <section id="simulation-code" class="level2">
@@ -776,7 +781,9 @@ Name: count, dtype: int64</code></pre>
 <section id="conclusion-future-work" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion-future-work"><strong>6. Conclusion &amp; Future Work</strong></h2>
 <p>The <strong>Kintoun Strategy</strong> demonstrates a significantly reduced drawdown compared to a naive breakout strategy. Using Volume, VWAP, and slope ensures we are not trading against the dominant intraday flow.</p>
-<p><strong>Future Improvements:</strong> - <strong>Execution:</strong> Moving from <code>close</code> prices to Tick Data to better model slippage on stop orders. - <strong>Optimization:</strong> Exploring a machine learning approach (Random Forest, XGBoost) to classify the probability of a successful retest/trade.</p>
+<p><strong>Future Improvements:</strong><br>
+- <strong>Execution:</strong> Moving from <code>close</code> prices to Tick Data to better model slippage on stop orders.<br>
+- <strong>Optimization:</strong> Exploring a machine learning approach (Random Forest, XGBoost) to classify the probability of a successful retest/trade.</p>
 
 
 </section>

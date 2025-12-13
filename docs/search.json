@@ -25,14 +25,14 @@
     "href": "project_kintoun.html#data-engineering-challenges",
     "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
     "section": "2. Data Engineering Challenges",
-    "text": "2. Data Engineering Challenges\nOne of the most critical aspects of this backtest was ensuring data integrity. Financial time series data often contains gaps or timezone inconsistencies that can ruin a backtest. ### Timezone Alignment Futures data often comes in UTC or CST. To accurately capture the 9:30 AM NY Open, I implemented robust timezone handling to account for Daylight Savings Time shifts automatically.\n\nVoided Dates\nReal-world data is rarely perfect. I sourced my data from DataBento, and while it was excellent for the most part, I identified specific dates where data feed degradation occured (e.g. gaps in time, outages) and voided those from the simulation."
+    "text": "2. Data Engineering Challenges\nOne of the most critical aspects of this backtest was ensuring data integrity. Financial time series data often contains gaps or timezone inconsistencies that can ruin a backtest.\n### Timezone Alignment\nFutures data often comes in UTC or CST. To accurately capture the 9:30 AM NY Open, I implemented robust timezone handling to account for Daylight Savings Time shifts automatically.\n\nVoided Dates\nReal-world data is rarely perfect. I sourced my data from DataBento, and while it was excellent for the most part, I identified specific dates where data feed degradation occured (e.g. gaps in time, outages) and voided those from the simulation."
   },
   {
     "objectID": "project_kintoun.html#mathematical-implementation",
     "href": "project_kintoun.html#mathematical-implementation",
     "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
     "section": "3. Mathematical Implementation",
-    "text": "3. Mathematical Implementation\n\nRobust VWAP Calculation\nI calculated the Volume Weighted Average Price (VWAP) using a vectorized approach (NumPy/Pandas) rather than an iterative loop for performance. \\[\n\\text{VWAP} = \\frac{\\sum_jP_j\\cdot{}V_j}{\\sum_jV_j}\n\\] The standard deviation bands (2.0 SD) were calculated to define the “Value Area”\n\n\nEvent Driven Simulation\nWhile vectorization is preferred for indicators, I utilized an Event-Driven Loop for the trade execution logic. This allows for more accurate state management of: 1. Breakout Status (broke_up / broke_down) 2. Retest Validation (retest_ok) 3. Dynamic Position Sizing (Scaling risk based on Equity)"
+    "text": "3. Mathematical Implementation\n\nRobust VWAP Calculation\nI calculated the Volume Weighted Average Price (VWAP) using a vectorized approach (NumPy/Pandas) rather than an iterative loop for performance. \\[\n\\text{VWAP} = \\frac{\\sum_jP_j\\cdot{}V_j}{\\sum_jV_j}\n\\] The standard deviation bands (2.0 SD) were calculated to define the “Value Area”\n\n\nEvent Driven Simulation\nWhile vectorization is preferred for indicators, I utilized an Event-Driven Loop for the trade execution logic. This allows for more accurate state management of:\n1. Breakout Status (broke_up / broke_down)\n2. Retest Validation (retest_ok)\n3. Dynamic Position Sizing (Scaling risk based on Equity)"
   },
   {
     "objectID": "project_kintoun.html#simulation-code",
@@ -53,7 +53,7 @@
     "href": "project_kintoun.html#conclusion-future-work",
     "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
     "section": "6. Conclusion & Future Work",
-    "text": "6. Conclusion & Future Work\nThe Kintoun Strategy demonstrates a significantly reduced drawdown compared to a naive breakout strategy. Using Volume, VWAP, and slope ensures we are not trading against the dominant intraday flow.\nFuture Improvements: - Execution: Moving from close prices to Tick Data to better model slippage on stop orders. - Optimization: Exploring a machine learning approach (Random Forest, XGBoost) to classify the probability of a successful retest/trade."
+    "text": "6. Conclusion & Future Work\nThe Kintoun Strategy demonstrates a significantly reduced drawdown compared to a naive breakout strategy. Using Volume, VWAP, and slope ensures we are not trading against the dominant intraday flow.\nFuture Improvements:\n- Execution: Moving from close prices to Tick Data to better model slippage on stop orders.\n- Optimization: Exploring a machine learning approach (Random Forest, XGBoost) to classify the probability of a successful retest/trade."
   },
   {
     "objectID": "about.html",
