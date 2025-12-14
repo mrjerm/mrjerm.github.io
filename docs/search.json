@@ -25,7 +25,7 @@
     "href": "project_kintoun.html#data-engineering-challenges",
     "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
     "section": "2. Data Engineering Challenges",
-    "text": "2. Data Engineering Challenges\nOne of the most critical aspects of this backtest was ensuring data integrity. Financial time series data often contains gaps or timezone inconsistencies that can ruin a backtest.\n### Timezone Alignment\nFutures data often comes in UTC or CST. To accurately capture the 9:30 AM NY Open, I implemented robust timezone handling to account for Daylight Savings Time shifts automatically.\n\nVoided Dates\nReal-world data is rarely perfect. I sourced my data from DataBento, and while it was excellent for the most part, I identified specific dates where data feed degradation occured (e.g. gaps in time, outages) and voided those from the simulation."
+    "text": "2. Data Engineering Challenges\nOne of the most critical aspects of this backtest was ensuring data integrity. Financial time series data often contains gaps or timezone inconsistencies that can ruin a backtest.\n\nTimezone Alignment\nFutures data often comes in UTC or CST. To accurately capture the 9:30 AM NY Open, I implemented robust timezone handling to account for Daylight Savings Time shifts automatically.\n\n\nVoided Dates\nReal-world data is rarely perfect. I sourced my data from DataBento, and while it was excellent for the most part, I identified specific dates where data feed degradation occured (e.g. gaps in time, outages) and voided those from the simulation."
   },
   {
     "objectID": "project_kintoun.html#mathematical-implementation",
@@ -65,15 +65,29 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Welcome",
+    "title": "Jeremy Hsu",
     "section": "",
-    "text": "I’m a first-year CS & Stats student at Penn State University. This site documents my adventures in quantitative finance."
+    "text": "I am a freshman at Penn State University double majoring in Computer Science and Statistics.\nI am interested in the combination of Software Engineering and Statistics/Data Science in Financial Markets. My goal is to build robust, event-driven trading systems and analyze market microstructure using quantitative approaches.\nCurrently, I am researching meta filtration and machine learning optimization in trading models and building my own automated trading system in Python."
   },
   {
-    "objectID": "index.html#recent-analysis",
-    "href": "index.html#recent-analysis",
-    "title": "Welcome",
-    "section": "Recent Analysis",
-    "text": "Recent Analysis\nHere is a sample of Python code running directly on this page:\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nx = np.linspace(0, 10, 100)\ny = np.sin(x)\n\nplt.plot(x, y)\nplt.title(\"Sine Wave (Rendered by Quarto)\")\nplt.show()"
+    "objectID": "index.html#about-me",
+    "href": "index.html#about-me",
+    "title": "Jeremy Hsu",
+    "section": "",
+    "text": "I am a freshman at Penn State University double majoring in Computer Science and Statistics.\nI am interested in the combination of Software Engineering and Statistics/Data Science in Financial Markets. My goal is to build robust, event-driven trading systems and analyze market microstructure using quantitative approaches.\nCurrently, I am researching meta filtration and machine learning optimization in trading models and building my own automated trading system in Python."
+  },
+  {
+    "objectID": "index.html#featured-research",
+    "href": "index.html#featured-research",
+    "title": "Jeremy Hsu",
+    "section": "Featured Research",
+    "text": "Featured Research\n\nProject Kintoun: NQ Futures Strategy\nStatus: Completed (Dec 2025)\nAn event-driven algorithmic trading strategy designed for the Nasdaq-100 E-Mini Futures (NQ). This project explores how Market Microstructure (Break & Retest) combined with Volume and Regression Analysis can filter out false breakouts in variable volatility environments.\n\nTechnique: Event-driven simulation (partially vectorized).\nData Handling: Timezone-aligned, degradation-filtered 1-minute OHLCV data.\nKey Metric: significantly improved expectancy (Profit Factor) and risk-adjusted return (Sharpe) compared to naive ORB strategies.\n\nView the full Analysis & Backtest ➞"
+  },
+  {
+    "objectID": "index.html#technical-stack",
+    "href": "index.html#technical-stack",
+    "title": "Jeremy Hsu",
+    "section": "Technical Stack",
+    "text": "Technical Stack\n\n\n\nDomain\nSkills\n\n\n\n\nLanguages\nPython, C++, Java, R\n\n\nLibraries\nPandas, NumPy, Scikit-Learn, MatPlotLib\n\n\nQuant\nTime-Series Data Analysis, Backtesting, Risk Management\n\n\nTools\nGit, VS Code, Jupyter, Linux/Ubuntu, Quarto"
   }
 ]

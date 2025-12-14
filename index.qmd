@@ -1,21 +1,53 @@
 ---
-title: "Welcome"
+title: "Jeremy Hsu"
+subtitle: "CS & Statistics @ PSU | Trader & Aspiring Quant"
+# image: profile.jpg
+about:
+  template: trestles # Options: jolla, trestles, broadside
+  image-shape: round
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/mrjerm
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/jerm04/
+    - icon: envelope
+      text: Email
+      href: mailto:jeremyhsu2025@gmail.com
 ---
 
-I'm a first-year CS & Stats student at Penn State University. This site documents my adventures in quantitative finance.
+## About Me
 
-## Recent Analysis
+I am a freshman at **Penn State University** double majoring in **Computer Science** and **Statistics**.
 
-Here is a sample of Python code running directly on this page:
+I am interested in the combination of **Software Engineering** and **Statistics/Data Science** in **Financial Markets**. My goal is to build robust, event-driven trading systems and analyze market microstructure using quantitative approaches.
 
-```{python}
-import matplotlib.pyplot as plt
-import numpy as np
+Currently, I am researching meta filtration and machine learning optimization in trading models and building my own automated trading system in Python.
 
-x = np.linspace(0, 10, 100)
-y = np.sin(x)
+---
 
-plt.plot(x, y)
-plt.title("Sine Wave (Rendered by Quarto)")
-plt.show()
-```
+## Featured Research
+
+### [Project Kintoun: NQ Futures Strategy](project_kintoun.ipynb)
+**Status:** *Completed (Dec 2025)*
+
+An event-driven algorithmic trading strategy designed for the Nasdaq-100 E-Mini Futures (NQ).
+This project explores how **Market Microstructure** (Break & Retest) combined with **Volume** and **Regression Analysis** can filter out false breakouts in variable volatility environments.
+
+*   **Technique:** Event-driven simulation (partially vectorized).
+*   **Data Handling:** Timezone-aligned, degradation-filtered 1-minute OHLCV data.
+*   **Key Metric:** significantly improved expectancy (Profit Factor) and risk-adjusted return (Sharpe) compared to naive ORB strategies.
+
+[**View the full Analysis & Backtest ➞**](project_kintoun.ipynb)
+
+---
+
+## Technical Stack
+
+| Domain | Skills |
+|:---|:---|
+| **Languages** | Python, C++, Java, R |
+| **Libraries** | Pandas, NumPy, Scikit-Learn, MatPlotLib |
+| **Quant** | Time-Series Data Analysis, Backtesting, Risk Management |
+| **Tools** | Git, VS Code, Jupyter, Linux/Ubuntu, Quarto |

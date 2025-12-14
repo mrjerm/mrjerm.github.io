@@ -199,6 +199,7 @@ window.Quarto = {
   <li><a href="#hypothesis" id="toc-hypothesis" class="nav-link" data-scroll-target="#hypothesis"><strong>1. Hypothesis</strong></a></li>
   <li><a href="#data-engineering-challenges" id="toc-data-engineering-challenges" class="nav-link" data-scroll-target="#data-engineering-challenges"><strong>2. Data Engineering Challenges</strong></a>
   <ul class="collapse">
+  <li><a href="#timezone-alignment" id="toc-timezone-alignment" class="nav-link" data-scroll-target="#timezone-alignment"><strong>Timezone Alignment</strong></a></li>
   <li><a href="#voided-dates" id="toc-voided-dates" class="nav-link" data-scroll-target="#voided-dates"><strong>Voided Dates</strong></a></li>
   </ul></li>
   <li><a href="#mathematical-implementation" id="toc-mathematical-implementation" class="nav-link" data-scroll-target="#mathematical-implementation"><strong>3. Mathematical Implementation</strong></a>
@@ -270,9 +271,11 @@ window.Quarto = {
 </section>
 <section id="data-engineering-challenges" class="level2">
 <h2 class="anchored" data-anchor-id="data-engineering-challenges"><strong>2. Data Engineering Challenges</strong></h2>
-<p>One of the most critical aspects of this backtest was ensuring data integrity. Financial time series data often contains gaps or timezone inconsistencies that can ruin a backtest.<br>
-### <strong>Timezone Alignment</strong><br>
-Futures data often comes in UTC or CST. To accurately capture the 9:30 AM NY Open, I implemented robust timezone handling to account for Daylight Savings Time shifts automatically.</p>
+<p>One of the most critical aspects of this backtest was ensuring data integrity. Financial time series data often contains gaps or timezone inconsistencies that can ruin a backtest.</p>
+<section id="timezone-alignment" class="level3">
+<h3 class="anchored" data-anchor-id="timezone-alignment"><strong>Timezone Alignment</strong></h3>
+<p>Futures data often comes in UTC or CST. To accurately capture the 9:30 AM NY Open, I implemented robust timezone handling to account for Daylight Savings Time shifts automatically.</p>
+</section>
 <section id="voided-dates" class="level3">
 <h3 class="anchored" data-anchor-id="voided-dates"><strong>Voided Dates</strong></h3>
 <p>Real-world data is rarely perfect. I sourced my data from DataBento, and while it was excellent for the most part, I identified specific dates where data feed degradation occured (e.g.&nbsp;gaps in time, outages) and voided those from the simulation.</p>
