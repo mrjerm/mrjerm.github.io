@@ -53,7 +53,7 @@
     "href": "project_kintoun.html#conclusion-future-work",
     "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
     "section": "6. Conclusion & Future Work",
-    "text": "6. Conclusion & Future Work\nThe Kintoun Strategy demonstrates a significantly reduced drawdown compared to a naive breakout strategy. Using Volume, VWAP, and slope ensures we are not trading against the dominant intraday flow.\nFuture Improvements:\n- Execution: Moving from close prices to Tick Data to better model slippage on stop orders.\n- Optimization: Exploring a machine learning approach (Random Forest, XGBoost) to classify the probability of a successful retest/trade."
+    "text": "6. Conclusion & Future Work\nThe Kintoun Strategy demonstrates significantly improved expectancy and risk-adjusted return, as well as lower max drawdown compared to a naive breakout strategy. Using Volume, VWAP, and slope ensures we are not trading against the dominant intraday flow.\nFuture Improvements:\n- Execution: Moving from close prices to Tick Data to better model slippage on stop orders.\n- Optimization: Exploring a machine learning approach (Random Forest, XGBoost) to classify the probability of a successful retest/trade."
   },
   {
     "objectID": "about.html",
