@@ -267,7 +267,9 @@ window.Quarto = {
 <p>The first hour of the US Equity session (9:30AM - 10:30AM ET) represent the period of highest price discovery and volatility. A standard ORB strategy bets that a breakout of the initial range will lead to a trend day.</p>
 <p>However, blind breakouts are susceptible to false breakouts, where price sweeps an extrema of the opening range, but fails to hold outside.</p>
 <p><strong>My hypothesis:</strong><br>
-1. <strong>Microstructure:</strong> Waiting for a <strong>retest</strong> of the breakout level (e.g.&nbsp;price breaks up → returns to range high → holds) validates support. 2. <strong>Regime:</strong> Trades should only be taken if the intraday trend agrees with the Session VWAP slope. 3. <strong>Volume:</strong> Breakouts must be accompanied by volume exceeding the 20-period SMA (Simple Moving Average) to confirm aggressive participation.</p>
+1. <strong>Microstructure:</strong> Waiting for a <strong>retest</strong> of the breakout level (e.g.&nbsp;price breaks up → returns to range high → holds) validates support.<br>
+2. <strong>Regime:</strong> Trades should only be taken if the intraday trend agrees with the Session VWAP slope.<br>
+3. <strong>Volume:</strong> Breakouts must be accompanied by volume exceeding the 20-period SMA (Simple Moving Average) to confirm aggressive participation.</p>
 </section>
 <section id="data-engineering-challenges" class="level2">
 <h2 class="anchored" data-anchor-id="data-engineering-challenges"><strong>2. Data Engineering Challenges</strong></h2>
@@ -299,8 +301,8 @@ window.Quarto = {
 </section>
 <section id="simulation-code" class="level2">
 <h2 class="anchored" data-anchor-id="simulation-code"><strong>4. Simulation Code</strong></h2>
-<p><em>Note: The full source code handles data loading, indicator calculation, and the backtesting loop</em></p>
-<div id="1740468e" class="cell" data-execution_count="5">
+<p><em>Note: The full source code handles data loading, indicator calculation, and the backtesting loop. Specific parameter values have been sanitized for public display.</em></p>
+<div id="1740468e" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -344,11 +346,11 @@ window.Quarto = {
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>BASELINE_SCALE_FACTOR <span class="op">=</span> <span class="dv">2</span></span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co"># --- STRATEGY PARAMS ---</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>VOL_MULT_LONG <span class="op">=</span> <span class="fl">0.5</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>VOL_MULT_SHORT <span class="op">=</span> <span class="fl">1.5</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>VWAP_REG_LEN <span class="op">=</span> <span class="dv">80</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>MAX_TRADES_PER_DAY <span class="op">=</span> <span class="dv">4</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>MAX_VWAP_DEV <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>VOL_MULT_LONG <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>VOL_MULT_SHORT <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>VWAP_REG_LEN <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>MAX_TRADES_PER_DAY <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>MAX_VWAP_DEV <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>ENABLE_5M_EXIT <span class="op">=</span> <span class="va">True</span></span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>ENABLE_NY_VWAP_EXIT <span class="op">=</span> <span class="va">True</span></span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
