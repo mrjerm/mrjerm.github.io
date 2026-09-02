@@ -1,0 +1,78 @@
+project:
+  type: website
+  output-dir: docs
+  # Explicit render scope. Without this Quarto renders every .md in the repo too,
+  # which published CLAUDE.md as a public page. Only .qmd/.ipynb are site pages.
+  render:
+    - "*.qmd"
+    - "*.ipynb"
+  resources:
+    - "resume.pdf"
+
+website:
+  title: "Jeremy Hsu"
+  description: "Jeremy Hsu — Computer Science at Penn State. Systematic trading research and execution infrastructure."
+  site-url: "https://mrjerm.github.io"
+  favicon: favicon.svg
+  open-graph: true
+  twitter-card:
+    card-style: summary_large_image
+  navbar:
+    title: "Jeremy Hsu"
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Work
+        menu:
+          - href: rime.qmd
+            text: "Rime — ETF regime allocator"
+          - href: fifth-sanctuary.qmd
+            text: "Fifth Sanctuary — gold volatility expansion"
+          - href: project_kintoun.ipynb
+            text: "Kintoun — ORB microstructure research"
+          - href: robotics.qmd
+            text: "Competitive robotics"
+      - href: about.qmd
+        text: About
+      - href: resume.pdf
+        text: Resume
+    right:
+      - icon: github
+        href: https://github.com/mrjerm
+        aria-label: GitHub
+      - icon: linkedin
+        href: https://www.linkedin.com/in/jerm04/
+        aria-label: LinkedIn
+      - icon: envelope
+        href: mailto:jeremyhsu2025@gmail.com
+        aria-label: Email
+  page-footer:
+    left: |
+      © 2026 Jeremy Hsu · [jeremyhsu2025@gmail.com](mailto:jeremyhsu2025@gmail.com)
+    center: |
+      Performance figures on this site are simulated backtest results unless
+      explicitly labeled otherwise. Simulated results have inherent limitations
+      and do not represent actual trading. Past performance is not indicative of
+      future results. Nothing here is an offer to sell or a solicitation of an
+      offer to buy any security, or investment advice.
+    right:
+      - icon: github
+        href: https://github.com/mrjerm
+      - icon: linkedin
+        href: https://www.linkedin.com/in/jerm04/
+
+format:
+  html:
+    theme:
+      light: [cosmo, theme.scss]
+      dark: [cosmo, theme.scss, theme-dark.scss]
+    toc: true
+    toc-depth: 3
+    anchor-sections: true
+    smooth-scroll: true
+    code-fold: true
+    code-tools: false
+    highlight-style: github
+
+execute:
+  enabled: false

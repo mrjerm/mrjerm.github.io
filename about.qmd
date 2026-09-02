@@ -1,0 +1,59 @@
+---
+title: "About"
+description: "Jeremy Hsu — Computer Science at Penn State, founder of Weaver Capital LP, undergraduate researcher in locomotion and robotics."
+toc: false
+---
+
+::: {.eyebrow}
+Penn State · B.S. Computer Science · Aug 2025 – Dec 2028 · West Chester, PA
+:::
+
+::: {.lede}
+I'm a Computer Science undergraduate at **Penn State**, graduating December 2028.
+:::
+
+Most of what I do sits between software engineering and statistics. I build systematic
+trading strategies, though more of the hours go into the infrastructure — the part that
+keeps a strategy running unattended without quietly turning into a different strategy
+than the one I tested.
+
+I founded **Weaver Capital LP** in January 2026 and run a multi-strategy systematic
+portfolio there, across futures and equities on intraday, swing, and macro horizons.
+Two of the strategies are live: [Rime](rime.html), a daily ETF regime allocator, and
+[Fifth Sanctuary](fifth-sanctuary.html), an intraday gold volatility-expansion system.
+The execution infrastructure is mine too — Python and C#, with automated strategy
+synchronization, enforced risk limits, and sub-second order handling — along with the
+portfolio optimization pipelines that allocate across uncorrelated sleeves.
+
+Since August 2026 I've also been an undergraduate researcher in the **Locomotion in
+Biology and Robotics (LiBR) Lab** under Dr. Baxi Chong, working on gait optimization in
+unconventional robot morphologies. It's a long way from futures, which is part of why I
+wanted it; the common thread is controlling a system you can only partially observe.
+
+Before college I founded [FTC #16468 Green Lemons Robotics](robotics.html) and ran it
+for six seasons, writing the autonomous control software. We finished #1 OPR globally
+among more than 8,000 teams at the 2024 World Championships.
+
+## What I'm looking for
+
+Summer 2027 internships in software engineering, quantitative development, or
+quantitative research. I'm most useful where the modeling and the systems work are the
+same problem: research infrastructure, backtesting and simulation frameworks, execution
+systems, data pipelines that have to be right.
+
+## Elsewhere
+
+```{=html}
+<table class="spec">
+<tr><th>Code</th><td><a href="https://github.com/mrjerm">github.com/mrjerm</a></td></tr>
+<tr><th>Background</th><td><a href="https://www.linkedin.com/in/jerm04/">linkedin.com/in/jerm04</a></td></tr>
+<tr><th>Email</th><td><a href="mailto:jeremyhsu2025@gmail.com">jeremyhsu2025@gmail.com</a></td></tr>
+<tr><th>One page</th><td><a href="resume.pdf">resume.pdf</a></td></tr>
+</table>
+```
+
+## About this site
+
+Built with [Quarto](https://quarto.org), hosted on GitHub Pages, source at
+[github.com/mrjerm/mrjerm.github.io](https://github.com/mrjerm/mrjerm.github.io).
+Project writeups are rendered from the same notebooks the analysis was done in.

@@ -1,0 +1,112 @@
+---
+title: "Fifth Sanctuary"
+subtitle: "Intraday gold volatility expansion with macro-scaled risk sleeves"
+description: "An intraday gold volatility-expansion system with independent long and short risk sleeves, macro-scaled and separately filtered."
+date: 2026-01-01
+date-format: "MMMM YYYY"
+toc: true
+---
+
+::: {.eyebrow}
+Weaver Capital LP · deployed strategy · Python, C#/NinjaScript, MQL5
+:::
+
+**Fifth Sanctuary** is an intraday volatility-expansion system on gold. It runs long
+and short as two separate sleeves, each sized by a macro state vector, and it's flat
+most of the time. Live since January 2026.
+
+```{=html}
+<div class="metrics">
+<div class="metric"><div class="metric-value">1.48</div><div class="metric-label">Profit factor, simulated</div><div class="metric-note">2004&ndash;2025 &middot; 22 years</div></div>
+<div class="metric"><div class="metric-value">1.38</div><div class="metric-label">Sharpe, simulated</div><div class="metric-note">spot XAU, hourly bars</div></div>
+<div class="metric"><div class="metric-value">~18%</div><div class="metric-label">Time in market</div><div class="metric-note">flat the other 82%</div></div>
+<div class="metric"><div class="metric-value">42% / 2:1</div><div class="metric-label">Win rate / payoff ratio</div><div class="metric-note">loses more often than it wins</div></div>
+</div>
+```
+
+::: {.note-strip}
+Figures above are **simulated** results from a historical backtest on spot XAU hourly
+bars, 2004–2025 — not live trading results. Simulated performance is constructed with
+hindsight, does not reflect real order flow, and does not guarantee future results.
+A live track record is available on request.
+:::
+
+## The asymmetry that shaped the design
+
+The first version treated long and short the same way. That was a mistake.
+
+Gold doesn't behave symmetrically, and the research was fairly blunt about it: the
+short sleeve wasn't merely weaker, it lost money consistently under a particular set of
+macro conditions, for a reason that made sense once I went looking for it. So instead
+of tuning the shorts I filtered them out of those conditions entirely.
+
+That one change did more for the system than anything else I tried, and it came from
+asking why a component was losing rather than reaching for better parameters.
+
+::: {.note-strip}
+Which conditions, and the macro series behind them, aren't published here. Happy to go
+through the research in an interview.
+:::
+
+## Architecture
+
+The system runs across a language boundary, which was a deliberate choice about where
+each job belongs.
+
+**Python — macro layer.** A daily script pulls a handful of macro series from FRED and
+Yahoo and turns them into sleeve weights. Everything is T+1 shifted, so a given trading
+day can only see data that was actually published before it began. Getting this wrong
+is the standard way a macro overlay produces a beautiful backtest that dies on contact
+with production.
+
+**C#/NinjaScript — execution layer.** The live strategy takes the daily sleeve weights
+and handles bar-by-bar execution, order management, and risk limits.
+
+**Dual-series routing.** It analyzes the full-size gold futures contract, where the
+liquidity and the cleanest price signal are, but executes on micro contracts because
+account size constrains position granularity.
+
+```{=html}
+<table class="spec">
+<tr><th>Instrument</th><td>Gold futures (analysis) / micro gold futures (execution)</td></tr>
+<tr><th>Timeframe</th><td>Intraday; hourly research bars</td></tr>
+<tr><th>Sleeves</th><td>Independent long and short, separately sized and filtered</td></tr>
+<tr><th>Macro inputs</th><td>A small set of rates, credit, FX and volatility series &mdash; all T+1 shifted</td></tr>
+<tr><th>Simulation window</th><td>2004&ndash;2025 (22 years, spot XAU hourly)</td></tr>
+<tr><th>Live since</th><td>January 2026</td></tr>
+</table>
+```
+
+## Reading the numbers honestly
+
+A 42% win rate means this thing is wrong more often than it's right. For a
+volatility-expansion system that's expected: it takes a lot of small losses waiting for
+an expansion and makes its money on the ones that follow through, at roughly 2:1. The
+number I actually watch is the payoff ratio, since that's what would erode first if
+market character changed.
+
+Being flat 82% of the time is a feature rather than an inefficiency. The capital isn't
+committed, which is what lets this sit alongside other sleeves at the portfolio level.
+
+The 22-year window matters more to me than either ratio. It covers 2008, the 2011–2015
+gold bear market, 2020, and the 2022 rate shock — four regimes different enough that
+surviving all of them is harder to write off as an artifact of one.
+
+## What I'd do next
+
+- Model slippage against tick data rather than hourly bars. Stop orders in fast markets are where intraday backtests lie most.
+- Check whether the sleeve weights generalize to silver and platinum. If they do, the mechanism is more likely real than gold-specific curve fitting.
+- Set formal correlation limits against the other portfolio sleeves instead of treating this as standalone.
+
+```{=html}
+<div class="related">
+<div class="related-label">Next</div>
+<a class="related-link" href="rime.html">
+<div>
+<div class="related-title">Rime</div>
+<div class="related-note">Daily ETF regime allocator &mdash; the other live strategy.</div>
+</div>
+<div class="related-arrow">&rarr;</div>
+</a>
+</div>
+```

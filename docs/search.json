@@ -1,0 +1,226 @@
+[
+  {
+    "objectID": "project_kintoun.html",
+    "href": "project_kintoun.html",
+    "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
+    "section": "",
+    "text": "Project Kintoun is an event-driven algorithmic trading strategy designed for the Nasdaq-100 (NQ) futures market.\nWhile standard Opening Range Breakout (ORB) strategies suffer from false breakouts in high-volatility environments, this research attempts to improve risk-adjusted returns and implementing a “Break & Retest” microstructure filter combined with a VWAP trend confirmation.\n\nInstrument: NQ Futures (1-minute timeframe)\nCore Logic: 15-minute ORB with Volume & VWAP confirmation\nData Handling: timezone-aware alignment (US/Eastern) and specific exclusion of degraded data days"
+  },
+  {
+    "objectID": "project_kintoun.html#executive-summary",
+    "href": "project_kintoun.html#executive-summary",
+    "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
+    "section": "",
+    "text": "Project Kintoun is an event-driven algorithmic trading strategy designed for the Nasdaq-100 (NQ) futures market.\nWhile standard Opening Range Breakout (ORB) strategies suffer from false breakouts in high-volatility environments, this research attempts to improve risk-adjusted returns and implementing a “Break & Retest” microstructure filter combined with a VWAP trend confirmation.\n\nInstrument: NQ Futures (1-minute timeframe)\nCore Logic: 15-minute ORB with Volume & VWAP confirmation\nData Handling: timezone-aware alignment (US/Eastern) and specific exclusion of degraded data days"
+  },
+  {
+    "objectID": "project_kintoun.html#hypothesis",
+    "href": "project_kintoun.html#hypothesis",
+    "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
+    "section": "Hypothesis",
+    "text": "Hypothesis\nThe first hour of the US Equity session (9:30AM - 10:30AM ET) represent the period of highest price discovery and volatility. A standard ORB strategy bets that a breakout of the initial range will lead to a trend day.\nHowever, blind breakouts are susceptible to false breakouts, where price sweeps an extrema of the opening range, but fails to hold outside.\nMy hypothesis:\n1. Microstructure: Waiting for a retest of the breakout level (e.g. price breaks up → returns to range high → holds) validates support.\n2. Regime: Trades should only be taken if the intraday trend agrees with the Session VWAP slope.\n3. Volume: Breakouts must be accompanied by volume exceeding the 20-period SMA (Simple Moving Average) to confirm aggressive participation."
+  },
+  {
+    "objectID": "project_kintoun.html#data-engineering-challenges",
+    "href": "project_kintoun.html#data-engineering-challenges",
+    "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
+    "section": "Data Engineering Challenges",
+    "text": "Data Engineering Challenges\nOne of the most critical aspects of this backtest was ensuring data integrity. Financial time series data often contains gaps or timezone inconsistencies that can ruin a backtest.\n\nTimezone Alignment\nFutures data often comes in UTC or CST. To accurately capture the 9:30 AM NY Open, I implemented robust timezone handling to account for Daylight Savings Time shifts automatically.\n\n\nVoided Dates\nReal-world data is rarely perfect. I sourced my data from DataBento, and while it was excellent for the most part, I identified specific dates where data feed degradation occured (e.g. gaps in time, outages) and voided those from the simulation."
+  },
+  {
+    "objectID": "project_kintoun.html#mathematical-implementation",
+    "href": "project_kintoun.html#mathematical-implementation",
+    "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
+    "section": "Mathematical Implementation",
+    "text": "Mathematical Implementation\n\nRobust VWAP Calculation\nI calculated the Volume Weighted Average Price (VWAP) using a vectorized approach (NumPy/Pandas) rather than an iterative loop for performance. \\[\n\\text{VWAP} = \\frac{\\sum_jP_j\\cdot{}V_j}{\\sum_jV_j}\n\\] The standard deviation bands (2.0 SD) were calculated to define the “Value Area”\n\n\nEvent Driven Simulation\nWhile vectorization is preferred for indicators, I utilized an Event-Driven Loop for the trade execution logic. This allows for more accurate state management of:\n1. Breakout Status (broke_up / broke_down)\n2. Retest Validation (retest_ok)\n3. Dynamic Position Sizing (Scaling risk based on Equity)"
+  },
+  {
+    "objectID": "project_kintoun.html#simulation-code",
+    "href": "project_kintoun.html#simulation-code",
+    "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
+    "section": "Simulation Code",
+    "text": "Simulation Code\nNote: The full source code handles data loading, indicator calculation, and the backtesting loop. Specific parameter values have been sanitized for public display.\n\n\nCode\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom datetime import time, timedelta\nimport pytz\nimport math\n\n# ==========================================\n# 1. CONFIGURATION\n# ==========================================\nCSV_PATH = 'NQ_1m.csv'\n\n# --- DATA SETTINGS ---\nDATA_SOURCE_TYPE = 'FIXED_EST' \n# Void dates (Degraded data)\nVOID_DATES_STR = {\n    '2017-11-13', '2018-10-21', '2019-01-15', '2019-02-22',\n    '2019-03-13', '2019-03-26', '2020-02-27', '2020-02-28',\n    '2020-06-30', '2020-07-01', '2021-12-05', '2022-01-02',\n    '2025-09-17', '2025-09-24', '2025-11-28'\n}\nVOID_DATES = {pd.to_datetime(d).date() for d in VOID_DATES_STR}\n\nSTART_DATE = '2022-06-01'\nEND_DATE = '2025-11-01'\n\n# --- ACCOUNT SETTINGS ---\nINITIAL_CAPITAL = 200_000\nCOMMISSION_PER_CONTRACT = 2.74\nPOINT_VALUE = 20.0 \nRISK_FREE_RATE = 0.04\n\n# --- SIZING SETTINGS ---\n# If True, size scales with equity (200k = 1.0, 220k = 1.1, etc.)\n# increments of 0.1 (approx 1 micro per 20k equity variance)\nENABLE_DYNAMIC_SIZING = True \n\n# If Dynamic is False, this static scale is used\nBASELINE_SCALE_FACTOR = 2\n\n# --- STRATEGY PARAMS ---\nVOL_MULT_LONG = 0\nVOL_MULT_SHORT = 0\nVWAP_REG_LEN = 1\nMAX_TRADES_PER_DAY = 1\nMAX_VWAP_DEV = 1\nENABLE_5M_EXIT = True\nENABLE_NY_VWAP_EXIT = True\n\n# --- TIME SETTINGS ---\nTIME_ORB_START = time(9, 30)\nTIME_ORB_END = time(9, 45)\nTIME_TRADE_START = time(9, 45)\nTIME_TRADE_END = time(14, 0)\nTIME_EOD_EXIT = time(14, 59)\n\nANCHOR_SESSION = time(18, 0)\nANCHOR_NY = time(9, 30)\n\n# ==========================================\n# 2. HELPER FUNCTIONS\n# ==========================================\n\ndef load_and_prep_data(path, date_col='datetime', tz_type='WALL_TIME'):\n    print(f\"Loading {path}...\")\n    try:\n        df = pd.read_csv(path)\n        df.columns = df.columns.str.lower().str.strip()\n        df[date_col] = pd.to_datetime(df[date_col])\n        df.set_index(date_col, inplace=True)\n        df.sort_index(inplace=True)\n        \n        target_tz = pytz.timezone('America/New_York')\n        \n        if tz_type == 'FIXED_EST':\n            df.index = df.index.tz_localize('Etc/GMT+5')\n            df.index = df.index.tz_convert(target_tz)\n        elif tz_type == 'UTC':\n            df.index = df.index.tz_localize('UTC')\n            df.index = df.index.tz_convert(target_tz)\n        elif tz_type == 'WALL_TIME':\n            df.index = df.index.tz_localize(target_tz, ambiguous='infer')\n            \n        return df.dropna()\n    except Exception as e:\n        print(f\"Error loading data: {e}\")\n        return pd.DataFrame()\n\ndef calculate_vwap_robust(df, anchor_time):\n    df = df.copy()\n    minutes = df.index.hour * 60 + df.index.minute\n    anchor_min = anchor_time.hour * 60 + anchor_time.minute\n    \n    day_change = pd.Series(df.index.date).diff().values != pd.Timedelta(0)\n    day_change[0] = True \n    \n    is_after_anchor = minutes &gt;= anchor_min\n    is_after_anchor_prev = np.roll(is_after_anchor, 1)\n    is_after_anchor_prev[0] = False\n    time_cross = (is_after_anchor & ~is_after_anchor_prev)\n    \n    if anchor_time.hour == 9:\n        reset_mask = day_change | time_cross\n    else:\n        reset_mask = time_cross\n        reset_mask[0] = True\n\n    group_id = reset_mask.cumsum()\n    df['hlc3'] = (df['high'] + df['low'] + df['close']) / 3\n    df['pv'] = df['hlc3'] * df['volume']\n    grouper = df.groupby(group_id)\n    cum_vol = grouper['volume'].cumsum()\n    cum_pv = grouper['pv'].cumsum()\n    vwap = cum_pv / cum_vol\n    df['p2v'] = (df['hlc3'] ** 2) * df['volume']\n    cum_p2v = grouper['p2v'].cumsum()\n    variance = (cum_p2v / cum_vol) - (vwap ** 2)\n    stdev = np.sqrt(variance.clip(lower=0))\n    return vwap, stdev\n\ndef calculate_slope(series, window=100):\n    y = series.values\n    x = np.arange(window)\n    sum_x = x.sum()\n    sum_x2 = (x**2).sum()\n    divisor = window * sum_x2 - sum_x**2\n    slopes = np.full(len(y), np.nan)\n    if len(y) &gt; window:\n        strides = (y.strides[0], y.strides[0])\n        shape = (len(y) - window + 1, window)\n        y_strided = np.lib.stride_tricks.as_strided(y, shape=shape, strides=strides)\n        sum_y = y_strided.sum(axis=1)\n        sum_xy = (y_strided * x).sum(axis=1)\n        slopes[window-1:] = (window * sum_xy - sum_x * sum_y) / divisor\n    return pd.Series(slopes, index=series.index)\n\ndef get_base_qty(t):\n    return 1\n\ndef analyze_performance(trades_df, price_df):\n    if trades_df.empty: return\n    \n    min_date = trades_df['exit_ts'].min()\n    max_date = trades_df['exit_ts'].max()\n    price_df_filtered = price_df[(price_df.index &gt;= min_date) & (price_df.index &lt;= max_date)]\n    \n    daily_pnl = trades_df.groupby(trades_df['exit_ts'].dt.date)['pnl'].sum()\n    daily_pnl.index = pd.to_datetime(daily_pnl.index)\n    \n    # Strip timezone for alignment\n    price_df_daily = price_df_filtered['close'].resample('B').last()\n    price_df_daily.index = price_df_daily.index.tz_localize(None).normalize()\n    \n    all_dates = pd.date_range(daily_pnl.index.min(), daily_pnl.index.max(), freq='B')\n    daily_pnl = daily_pnl.reindex(all_dates).fillna(0)\n    price_df_daily = price_df_daily.reindex(all_dates).ffill()\n    \n    benchmark_rets = price_df_daily.pct_change().fillna(0)\n    strat_rets = daily_pnl / INITIAL_CAPITAL\n    aligned_df = pd.DataFrame({'strat': strat_rets, 'bench': benchmark_rets}).dropna()\n    \n    total_trades = len(trades_df)\n    gross_win = trades_df[trades_df['pnl'] &gt; 0]['pnl'].sum()\n    gross_loss = trades_df[trades_df['pnl'] &lt;= 0]['pnl'].sum()\n    profit_factor = abs(gross_win / gross_loss) if gross_loss != 0 else np.inf\n    win_rate = (trades_df['pnl'] &gt; 0).mean()\n    \n    ANN_FACTOR = 252\n    avg_daily_ret = strat_rets.mean()\n    std_daily_ret = strat_rets.std()\n    annualized_ret = avg_daily_ret * ANN_FACTOR\n    \n    sharpe = (avg_daily_ret / std_daily_ret) * np.sqrt(ANN_FACTOR) if std_daily_ret != 0 else 0\n    \n    downside_rets = strat_rets[strat_rets &lt; 0]\n    downside_std = downside_rets.std()\n    sortino = (avg_daily_ret / downside_std) * np.sqrt(ANN_FACTOR) if downside_std != 0 else 0\n    \n    full_equity = daily_pnl.cumsum() + INITIAL_CAPITAL\n    running_max = full_equity.cummax()\n    drawdown_pct = (full_equity - running_max) / running_max\n    max_dd_pct = drawdown_pct.min()\n    max_dd_amt = (full_equity - running_max).min()\n    calmar = annualized_ret / abs(max_dd_pct) if max_dd_pct != 0 else 0\n    \n    if not aligned_df.empty:\n        covariance = aligned_df.cov().iloc[0, 1]\n        bench_var = aligned_df['bench'].var()\n        beta = covariance / bench_var if bench_var != 0 else 0\n        treynor = (annualized_ret - RISK_FREE_RATE) / beta if abs(beta) &gt; 0.0001 else 0\n    else:\n        beta = 0; treynor = 0\n\n    print(\"\\n\" + \"=\"*45)\n    print(f\" KINTOUN PERFORMANCE ({START_DATE} to {END_DATE})\")\n    print(f\" Dynamic Sizing: {ENABLE_DYNAMIC_SIZING}\")\n    print(\"=\"*45)\n    print(f\"Total Trades:      {total_trades}\")\n    print(f\"Win Rate:          {win_rate:.2%}\")\n    print(f\"Profit Factor:     {profit_factor:.2f}\")\n    print(\"-\" * 45)\n    print(f\"Total PnL:         ${trades_df['pnl'].sum():,.2f}\")\n    print(f\"Final Equity:      ${trades_df['equity'].iloc[-1]:,.2f}\")\n    print(f\"Annualized Ret:    {annualized_ret:.2%}\")\n    print(\"-\" * 45)\n    print(f\"Max Drawdown:      {max_dd_pct:.2%} (${max_dd_amt:,.2f})\")\n    print(f\"Sharpe Ratio:      {sharpe:.2f}\")\n    print(f\"Sortino Ratio:     {sortino:.2f}\")\n    print(f\"Calmar Ratio:      {calmar:.2f}\")\n    print(f\"Treynor Ratio:     {treynor:.2f} (Beta: {beta:.2f})\")\n    print(\"=\"*45)\n    \n    print(\"\\n[EXIT REASON DISTRIBUTION]\")\n    print(trades_df['reason'].value_counts())\n    \n    plt.style.use('bmh')\n    fig = plt.figure(figsize=(12, 10))\n    gs = fig.add_gridspec(3, 1, height_ratios=[3, 1, 1])\n    ax1 = fig.add_subplot(gs[0])\n    ax1.plot(full_equity.index, full_equity, label='Strategy Equity', color='#2ecc71')\n    if not aligned_df.empty:\n        bench_equity = (1 + aligned_df['bench']).cumprod() * INITIAL_CAPITAL\n        ax1.plot(bench_equity.index, bench_equity, label='NQ Buy & Hold', color='gray', alpha=0.3, linestyle='--')\n    ax1.set_title(f'Equity Curve')\n    ax1.legend()\n    ax1.set_ylabel('Capital ($)')\n    ax2 = fig.add_subplot(gs[1], sharex=ax1)\n    ax2.fill_between(drawdown_pct.index, drawdown_pct, 0, color='#e74c3c', alpha=0.5)\n    ax2.set_title('Drawdown (%)')\n    ax3 = fig.add_subplot(gs[2], sharex=ax1)\n    ax3.bar(strat_rets.index, strat_rets, color='#3498db', alpha=0.7)\n    ax3.set_title('Daily Returns')\n    plt.tight_layout()\n    plt.show()\n\n# ==========================================\n# 4. MAIN EXECUTION\n# ==========================================\n\ndef run_strategy():\n    df = load_and_prep_data(CSV_PATH, tz_type=DATA_SOURCE_TYPE)\n    if df.empty: return\n\n    print(\"Calculating Indicators...\")\n    df['session_vwap'], _ = calculate_vwap_robust(df, ANCHOR_SESSION)\n    df['ny_vwap'], df['ny_std'] = calculate_vwap_robust(df, ANCHOR_NY)\n    df[['session_vwap','ny_vwap','ny_std']] = df[['session_vwap','ny_vwap','ny_std']].ffill()\n    df['upper'] = df['ny_vwap'] + (MAX_VWAP_DEV * df['ny_std'])\n    df['lower'] = df['ny_vwap'] - (MAX_VWAP_DEV * df['ny_std'])\n    df['slope'] = calculate_slope(df['session_vwap'], window=VWAP_REG_LEN)\n    df['vol_sma'] = df['volume'].rolling(20).mean()\n\n    print(f\"Filtering data from {START_DATE} to {END_DATE}...\")\n    if START_DATE:\n        df = df[df.index &gt;= pd.to_datetime(START_DATE).tz_localize('America/New_York')]\n    if END_DATE:\n        df = df[df.index &lt; pd.to_datetime(END_DATE).tz_localize('America/New_York') + timedelta(days=1)]\n    \n    if df.empty:\n        print(\"Error: No data in date range.\")\n        return\n\n    print(f\"Simulation Range: {df.index[0]} to {df.index[-1]}\")\n    \n    trades = []\n    active = None\n    \n    # Track Equity State\n    current_equity = INITIAL_CAPITAL\n    \n    curr_date = None\n    orb_h, orb_l = np.nan, np.nan\n    broke_up, broke_dn = False, False\n    retest_ok = False\n    break_idx = 0\n    day_trades = 0\n    \n    # Pre-fetch numpy arrays\n    idx_arr = df.index\n    open_arr = df['open'].values\n    high_arr = df['high'].values\n    low_arr = df['low'].values\n    close_arr = df['close'].values\n    vol_arr = df['volume'].values\n    ny_vwap_arr = df['ny_vwap'].values\n    slope_arr = df['slope'].values\n    vol_sma_arr = df['vol_sma'].values\n    upper_arr = df['upper'].values\n    lower_arr = df['lower'].values\n    \n    for i in range(len(df)):\n        ts = idx_arr[i]\n        t = ts.time()\n        d = ts.date()\n        \n        # --- NEW DAY LOGIC ---\n        if curr_date != d:\n            curr_date = d\n            orb_h, orb_l = np.nan, np.nan\n            broke_up, broke_dn = False, False\n            retest_ok = False\n            break_idx = 0\n            day_trades = 0\n            \n            # Force EOD VOID\n            if active:\n                active = None\n        \n        # --- VOID DATE CHECK ---\n        if d in VOID_DATES:\n            continue\n\n        # ORB\n        if TIME_ORB_START &lt;= t &lt; TIME_ORB_END:\n            orb_h = high_arr[i] if np.isnan(orb_h) else max(orb_h, high_arr[i])\n            orb_l = low_arr[i] if np.isnan(orb_l) else min(orb_l, low_arr[i])\n            continue\n        if np.isnan(orb_h): continue\n        orb_rng = orb_h - orb_l\n\n        # Break/Retest\n        if high_arr[i] &gt; orb_h and not broke_up:\n            broke_up = True; break_idx = i; retest_ok = False\n        if low_arr[i] &lt; orb_l and not broke_dn:\n            broke_dn = True; break_idx = i; retest_ok = False\n            \n        if broke_up and low_arr[i] &lt;= orb_h: retest_ok = True\n        if broke_dn and high_arr[i] &gt;= orb_l: retest_ok = True\n\n        # Exits\n        if active:\n            exit_px = None; reason = \"\"\n            if t &gt;= TIME_EOD_EXIT:\n                exit_px = close_arr[i]; reason = \"EOD\"\n            elif active['type'] == 'long':\n                if low_arr[i] &lt;= active['sl']: exit_px = active['sl']; reason = \"SL\"\n                elif high_arr[i] &gt;= active['tp']: exit_px = active['tp']; reason = \"TP\"\n                elif ENABLE_NY_VWAP_EXIT and close_arr[i] &lt; ny_vwap_arr[i]: exit_px = close_arr[i]; reason = \"VWAP\"\n            else:\n                if high_arr[i] &gt;= active['sl']: exit_px = active['sl']; reason = \"SL\"\n                elif low_arr[i] &lt;= active['tp']: exit_px = active['tp']; reason = \"TP\"\n                elif ENABLE_NY_VWAP_EXIT and close_arr[i] &gt; ny_vwap_arr[i]: exit_px = close_arr[i]; reason = \"VWAP\"\n\n            if not exit_px and ENABLE_5M_EXIT:\n                if 0 &lt; (i - active['ent_idx']) &lt;= 5 and t.minute % 5 == 4:\n                    if i &gt;= 4:\n                        op_5m = open_arr[i-4]\n                        if active['type'] == 'long' and close_arr[i] &lt; op_5m: exit_px = close_arr[i]; reason = \"5m\"\n                        elif active['type'] == 'short' and close_arr[i] &gt; op_5m: exit_px = close_arr[i]; reason = \"5m\"\n\n            if exit_px:\n                diff = (exit_px - active['ent_px']) if active['type'] == 'long' else (active['ent_px'] - exit_px)\n                pnl = (diff * active['qty'] * POINT_VALUE) - (COMMISSION_PER_CONTRACT * active['qty'])\n                \n                # UPDATE RUNNING EQUITY\n                current_equity += pnl\n                \n                trades.append({**active, 'exit_px': exit_px, 'exit_ts': ts, 'reason': reason, 'pnl': pnl})\n                active = None\n            continue\n\n        # Entries\n        if not (TIME_TRADE_START &lt;= t &lt; TIME_TRADE_END): continue\n        if day_trades &gt;= MAX_TRADES_PER_DAY: continue\n        \n        c_long = (broke_up and retest_ok and i &gt; break_idx and close_arr[i] &gt; orb_h and low_arr[i] &lt;= orb_h)\n        c_short = (broke_dn and retest_ok and i &gt; break_idx and close_arr[i] &lt; orb_l and high_arr[i] &gt;= orb_l)\n        \n        if not c_long and not c_short: continue\n        if not (lower_arr[i] &lt; close_arr[i] &lt; upper_arr[i]): continue\n        slp = slope_arr[i]\n        if np.isnan(slp): continue\n        vol_chk = vol_arr[i] &gt; (vol_sma_arr[i] * (VOL_MULT_LONG if c_long else VOL_MULT_SHORT))\n        if not vol_chk: continue\n\n        if c_long and slp &gt; 0 and close_arr[i] &gt; ny_vwap_arr[i] and close_arr[i] &lt; orb_h + orb_rng:\n            base_q = get_base_qty(t)\n            \n            # --- SCALING LOGIC ---\n            scale = BASELINE_SCALE_FACTOR\n            if ENABLE_DYNAMIC_SIZING:\n                # Ratio: Current / Initial\n                ratio = BASELINE_SCALE_FACTOR * current_equity / INITIAL_CAPITAL\n                # Floor to nearest 0.1 increment\n                scale = math.floor(ratio * 10) / 10.0\n                # Sanity check: Don't go below 0.1 scale\n                scale = max(0.1, scale)\n                \n            q = base_q * scale\n            \n            if q &gt; 0:\n                active = {'type':'long', 'ent_ts':ts, 'ent_px':close_arr[i], 'qty':q, \n                          'sl':orb_l, 'tp':orb_h+orb_rng, 'ent_idx':i, 'scale':scale}\n                day_trades += 1; broke_up = False; retest_ok = False\n\n        elif c_short and slp &lt; 0 and close_arr[i] &lt; ny_vwap_arr[i] and close_arr[i] &gt; orb_l - orb_rng:\n            base_q = get_base_qty(t)\n            \n            scale = BASELINE_SCALE_FACTOR\n            if ENABLE_DYNAMIC_SIZING:\n                ratio = BASELINE_SCALE_FACTOR * current_equity / INITIAL_CAPITAL\n                scale = math.floor(ratio * 10) / 10.0\n                scale = max(0.1, scale)\n            \n            q = base_q * scale\n            \n            if q &gt; 0:\n                active = {'type':'short', 'ent_ts':ts, 'ent_px':close_arr[i], 'qty':q, \n                          'sl':orb_h, 'tp':orb_l-orb_rng, 'ent_idx':i, 'scale':scale}\n                day_trades += 1; broke_dn = False; retest_ok = False\n\n    if len(trades) &gt; 0:\n        res = pd.DataFrame(trades)\n        # Recalculate full equity curve from PnL for analysis consistency\n        res['equity'] = res['pnl'].cumsum() + INITIAL_CAPITAL\n        \n        print(\"\\nExporting trades to 'kintoun_trade_log.csv'...\")\n        res.to_csv(\"kintoun_trade_log.csv\", index=False)\n        \n        analyze_performance(res, df)\n    else:\n        print(\"No trades generated.\")"
+  },
+  {
+    "objectID": "project_kintoun.html#performance-analysis",
+    "href": "project_kintoun.html#performance-analysis",
+    "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
+    "section": "Performance Analysis",
+    "text": "Performance Analysis\nBelow are the results generated from the simulation running on 1-minute NQ bars over the last ~3 years.\n\n\nCode\nrun_strategy()\n\n\nLoading NQ_1m.csv...\nCalculating Indicators...\nFiltering data from 2022-06-01 to 2025-11-01...\nSimulation Range: 2022-06-01 00:00:00-04:00 to 2025-10-31 16:59:00-04:00\n\nExporting trades to 'kintoun_trade_log.csv'...\n\n=============================================\n KINTOUN PERFORMANCE (2022-06-01 to 2025-11-01)\n Dynamic Sizing: True\n=============================================\nTotal Trades:      1062\nWin Rate:          33.90%\nProfit Factor:     1.47\n---------------------------------------------\nTotal PnL:         $404,294.74\nFinal Equity:      $604,294.74\nAnnualized Ret:    57.24%\n---------------------------------------------\nMax Drawdown:      -8.46% ($-22,569.99)\nSharpe Ratio:      2.28\nSortino Ratio:     4.00\nCalmar Ratio:      6.76\nTreynor Ratio:     2.36 (Beta: 0.23)\n=============================================\n\n[EXIT REASON DISTRIBUTION]\nreason\nVWAP    495\n5m      251\nTP      241\nEOD      67\nSL        8\nName: count, dtype: int64"
+  },
+  {
+    "objectID": "project_kintoun.html#conclusion-future-work",
+    "href": "project_kintoun.html#conclusion-future-work",
+    "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
+    "section": "Conclusion & Future Work",
+    "text": "Conclusion & Future Work\nThe Kintoun Strategy demonstrates significantly improved expectancy and risk-adjusted return, as well as lower max drawdown compared to a naive breakout strategy. Using Volume, VWAP, and slope ensures we are not trading against the dominant intraday flow.\nFuture Improvements:\n- Execution: Moving from close prices to Tick Data to better model slippage on stop orders.\n- Optimization: Exploring a machine learning approach (Random Forest, XGBoost) to classify the probability of a successful retest/trade."
+  },
+  {
+    "objectID": "rime.html",
+    "href": "rime.html",
+    "title": "Rime",
+    "section": "",
+    "text": "Weaver Capital LP · deployed strategy · Python, pandas, NumPy, Alpaca API, Streamlit\nRime is a daily allocator. Each morning it splits capital between leveraged Nasdaq ETF exposure, a volatility hedge, and cash. It’s been running on Alpaca since April 2026.\nMost of the work went into the plumbing rather than the signal — making sure the code running in production is the same code that produced the backtest."
+  },
+  {
+    "objectID": "rime.html#the-problem",
+    "href": "rime.html#the-problem",
+    "title": "Rime",
+    "section": "The problem",
+    "text": "The problem\nLeveraged index ETFs decay in choppy markets. They rebalance daily, so the compounded return depends on the path and not just the endpoint — a sideways market grinds them down even when the index finishes flat. Holding one indefinitely is a bet that volatility stays low.\nRime asks something narrower: can you hold that exposure only while the drag is small, and be somewhere else the rest of the time?"
+  },
+  {
+    "objectID": "rime.html#how-it-decides",
+    "href": "rime.html#how-it-decides",
+    "title": "Rime",
+    "section": "How it decides",
+    "text": "How it decides\nThe allocator is a shallow decision tree over three groups of inputs — a set of trend and volatility state variables, a macro overlay, and a volatility circuit breaker.\nThe tree is shallow on purpose. Fourteen years of daily bars isn’t a big sample, and every extra split is another chance to fit noise.\nThe macro overlay leans on cross-asset series that tend to move ahead of equities rather than alongside them. The circuit breaker cuts leveraged exposure when volatility spikes, and it runs on hysteresis — the level that switches it on isn’t the level that switches it off — so the allocation doesn’t thrash around a single threshold. On top of that sits a rebalance deadband: if the target hasn’t moved much, nothing trades.\n\nThe specific state variables, macro series, and thresholds aren’t published here. Happy to walk through them in an interview."
+  },
+  {
+    "objectID": "rime.html#the-engineering-that-matters",
+    "href": "rime.html#the-engineering-that-matters",
+    "title": "Rime",
+    "section": "The engineering that matters",
+    "text": "The engineering that matters\nOne decision function. Research and production call the same function. There’s no notebook that approximates what the live system does, because that gap is the usual way a backtested strategy quietly stops being the strategy you tested. State persists between runs, so the live system’s view of the current regime survives a restart instead of being rebuilt from a truncated window.\nData quality gates. Bad ticks, stale bars, and missing sessions get caught before anything reaches the allocator. If the feed looks wrong, the system sits out.\n47 pytest tests across the signal tree and the risk overlays — regime transitions, breaker behavior at the hysteresis boundaries, deadband logic. Mostly they exist so I can change things without guessing."
+  },
+  {
+    "objectID": "rime.html#validation",
+    "href": "rime.html#validation",
+    "title": "Rime",
+    "section": "Validation",
+    "text": "Validation\nOne backtest number doesn’t tell you much, so I put it through a few things that could have killed it:\n\n\n\nWalk-forward folds\nParameters fit on one window, evaluated on the next, rolling forward. No single global fit.\n\n\nPre/post-2020 splits\n2020 is an outlier regime that flatters almost any volatility-responsive strategy. Reported separately for exactly that reason.\n\n\nSlippage & commission stress\nCosts scaled well past realistic levels to find where the edge disappears.\n\n\nBlock bootstrap\nResampling in blocks to preserve autocorrelation, testing whether results depend on the specific historical path.\n\n\n\nBoth 1.86 and 1.58 are on this page because the gap between them is the finding. 2020 contributed a large share of the headline Sharpe, and quoting only the higher number would be misleading."
+  },
+  {
+    "objectID": "rime.html#what-id-do-next",
+    "href": "rime.html#what-id-do-next",
+    "title": "Rime",
+    "section": "What I’d do next",
+    "text": "What I’d do next\n\nSwap the shallow tree for a probabilistic regime model, and check honestly whether it beats the rules instead of assuming it will.\nModel execution against intraday liquidity rather than assuming a fill at the daily close.\nWiden the macro overlay carefully. More inputs are more degrees of freedom.\n\n\nNext\n\n\nFifth Sanctuary\nIntraday gold volatility expansion — the other live strategy.\n\n→"
+  },
+  {
+    "objectID": "fifth-sanctuary.html",
+    "href": "fifth-sanctuary.html",
+    "title": "Fifth Sanctuary",
+    "section": "",
+    "text": "Weaver Capital LP · deployed strategy · Python, C#/NinjaScript, MQL5\nFifth Sanctuary is an intraday volatility-expansion system on gold. It runs long and short as two separate sleeves, each sized by a macro state vector, and it’s flat most of the time. Live since January 2026."
+  },
+  {
+    "objectID": "fifth-sanctuary.html#the-asymmetry-that-shaped-the-design",
+    "href": "fifth-sanctuary.html#the-asymmetry-that-shaped-the-design",
+    "title": "Fifth Sanctuary",
+    "section": "The asymmetry that shaped the design",
+    "text": "The asymmetry that shaped the design\nThe first version treated long and short the same way. That was a mistake.\nGold doesn’t behave symmetrically, and the research was fairly blunt about it: the short sleeve wasn’t merely weaker, it lost money consistently under a particular set of macro conditions, for a reason that made sense once I went looking for it. So instead of tuning the shorts I filtered them out of those conditions entirely.\nThat one change did more for the system than anything else I tried, and it came from asking why a component was losing rather than reaching for better parameters.\n\nWhich conditions, and the macro series behind them, aren’t published here. Happy to go through the research in an interview."
+  },
+  {
+    "objectID": "fifth-sanctuary.html#architecture",
+    "href": "fifth-sanctuary.html#architecture",
+    "title": "Fifth Sanctuary",
+    "section": "Architecture",
+    "text": "Architecture\nThe system runs across a language boundary, which was a deliberate choice about where each job belongs.\nPython — macro layer. A daily script pulls a handful of macro series from FRED and Yahoo and turns them into sleeve weights. Everything is T+1 shifted, so a given trading day can only see data that was actually published before it began. Getting this wrong is the standard way a macro overlay produces a beautiful backtest that dies on contact with production.\nC#/NinjaScript — execution layer. The live strategy takes the daily sleeve weights and handles bar-by-bar execution, order management, and risk limits.\nDual-series routing. It analyzes the full-size gold futures contract, where the liquidity and the cleanest price signal are, but executes on micro contracts because account size constrains position granularity.\n\n\n\nInstrument\nGold futures (analysis) / micro gold futures (execution)\n\n\nTimeframe\nIntraday; hourly research bars\n\n\nSleeves\nIndependent long and short, separately sized and filtered\n\n\nMacro inputs\nA small set of rates, credit, FX and volatility series — all T+1 shifted\n\n\nSimulation window\n2004–2025 (22 years, spot XAU hourly)\n\n\nLive since\nJanuary 2026"
+  },
+  {
+    "objectID": "fifth-sanctuary.html#reading-the-numbers-honestly",
+    "href": "fifth-sanctuary.html#reading-the-numbers-honestly",
+    "title": "Fifth Sanctuary",
+    "section": "Reading the numbers honestly",
+    "text": "Reading the numbers honestly\nA 42% win rate means this thing is wrong more often than it’s right. For a volatility-expansion system that’s expected: it takes a lot of small losses waiting for an expansion and makes its money on the ones that follow through, at roughly 2:1. The number I actually watch is the payoff ratio, since that’s what would erode first if market character changed.\nBeing flat 82% of the time is a feature rather than an inefficiency. The capital isn’t committed, which is what lets this sit alongside other sleeves at the portfolio level.\nThe 22-year window matters more to me than either ratio. It covers 2008, the 2011–2015 gold bear market, 2020, and the 2022 rate shock — four regimes different enough that surviving all of them is harder to write off as an artifact of one."
+  },
+  {
+    "objectID": "fifth-sanctuary.html#what-id-do-next",
+    "href": "fifth-sanctuary.html#what-id-do-next",
+    "title": "Fifth Sanctuary",
+    "section": "What I’d do next",
+    "text": "What I’d do next\n\nModel slippage against tick data rather than hourly bars. Stop orders in fast markets are where intraday backtests lie most.\nCheck whether the sleeve weights generalize to silver and platinum. If they do, the mechanism is more likely real than gold-specific curve fitting.\nSet formal correlation limits against the other portfolio sleeves instead of treating this as standalone.\n\n\nNext\n\n\nRime\nDaily ETF regime allocator — the other live strategy.\n\n→"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Penn State · B.S. Computer Science · Aug 2025 – Dec 2028 · West Chester, PA\nMost of what I do sits between software engineering and statistics. I build systematic trading strategies, though more of the hours go into the infrastructure — the part that keeps a strategy running unattended without quietly turning into a different strategy than the one I tested.\nI founded Weaver Capital LP in January 2026 and run a multi-strategy systematic portfolio there, across futures and equities on intraday, swing, and macro horizons. Two of the strategies are live: Rime, a daily ETF regime allocator, and Fifth Sanctuary, an intraday gold volatility-expansion system. The execution infrastructure is mine too — Python and C#, with automated strategy synchronization, enforced risk limits, and sub-second order handling — along with the portfolio optimization pipelines that allocate across uncorrelated sleeves.\nSince August 2026 I’ve also been an undergraduate researcher in the Locomotion in Biology and Robotics (LiBR) Lab under Dr. Baxi Chong, working on gait optimization in unconventional robot morphologies. It’s a long way from futures, which is part of why I wanted it; the common thread is controlling a system you can only partially observe.\nBefore college I founded FTC #16468 Green Lemons Robotics and ran it for six seasons, writing the autonomous control software. We finished #1 OPR globally among more than 8,000 teams at the 2024 World Championships."
+  },
+  {
+    "objectID": "about.html#what-im-looking-for",
+    "href": "about.html#what-im-looking-for",
+    "title": "About",
+    "section": "What I’m looking for",
+    "text": "What I’m looking for\nSummer 2027 internships in software engineering, quantitative development, or quantitative research. I’m most useful where the modeling and the systems work are the same problem: research infrastructure, backtesting and simulation frameworks, execution systems, data pipelines that have to be right."
+  },
+  {
+    "objectID": "about.html#elsewhere",
+    "href": "about.html#elsewhere",
+    "title": "About",
+    "section": "Elsewhere",
+    "text": "Elsewhere\n\n\n\nCode\ngithub.com/mrjerm\n\n\nBackground\nlinkedin.com/in/jerm04\n\n\nEmail\njeremyhsu2025@gmail.com\n\n\nOne page\nresume.pdf"
+  },
+  {
+    "objectID": "about.html#about-this-site",
+    "href": "about.html#about-this-site",
+    "title": "About",
+    "section": "About this site",
+    "text": "About this site\nBuilt with Quarto, hosted on GitHub Pages, source at github.com/mrjerm/mrjerm.github.io. Project writeups are rendered from the same notebooks the analysis was done in."
+  },
+  {
+    "objectID": "index.html#selected-work",
+    "href": "index.html#selected-work",
+    "title": "Jeremy Hsu",
+    "section": "Selected work",
+    "text": "Selected work\n\n\nLive · deployed\nRime\nDaily ETF regime allocator · Python, pandas, Alpaca\nA daily allocator that splits capital between leveraged Nasdaq ETF exposure, a volatility hedge, and cash, using a shallow regime tree with a macro overlay and a volatility circuit breaker. Research and production call the same decision function, so live orders can't quietly drift from the backtest.\nRead the writeup →\n\n\nLive · deployed\nFifth Sanctuary\nIntraday gold volatility expansion · Python, C#/NinjaScript\nAn intraday gold system running long and short as two separate risk sleeves, each sized by a macro state vector and filtered independently. The research found one sleeve was losing money structurally rather than randomly, which changed the design more than any amount of tuning would have.\nRead the writeup →\n\n\nResearch · Dec 2025\nProject Kintoun\nORB microstructure study · Python, event-driven sim\nA research notebook testing whether a break-and-retest microstructure filter plus VWAP trend confirmation can suppress false breakouts in Nasdaq-100 futures. Full methodology, math, and code are published, including where it doesn't work.\nRead the notebook →\n\n\n2019 – 2025\nGreen Lemons Robotics\nFTC #16468 · autonomous software, team leadership\nFounded and led a 14-member competitive robotics team across six seasons, writing the autonomous control stack — vision-based navigation and path planning. Finished #1 OPR globally out of more than 8,000 teams at the 2024 FTC World Championships.\nRead more →"
+  },
+  {
+    "objectID": "index.html#experience",
+    "href": "index.html#experience",
+    "title": "Jeremy Hsu",
+    "section": "Experience",
+    "text": "Experience\n\n\nJan 2026 — present\n\nFounder & Quantitative Researcher\nWeaver Capital LP · West Chester, PA\n\nOperate a multi-strategy systematic portfolio across futures and equities, spanning intraday, swing, and macro horizons.\nEngineered the execution infrastructure in Python and C#, with automated strategy synchronization, enforced risk limits, and sub-second order handling.\nBuilt portfolio optimization pipelines that allocate capital dynamically across uncorrelated sleeves and balance risk at the portfolio level.\n\n\n\n\nAug 2026 — present\n\nUndergraduate Researcher\nLocomotion in Biology and Robotics (LiBR) Lab, Penn State\n\nResearching locomotion and gait optimization in unconventional robot morphologies under Dr. Baxi Chong.\n\n\n\n\nAug 2025 — present\n\nResearch Team\nPenn State Quantitative Finance Club\n\nProduce weekly market outlooks, technical analyses, and trade ideas for equity index futures.\nDeveloped forecasting models focused on macroeconomic cycles and market regime shifts.\n\n\n\n\nJun 2019 — Apr 2025\n\nFounder & Technical Lead\nFTC #16468 Green Lemons Robotics · West Chester, PA\n\nFinished #1 OPR globally among 8,000+ teams at the 2024 FTC World Championships.\nFounded and led a 14-member team across six seasons; built the autonomous control software, including vision-based navigation and path planning."
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Jeremy Hsu",
+    "section": "Education",
+    "text": "Education\nPennsylvania State University — B.S. Computer Science, Aug 2025 – Dec 2028, University Park, PA\n\n\nCoursework\nApplied Regression AnalysisDiscrete Mathematics for CSLinear AlgebraMultivariable Calculus & Vector AnalysisData Structures"
+  },
+  {
+    "objectID": "index.html#technical",
+    "href": "index.html#technical",
+    "title": "Jeremy Hsu",
+    "section": "Technical",
+    "text": "Technical\n\n\nLanguages\nPythonC++C#JavaSQLPine Script\n\n\nML / statistics\nscikit-learnStatsmodelswalk-forward validationMonte Carloblock bootstrap\n\n\nData\npandasNumPySciPyTA-LibMatplotlibPlotlyParquet\n\n\nPlatforms & tools\nAlpaca APIQuantConnectBacktraderNinjaTraderStreamlitpytestGitLinux"
+  },
+  {
+    "objectID": "index.html#awards",
+    "href": "index.html#awards",
+    "title": "Jeremy Hsu",
+    "section": "Awards",
+    "text": "Awards\n\n\n#1 OPR, worldwide\nFTC World Championships · 8,000+ teams · 2024\n\n\nDean’s List Finalist\nFIRST Tech Challenge · individual student award · 2024\n\n\nTop 100, United States\nIMC Prosperity · qualifying rounds\n\n\n4th Degree Black Belt\nTaekwondo · Kukkiwon, World Taekwondo Headquarters · 2025"
+  },
+  {
+    "objectID": "index.html#get-in-touch",
+    "href": "index.html#get-in-touch",
+    "title": "Jeremy Hsu",
+    "section": "Get in touch",
+    "text": "Get in touch\nBest reached at jeremyhsu2025@gmail.com. Code on GitHub, background on LinkedIn, and the one-page version is here."
+  },
+  {
+    "objectID": "robotics.html",
+    "href": "robotics.html",
+    "title": "Green Lemons Robotics",
+    "section": "",
+    "text": "FTC #16468 · 2019 – 2025 · founder & technical lead\nI started Green Lemons in 2019 and led it for six seasons, growing it to fourteen members. I wrote the autonomous control software — vision-based navigation and path planning."
+  },
+  {
+    "objectID": "robotics.html#why-this-is-on-a-quants-website",
+    "href": "robotics.html#why-this-is-on-a-quants-website",
+    "title": "Green Lemons Robotics",
+    "section": "Why this is on a quant’s website",
+    "text": "Why this is on a quant’s website\nTwo reasons: the autonomous period is a control and estimation problem on a hard deadline, and OPR is a statistic.\nOPR — Offensive Power Rating — is a least-squares estimate. Alliance scores are observed, individual contributions aren’t, so you solve for the per-team contribution vector that best explains the observed alliance totals across the match schedule. Finishing #1 on it among 8,000+ teams means the model attributed more scoring to this robot than to any other, over a season of matches nobody got to choose.\nThe autonomous stack was a real software problem. Thirty seconds, no driver input, and a robot that has to localize itself, decide, and act. Vision-based navigation meant turning camera input into a position estimate good enough to act on and robust enough not to fall apart under a different venue’s lighting. Path planning meant getting from that estimate to motion inside the control loop’s budget.\nThe failure modes are the ones I still care about. Sensor input that’s noisy, occasionally corrupt, and never quite what you calibrated against. A system that has to keep working when a component returns something wrong instead of acting on it confidently. And the gap between the practice field and the competition field, which behaves a lot like the gap between a backtest and live execution."
+  },
+  {
+    "objectID": "robotics.html#the-part-that-wasnt-software",
+    "href": "robotics.html#the-part-that-wasnt-software",
+    "title": "Green Lemons Robotics",
+    "section": "The part that wasn’t software",
+    "text": "The part that wasn’t software\nSix seasons, from nothing to fourteen people. Recruiting, teaching people who’d never built anything before, keeping it going through seasons that went badly, and handing it off still working. Running a team for six years is a different skill from writing its code.\n\nNext\n\n\nRime\nDaily ETF regime allocator — the systematic work this led to.\n\n→"
+  }
+]

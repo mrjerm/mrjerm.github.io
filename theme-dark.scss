@@ -1,0 +1,68 @@
+/*-- scss:defaults --*/
+
+// Dark palette only. All structure lives in theme.scss — do not add layout here.
+// Monochrome, like the light layer: no hue, and $accent is again just $ink.
+// Values are palantir.com's own dark-section colours.
+
+$ink:        #efefef;           // their dark-section text
+$paper:      #1e2124;           // their dark-section background
+$surface:    #1e2124;           // same as paper — panels are outlined, not filled
+$surface-2:  #282b2e;           // fills that must read as raised
+$muted:      #b9b9b9;           // their dark-section secondary
+$hairline:   #3a3d40;
+$accent:     #efefef;           // = $ink. No hue.
+$accent-soft:#282b2e;
+
+$body-bg:    $paper;
+$body-color: $ink;
+$link-color: $ink;
+$border-color: $hairline;
+
+$navbar-bg:  $paper;
+$navbar-fg:  $ink;
+$navbar-hl:  $ink;
+
+// Code wells recede rather than lift, which also buys back token contrast.
+$code-bg: #16181a;
+$code-color: #d6d6d6;
+$code-block-bg: #16181a;   // see the note in theme.scss — must be set per layer
+
+$toc-color: $muted;
+$toc-active-border: $ink;
+
+/*-- scss:rules --*/
+
+:root {
+  --jh-ink: #{$ink};
+  --jh-paper: #{$paper};
+  --jh-surface: #{$surface};
+  --jh-surface-2: #{$surface-2};
+  --jh-muted: #{$muted};
+  --jh-hairline: #{$hairline};
+  --jh-accent: #{$accent};
+  --jh-accent-soft: #{$accent-soft};
+  --jh-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.6);
+  --jh-shadow-lift: 0 0 0 1px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.6),
+    0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+// The inversion hovers in theme.scss are expressed purely as ink/paper swaps,
+// so they invert correctly here with no per-component overrides.
+
+.note-strip {
+  color: var(--jh-ink);
+}
+
+// Token colour, so it belongs in the palette layer. Quarto's github-dark
+// comment grey (#6a737d) lands under AA on the code-block background, and
+// comments carry the explanation in the Kintoun notebook.
+code span.co,
+code span.do {
+  color: #9aa4ae !important;
+}
+
+img.lightbox,
+.figure img,
+p > img {
+  filter: brightness(0.92);
+}

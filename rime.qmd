@@ -1,0 +1,116 @@
+---
+title: "Rime"
+subtitle: "A daily regime allocator for leveraged Nasdaq ETFs"
+description: "A systematic daily allocator that rotates between leveraged Nasdaq ETF exposure, a volatility hedge, and cash."
+date: 2026-04-01
+date-format: "MMMM YYYY"
+toc: true
+---
+
+::: {.eyebrow}
+Weaver Capital LP · deployed strategy · Python, pandas, NumPy, Alpaca API, Streamlit
+:::
+
+**Rime** is a daily allocator. Each morning it splits capital between leveraged Nasdaq
+ETF exposure, a volatility hedge, and cash. It's been running on Alpaca since April
+2026.
+
+Most of the work went into the plumbing rather than the signal — making sure the code
+running in production is the same code that produced the backtest.
+
+```{=html}
+<div class="metrics">
+<div class="metric"><div class="metric-value">1.86</div><div class="metric-label">Sharpe, simulated</div><div class="metric-note">2012&ndash;2025 &middot; SPY 0.92</div></div>
+<div class="metric"><div class="metric-value">1.58</div><div class="metric-label">Sharpe excluding 2020</div><div class="metric-note">the honest number</div></div>
+<div class="metric"><div class="metric-value">&minus;17%</div><div class="metric-label">Max drawdown, simulated</div><div class="metric-note">SPY &minus;34% same window</div></div>
+<div class="metric"><div class="metric-value">~44%</div><div class="metric-label">Average gross exposure</div><div class="metric-note">not fully invested</div></div>
+</div>
+```
+
+::: {.note-strip}
+Figures above are **simulated** results from a historical backtest over 2012–2025,
+not live trading results. Simulated performance has inherent limitations: it is
+constructed with hindsight, does not reflect the impact of real order flow, and does
+not guarantee future results. A live track record is available on request.
+:::
+
+## The problem
+
+Leveraged index ETFs decay in choppy markets. They rebalance daily, so the compounded
+return depends on the path and not just the endpoint — a sideways market grinds them
+down even when the index finishes flat. Holding one indefinitely is a bet that
+volatility stays low.
+
+Rime asks something narrower: can you hold that exposure only while the drag is small,
+and be somewhere else the rest of the time?
+
+## How it decides
+
+The allocator is a shallow decision tree over three groups of inputs — a set of trend
+and volatility state variables, a macro overlay, and a volatility circuit breaker.
+
+The tree is shallow on purpose. Fourteen years of daily bars isn't a big sample, and
+every extra split is another chance to fit noise.
+
+The macro overlay leans on cross-asset series that tend to move ahead of equities
+rather than alongside them. The circuit breaker cuts leveraged exposure when volatility
+spikes, and it runs on hysteresis — the level that switches it on isn't the level that
+switches it off — so the allocation doesn't thrash around a single threshold. On top of
+that sits a rebalance deadband: if the target hasn't moved much, nothing trades.
+
+::: {.note-strip}
+The specific state variables, macro series, and thresholds aren't published here.
+Happy to walk through them in an interview.
+:::
+
+## The engineering that matters
+
+**One decision function.** Research and production call the same function. There's no
+notebook that approximates what the live system does, because that gap is the usual way
+a backtested strategy quietly stops being the strategy you tested. State persists
+between runs, so the live system's view of the current regime survives a restart
+instead of being rebuilt from a truncated window.
+
+**Data quality gates.** Bad ticks, stale bars, and missing sessions get caught before
+anything reaches the allocator. If the feed looks wrong, the system sits out.
+
+**47 pytest tests** across the signal tree and the risk overlays — regime transitions,
+breaker behavior at the hysteresis boundaries, deadband logic. Mostly they exist so I
+can change things without guessing.
+
+## Validation
+
+One backtest number doesn't tell you much, so I put it through a few things that could
+have killed it:
+
+```{=html}
+<table class="spec">
+<tr><th>Walk-forward folds</th><td>Parameters fit on one window, evaluated on the next, rolling forward. No single global fit.</td></tr>
+<tr><th>Pre/post-2020 splits</th><td>2020 is an outlier regime that flatters almost any volatility-responsive strategy. Reported separately for exactly that reason.</td></tr>
+<tr><th>Slippage &amp; commission stress</th><td>Costs scaled well past realistic levels to find where the edge disappears.</td></tr>
+<tr><th>Block bootstrap</th><td>Resampling in blocks to preserve autocorrelation, testing whether results depend on the specific historical path.</td></tr>
+</table>
+```
+
+Both 1.86 and 1.58 are on this page because the gap between them is the finding. 2020
+contributed a large share of the headline Sharpe, and quoting only the higher number
+would be misleading.
+
+## What I'd do next
+
+- Swap the shallow tree for a probabilistic regime model, and check honestly whether it beats the rules instead of assuming it will.
+- Model execution against intraday liquidity rather than assuming a fill at the daily close.
+- Widen the macro overlay carefully. More inputs are more degrees of freedom.
+
+```{=html}
+<div class="related">
+<div class="related-label">Next</div>
+<a class="related-link" href="fifth-sanctuary.html">
+<div>
+<div class="related-title">Fifth Sanctuary</div>
+<div class="related-note">Intraday gold volatility expansion &mdash; the other live strategy.</div>
+</div>
+<div class="related-arrow">&rarr;</div>
+</a>
+</div>
+```

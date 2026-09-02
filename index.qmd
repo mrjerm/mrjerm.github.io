@@ -1,0 +1,182 @@
+---
+title: "Jeremy Hsu"
+description: "Computer Science at Penn State. Systematic trading research and the execution infrastructure that runs it."
+title-block-style: none
+toc: false
+page-layout: full
+---
+
+<style>#title-block-header { display: none; }</style>
+
+```{=html}
+<div class="hero">
+<span class="availability">Open to Summer 2027 SWE &amp; quant internships</span>
+<h1 class="hero-name">Jeremy Hsu</h1>
+<div class="hero-line">I build systematic trading strategies and the infrastructure that runs them &mdash; research, validation, and live execution against real capital.</div>
+<div class="hero-sub">Computer Science at <strong>Penn State</strong> (B.S., Dec.&nbsp;2028). Founder of <strong>Weaver Capital LP</strong>, where two systematic strategies I wrote are deployed live. Undergraduate researcher in the <strong>Locomotion in Biology and Robotics Lab</strong> under Dr.&nbsp;Baxi Chong.</div>
+<div class="hero-links">
+<a class="btn-jh btn-jh-primary" href="resume.pdf">Resume (PDF)</a>
+<a class="btn-jh" href="mailto:jeremyhsu2025@gmail.com">jeremyhsu2025@gmail.com</a>
+<a class="btn-jh" href="https://github.com/mrjerm">GitHub</a>
+<a class="btn-jh" href="https://www.linkedin.com/in/jerm04/">LinkedIn</a>
+</div>
+</div>
+```
+
+
+## Selected work
+
+```{=html}
+<div class="work-grid">
+<a class="work-card" href="rime.html">
+<div class="work-status">Live &middot; deployed</div>
+<div class="work-title">Rime</div>
+<div class="work-meta">Daily ETF regime allocator &middot; Python, pandas, Alpaca</div>
+<p>A daily allocator that splits capital between leveraged Nasdaq ETF exposure, a volatility hedge, and cash, using a shallow regime tree with a macro overlay and a volatility circuit breaker. Research and production call the same decision function, so live orders can't quietly drift from the backtest.</p>
+<div class="work-more">Read the writeup &rarr;</div>
+</a>
+<a class="work-card" href="fifth-sanctuary.html">
+<div class="work-status">Live &middot; deployed</div>
+<div class="work-title">Fifth Sanctuary</div>
+<div class="work-meta">Intraday gold volatility expansion &middot; Python, C#/NinjaScript</div>
+<p>An intraday gold system running long and short as two separate risk sleeves, each sized by a macro state vector and filtered independently. The research found one sleeve was losing money structurally rather than randomly, which changed the design more than any amount of tuning would have.</p>
+<div class="work-more">Read the writeup &rarr;</div>
+</a>
+<a class="work-card" href="project_kintoun.html">
+<div class="work-status is-archive">Research &middot; Dec 2025</div>
+<div class="work-title">Project Kintoun</div>
+<div class="work-meta">ORB microstructure study &middot; Python, event-driven sim</div>
+<p>A research notebook testing whether a break-and-retest microstructure filter plus VWAP trend confirmation can suppress false breakouts in Nasdaq-100 futures. Full methodology, math, and code are published, including where it doesn't work.</p>
+<div class="work-more">Read the notebook &rarr;</div>
+</a>
+<a class="work-card" href="robotics.html">
+<div class="work-status is-archive">2019 &ndash; 2025</div>
+<div class="work-title">Green Lemons Robotics</div>
+<div class="work-meta">FTC #16468 &middot; autonomous software, team leadership</div>
+<p>Founded and led a 14-member competitive robotics team across six seasons, writing the autonomous control stack &mdash; vision-based navigation and path planning. Finished #1 OPR globally out of more than 8,000 teams at the 2024 FTC World Championships.</p>
+<div class="work-more">Read more &rarr;</div>
+</a>
+</div>
+```
+
+
+## Experience
+
+```{=html}
+<div class="xp">
+<div class="xp-item">
+<div class="xp-when">Jan 2026 &mdash; present</div>
+<div class="xp-body">
+<div class="xp-role">Founder &amp; Quantitative Researcher</div>
+<div class="xp-org">Weaver Capital LP &middot; West Chester, PA</div>
+<ul>
+<li>Operate a multi-strategy systematic portfolio across futures and equities, spanning intraday, swing, and macro horizons.</li>
+<li>Engineered the execution infrastructure in Python and C#, with automated strategy synchronization, enforced risk limits, and sub-second order handling.</li>
+<li>Built portfolio optimization pipelines that allocate capital dynamically across uncorrelated sleeves and balance risk at the portfolio level.</li>
+</ul>
+</div>
+</div>
+<div class="xp-item">
+<div class="xp-when">Aug 2026 &mdash; present</div>
+<div class="xp-body">
+<div class="xp-role">Undergraduate Researcher</div>
+<div class="xp-org">Locomotion in Biology and Robotics (LiBR) Lab, Penn State</div>
+<ul>
+<li>Researching locomotion and gait optimization in unconventional robot morphologies under Dr. Baxi Chong.</li>
+</ul>
+</div>
+</div>
+<div class="xp-item">
+<div class="xp-when">Aug 2025 &mdash; present</div>
+<div class="xp-body">
+<div class="xp-role">Research Team</div>
+<div class="xp-org">Penn State Quantitative Finance Club</div>
+<ul>
+<li>Produce weekly market outlooks, technical analyses, and trade ideas for equity index futures.</li>
+<li>Developed forecasting models focused on macroeconomic cycles and market regime shifts.</li>
+</ul>
+</div>
+</div>
+<div class="xp-item">
+<div class="xp-when">Jun 2019 &mdash; Apr 2025</div>
+<div class="xp-body">
+<div class="xp-role">Founder &amp; Technical Lead</div>
+<div class="xp-org">FTC #16468 Green Lemons Robotics &middot; West Chester, PA</div>
+<ul>
+<li>Finished #1 OPR globally among 8,000+ teams at the 2024 FTC World Championships.</li>
+<li>Founded and led a 14-member team across six seasons; built the autonomous control software, including vision-based navigation and path planning.</li>
+</ul>
+</div>
+</div>
+</div>
+```
+
+
+## Education
+
+**Pennsylvania State University** — B.S. Computer Science, Aug 2025 – Dec 2028, University Park, PA
+
+```{=html}
+<div class="skills">
+<div class="skill-row">
+<div class="skill-cat">Coursework</div>
+<div class="chips"><span class="chip">Applied Regression Analysis</span><span class="chip">Discrete Mathematics for CS</span><span class="chip">Linear Algebra</span><span class="chip">Multivariable Calculus &amp; Vector Analysis</span><span class="chip">Data Structures</span></div>
+</div>
+</div>
+```
+
+
+## Technical
+
+```{=html}
+<div class="skills">
+<div class="skill-row">
+<div class="skill-cat">Languages</div>
+<div class="chips"><span class="chip">Python</span><span class="chip">C++</span><span class="chip">C#</span><span class="chip">Java</span><span class="chip">SQL</span><span class="chip">Pine Script</span></div>
+</div>
+<div class="skill-row">
+<div class="skill-cat">ML / statistics</div>
+<div class="chips"><span class="chip">scikit-learn</span><span class="chip">Statsmodels</span><span class="chip">walk-forward validation</span><span class="chip">Monte Carlo</span><span class="chip">block bootstrap</span></div>
+</div>
+<div class="skill-row">
+<div class="skill-cat">Data</div>
+<div class="chips"><span class="chip">pandas</span><span class="chip">NumPy</span><span class="chip">SciPy</span><span class="chip">TA-Lib</span><span class="chip">Matplotlib</span><span class="chip">Plotly</span><span class="chip">Parquet</span></div>
+</div>
+<div class="skill-row">
+<div class="skill-cat">Platforms &amp; tools</div>
+<div class="chips"><span class="chip">Alpaca API</span><span class="chip">QuantConnect</span><span class="chip">Backtrader</span><span class="chip">NinjaTrader</span><span class="chip">Streamlit</span><span class="chip">pytest</span><span class="chip">Git</span><span class="chip">Linux</span></div>
+</div>
+</div>
+```
+
+
+## Awards
+
+```{=html}
+<div class="awards">
+<div class="award">
+<div class="award-name">#1 OPR, worldwide</div>
+<div class="award-detail">FTC World Championships &middot; 8,000+ teams &middot; 2024</div>
+</div>
+<div class="award">
+<div class="award-name">Dean&rsquo;s List Finalist</div>
+<div class="award-detail">FIRST Tech Challenge &middot; individual student award &middot; 2024</div>
+</div>
+<div class="award">
+<div class="award-name">Top 100, United States</div>
+<div class="award-detail">IMC Prosperity &middot; qualifying rounds</div>
+</div>
+<div class="award">
+<div class="award-name">4th Degree Black Belt</div>
+<div class="award-detail">Taekwondo &middot; Kukkiwon, World Taekwondo Headquarters &middot; 2025</div>
+</div>
+</div>
+```
+
+
+## Get in touch
+
+Best reached at [jeremyhsu2025@gmail.com](mailto:jeremyhsu2025@gmail.com). Code on
+[GitHub](https://github.com/mrjerm), background on
+[LinkedIn](https://www.linkedin.com/in/jerm04/), and the one-page version is
+[here](resume.pdf).
