@@ -98,6 +98,18 @@ page-layout: full
 </div>
 </div>
 <div class="xp-item">
+<div class="xp-when">Jun 2024 &mdash; Jul 2024</div>
+<div class="xp-body">
+<div class="xp-role">Research Intern</div>
+<div class="xp-org">Robot Perception and Navigation Group, University of Delaware &middot; Newark, DE</div>
+<ul>
+<li>Built a 2D SLAM pipeline on a TurtleBot3 in C++ with ROS&nbsp;2 and Google Cartographer, mapping an indoor lab environment.</li>
+<li>Integrated Nav2 for autonomous waypoint navigation on the resulting map.</li>
+<li>Presented navigation and sensing results to graduate researchers and faculty.</li>
+</ul>
+</div>
+</div>
+<div class="xp-item">
 <div class="xp-when">Jun 2019 &mdash; Apr 2025</div>
 <div class="xp-body">
 <div class="xp-role">Founder &amp; Technical Lead</div>
@@ -136,7 +148,11 @@ page-layout: full
 </div>
 <div class="skill-row">
 <div class="skill-cat">ML / statistics</div>
-<div class="chips"><span class="chip">scikit-learn</span><span class="chip">Statsmodels</span><span class="chip">walk-forward validation</span><span class="chip">Monte Carlo</span><span class="chip">block bootstrap</span></div>
+<div class="chips"><span class="chip">scikit-learn</span><span class="chip">Statsmodels</span><span class="chip">PyTorch</span><span class="chip">TensorFlow</span><span class="chip">walk-forward validation</span><span class="chip">Monte Carlo</span><span class="chip">block bootstrap</span></div>
+</div>
+<div class="skill-row">
+<div class="skill-cat">Robotics</div>
+<div class="chips"><span class="chip">ROS 2</span><span class="chip">Cartographer SLAM</span><span class="chip">Nav2</span><span class="chip">RViz2</span><span class="chip">LiDAR</span><span class="chip">OpenCV</span></div>
 </div>
 <div class="skill-row">
 <div class="skill-cat">Data</div>
