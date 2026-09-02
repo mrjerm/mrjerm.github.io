@@ -4,14 +4,14 @@
     "href": "project_kintoun.html",
     "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
     "section": "",
-    "text": "Project Kintoun is an event-driven algorithmic trading strategy designed for the Nasdaq-100 (NQ) futures market.\nWhile standard Opening Range Breakout (ORB) strategies suffer from false breakouts in high-volatility environments, this research attempts to improve risk-adjusted returns and implementing a “Break & Retest” microstructure filter combined with a VWAP trend confirmation.\n\nInstrument: NQ Futures (1-minute timeframe)\nCore Logic: 15-minute ORB with Volume & VWAP confirmation\nData Handling: timezone-aware alignment (US/Eastern) and specific exclusion of degraded data days"
+    "text": "Project Kintoun is an event-driven algorithmic trading strategy designed for the Nasdaq-100 (NQ) futures market.\nWhile standard Opening Range Breakout (ORB) strategies suffer from false breakouts in high-volatility environments, this research attempts to improve risk-adjusted returns and implementing a “Break & Retest” microstructure filter combined with a VWAP trend confirmation.\n\nInstrument: NQ Futures (1-minute timeframe)\nCore Logic: 15-minute ORB with Volume & VWAP confirmation\nData Handling: timezone-aware alignment (US/Eastern) and specific exclusion of degraded data days\n\nCode, the full 1,062-row trade log, and notes on what the approach does not solve: github.com/mrjerm/kintoun."
   },
   {
     "objectID": "project_kintoun.html#executive-summary",
     "href": "project_kintoun.html#executive-summary",
     "title": "Project Kintoun: A Regime-Filtered ORB Strategy",
     "section": "",
-    "text": "Project Kintoun is an event-driven algorithmic trading strategy designed for the Nasdaq-100 (NQ) futures market.\nWhile standard Opening Range Breakout (ORB) strategies suffer from false breakouts in high-volatility environments, this research attempts to improve risk-adjusted returns and implementing a “Break & Retest” microstructure filter combined with a VWAP trend confirmation.\n\nInstrument: NQ Futures (1-minute timeframe)\nCore Logic: 15-minute ORB with Volume & VWAP confirmation\nData Handling: timezone-aware alignment (US/Eastern) and specific exclusion of degraded data days"
+    "text": "Project Kintoun is an event-driven algorithmic trading strategy designed for the Nasdaq-100 (NQ) futures market.\nWhile standard Opening Range Breakout (ORB) strategies suffer from false breakouts in high-volatility environments, this research attempts to improve risk-adjusted returns and implementing a “Break & Retest” microstructure filter combined with a VWAP trend confirmation.\n\nInstrument: NQ Futures (1-minute timeframe)\nCore Logic: 15-minute ORB with Volume & VWAP confirmation\nData Handling: timezone-aware alignment (US/Eastern) and specific exclusion of degraded data days\n\nCode, the full 1,062-row trade log, and notes on what the approach does not solve: github.com/mrjerm/kintoun."
   },
   {
     "objectID": "project_kintoun.html#hypothesis",
