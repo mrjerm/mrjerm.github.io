@@ -48,7 +48,8 @@ systems, data pipelines that have to be right.
 <tr><th>Code</th><td><a href="https://github.com/mrjerm">github.com/mrjerm</a></td></tr>
 <tr><th>Background</th><td><a href="https://www.linkedin.com/in/jerm04/">linkedin.com/in/jerm04</a></td></tr>
 <tr><th>Email</th><td><a href="mailto:jeremyhsu2025@gmail.com">jeremyhsu2025@gmail.com</a></td></tr>
-<tr><th>One page</th><td><a href="resume.pdf">resume.pdf</a></td></tr>
+<tr><th>Resume</th><td><a href="resume.pdf">resume.pdf</a> &middot; quantitative research and trading</td></tr>
+<tr><th>Resume, SWE</th><td><a href="resume-engineering.pdf">resume-engineering.pdf</a> &middot; software engineering and robotics</td></tr>
 </table>
 ```
 

@@ -8,6 +8,7 @@ project:
     - "*.ipynb"
   resources:
     - "resume.pdf"
+    - "resume-engineering.pdf"
 
 website:
   title: "Jeremy Hsu"
