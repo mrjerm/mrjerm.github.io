@@ -1,6 +1,6 @@
 ---
 title: "Green Lemons Robotics"
-subtitle: "FTC #16468 — six seasons, one team built from scratch"
+subtitle: "FTC #16468, six seasons, one team built from scratch"
 description: "Founded and led a 14-member FIRST Tech Challenge team, wrote the autonomous control stack, and finished #1 OPR globally among 8,000+ teams at the 2024 World Championships."
 date: 2025-04-01
 date-format: "MMMM YYYY"
@@ -12,7 +12,7 @@ FTC #16468 · 2019 – 2025 · founder &amp; technical lead
 :::
 
 I started Green Lemons in 2019 and led it for six seasons, growing it to fourteen
-members. I wrote the autonomous control software — vision-based navigation and path
+members. I wrote the autonomous control software: vision-based navigation and path
 planning.
 
 ```{=html}
@@ -28,7 +28,7 @@ planning.
 Two reasons: the autonomous period is a control and estimation problem on a hard
 deadline, and OPR is a statistic.
 
-**OPR** — Offensive Power Rating — is a least-squares estimate. Alliance scores are
+**OPR**, Offensive Power Rating, is a least-squares estimate. Alliance scores are
 observed, individual contributions aren't, so you solve for the per-team contribution
 vector that best explains the observed alliance totals across the match schedule.
 Finishing #1 on it among 8,000+ teams means the model attributed more scoring to this
@@ -59,7 +59,7 @@ code.
 <a class="related-link" href="rime.html">
 <div>
 <div class="related-title">Rime</div>
-<div class="related-note">Daily ETF regime allocator &mdash; the systematic work this led to.</div>
+<div class="related-note">Daily ETF regime allocator, the systematic work this led to.</div>
 </div>
 <div class="related-arrow">&rarr;</div>
 </a>

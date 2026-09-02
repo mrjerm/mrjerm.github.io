@@ -12,7 +12,7 @@ page-layout: full
 <div class="hero">
 <span class="availability">Open to Summer 2027 SWE &amp; quant internships</span>
 <h1 class="hero-name">Jeremy Hsu</h1>
-<div class="hero-line">I build systematic trading strategies and the infrastructure that runs them &mdash; research, validation, and live execution against real capital.</div>
+<div class="hero-line">I build systematic trading strategies and the infrastructure that runs them: research, validation, and live execution against real capital.</div>
 <div class="hero-sub">Computer Science at <strong>Penn State</strong> (B.S., Dec.&nbsp;2028). Founder of <strong>Weaver Capital LP</strong>, where two systematic strategies I wrote are deployed live. Undergraduate researcher in the <strong>Locomotion in Biology and Robotics Lab</strong> under Dr.&nbsp;Baxi Chong.</div>
 <div class="hero-links">
 <a class="btn-jh btn-jh-primary" href="resume.pdf">Resume (PDF)</a>
@@ -32,7 +32,7 @@ page-layout: full
 <div class="work-status">Live &middot; deployed</div>
 <div class="work-title">Rime</div>
 <div class="work-meta">Daily ETF regime allocator &middot; Python, pandas, Alpaca</div>
-<p>A daily allocator that splits capital between leveraged Nasdaq ETF exposure, a volatility hedge, and cash, using a shallow regime tree with a macro overlay and a volatility circuit breaker. Research and production call the same decision function, so live orders can't quietly drift from the backtest.</p>
+<p>A daily allocator that splits capital between leveraged equity ETF exposure, a volatility hedge, and cash, using a shallow regime tree with a macro overlay and a volatility circuit breaker. Research and production call the same decision function, so live orders can't quietly drift from the backtest.</p>
 <div class="work-more">Read the writeup &rarr;</div>
 </a>
 <a class="work-card" href="fifth-sanctuary.html">
@@ -53,7 +53,7 @@ page-layout: full
 <div class="work-status is-archive">2019 &ndash; 2025</div>
 <div class="work-title">Green Lemons Robotics</div>
 <div class="work-meta">FTC #16468 &middot; autonomous software, team leadership</div>
-<p>Founded and led a 14-member competitive robotics team across six seasons, writing the autonomous control stack &mdash; vision-based navigation and path planning. Finished #1 OPR globally out of more than 8,000 teams at the 2024 FTC World Championships.</p>
+<p>Founded and led a 14-member competitive robotics team across six seasons, writing the autonomous control stack, including vision-based navigation and path planning. Finished #1 OPR globally out of more than 8,000 teams at the 2024 FTC World Championships.</p>
 <div class="work-more">Read more &rarr;</div>
 </a>
 </div>
@@ -65,7 +65,7 @@ page-layout: full
 ```{=html}
 <div class="xp">
 <div class="xp-item">
-<div class="xp-when">Jan 2026 &mdash; present</div>
+<div class="xp-when">Jan 2026 &ndash; present</div>
 <div class="xp-body">
 <div class="xp-role">Founder &amp; Quantitative Researcher</div>
 <div class="xp-org">Weaver Capital LP &middot; West Chester, PA</div>
@@ -77,7 +77,7 @@ page-layout: full
 </div>
 </div>
 <div class="xp-item">
-<div class="xp-when">Aug 2026 &mdash; present</div>
+<div class="xp-when">Aug 2026 &ndash; present</div>
 <div class="xp-body">
 <div class="xp-role">Undergraduate Researcher</div>
 <div class="xp-org">Locomotion in Biology and Robotics (LiBR) Lab, Penn State</div>
@@ -87,7 +87,7 @@ page-layout: full
 </div>
 </div>
 <div class="xp-item">
-<div class="xp-when">Aug 2025 &mdash; present</div>
+<div class="xp-when">Aug 2025 &ndash; present</div>
 <div class="xp-body">
 <div class="xp-role">Research Team</div>
 <div class="xp-org">Penn State Quantitative Finance Club</div>
@@ -98,7 +98,7 @@ page-layout: full
 </div>
 </div>
 <div class="xp-item">
-<div class="xp-when">Jun 2024 &mdash; Jul 2024</div>
+<div class="xp-when">Jun 2024 &ndash; Jul 2024</div>
 <div class="xp-body">
 <div class="xp-role">Research Intern</div>
 <div class="xp-org">Robot Perception and Navigation Group, University of Delaware &middot; Newark, DE</div>
@@ -110,7 +110,7 @@ page-layout: full
 </div>
 </div>
 <div class="xp-item">
-<div class="xp-when">Jun 2019 &mdash; Apr 2025</div>
+<div class="xp-when">Jun 2019 &ndash; Apr 2025</div>
 <div class="xp-body">
 <div class="xp-role">Founder &amp; Technical Lead</div>
 <div class="xp-org">FTC #16468 Green Lemons Robotics &middot; West Chester, PA</div>
@@ -126,7 +126,7 @@ page-layout: full
 
 ## Education
 
-**Pennsylvania State University** — B.S. Computer Science, Aug 2025 – Dec 2028, University Park, PA
+**Pennsylvania State University**, B.S. Computer Science, Aug 2025 – Dec 2028, University Park, PA
 
 ```{=html}
 <div class="skills">

@@ -1,7 +1,7 @@
 ---
 title: "Rime"
-subtitle: "A daily regime allocator for leveraged Nasdaq ETFs"
-description: "A systematic daily allocator that rotates between leveraged Nasdaq ETF exposure, a volatility hedge, and cash."
+subtitle: "A daily regime allocator for leveraged equity ETFs"
+description: "A systematic daily allocator that rotates between leveraged equity ETF exposure, a volatility hedge, and cash."
 date: 2026-04-01
 date-format: "MMMM YYYY"
 toc: true
@@ -11,12 +11,13 @@ toc: true
 Weaver Capital LP · deployed strategy · Python, pandas, NumPy, Alpaca API, Streamlit
 :::
 
-**Rime** is a daily allocator. Each morning it splits capital between leveraged Nasdaq
-ETF exposure, a volatility hedge, and cash. It's been running on Alpaca since April
-2026.
+**Rime** is a daily allocator. Each morning it splits capital between leveraged equity
+ETF exposure, a volatility hedge, and cash. It's been running live on Alpaca since
+April 2026.
 
-Most of the work went into the plumbing rather than the signal — making sure the code
-running in production is the same code that produced the backtest.
+There are three parts to it: a base signal, a macro and risk overlay sitting on top of
+that, and the infrastructure that runs the whole thing unattended. The sections below
+take them in that order.
 
 ```{=html}
 <div class="metrics">
@@ -26,6 +27,11 @@ running in production is the same code that produced the backtest.
 <div class="metric"><div class="metric-value">~44%</div><div class="metric-label">Average gross exposure</div><div class="metric-note">not fully invested</div></div>
 </div>
 ```
+
+The gap between those two Sharpe figures is 2020. The volatility hedge had an enormous
+run during the COVID crash, and a stretch like that lifts the headline number for the
+whole period. Both are on this page because 1.58 is the better guide to what the
+strategy does in an ordinary year.
 
 ::: {.note-strip}
 Figures above are **simulated** results from a historical backtest over 2012–2025,
@@ -37,46 +43,45 @@ not guarantee future results. A live track record is available on request.
 ## The problem
 
 Leveraged index ETFs decay in choppy markets. They rebalance daily, so the compounded
-return depends on the path and not just the endpoint — a sideways market grinds them
-down even when the index finishes flat. Holding one indefinitely is a bet that
-volatility stays low.
+return depends on the path and not just the endpoint. A sideways market grinds them down
+even when the index finishes flat. Holding one indefinitely is a bet that volatility
+stays low.
 
 Rime asks something narrower: can you hold that exposure only while the drag is small,
 and be somewhere else the rest of the time?
 
 ## How it decides
 
-The allocator is a shallow decision tree over three groups of inputs — a set of trend
-and volatility state variables, a macro overlay, and a volatility circuit breaker.
-
-The tree is shallow on purpose. Fourteen years of daily bars isn't a big sample, and
+**The base signal.** A shallow decision tree over a set of trend and volatility state
+variables. It's shallow on purpose. Fourteen years of daily bars isn't a big sample, and
 every extra split is another chance to fit noise.
 
-The macro overlay leans on cross-asset series that tend to move ahead of equities
-rather than alongside them. The circuit breaker cuts leveraged exposure when volatility
-spikes, and it runs on hysteresis — the level that switches it on isn't the level that
-switches it off — so the allocation doesn't thrash around a single threshold. On top of
-that sits a rebalance deadband: if the target hasn't moved much, nothing trades.
+**The macro and risk overlay.** The macro layer leans on cross-asset series that tend to
+move ahead of equities rather than alongside them. Over that sits a volatility circuit
+breaker, which cuts leveraged exposure when volatility spikes. It runs on hysteresis, so
+the level that switches it on isn't the level that switches it off, and the allocation
+doesn't thrash around a single threshold. A rebalance deadband covers everything: if the
+target hasn't moved much, nothing trades.
 
 ::: {.note-strip}
 The specific state variables, macro series, and thresholds aren't published here.
 Happy to walk through them in an interview.
 :::
 
-## The engineering that matters
+## The infrastructure
 
 **One decision function.** Research and production call the same function. There's no
 notebook that approximates what the live system does, because that gap is the usual way
 a backtested strategy quietly stops being the strategy you tested. State persists
-between runs, so the live system's view of the current regime survives a restart
-instead of being rebuilt from a truncated window.
+between runs, so the live system's view of the current regime survives a restart instead
+of being rebuilt from a truncated window.
 
 **Data quality gates.** Bad ticks, stale bars, and missing sessions get caught before
 anything reaches the allocator. If the feed looks wrong, the system sits out.
 
-**47 pytest tests** across the signal tree and the risk overlays — regime transitions,
-breaker behavior at the hysteresis boundaries, deadband logic. Mostly they exist so I
-can change things without guessing.
+**47 pytest tests** across the signal tree and the risk overlays, covering regime
+transitions, breaker behavior at the hysteresis boundaries, and deadband logic. Mostly
+they exist so I can change things without guessing.
 
 ## Validation
 
@@ -92,9 +97,9 @@ have killed it:
 </table>
 ```
 
-Both 1.86 and 1.58 are on this page because the gap between them is the finding. 2020
-contributed a large share of the headline Sharpe, and quoting only the higher number
-would be misleading.
+Of those four, the 2020 split is the one that changed how I report the strategy. Quoting
+only the number that includes it would overstate what Rime does in a normal year, which
+is why both figures sit at the top of this page rather than buried down here.
 
 ## What I'd do next
 
@@ -108,7 +113,7 @@ would be misleading.
 <a class="related-link" href="fifth-sanctuary.html">
 <div>
 <div class="related-title">Fifth Sanctuary</div>
-<div class="related-note">Intraday gold volatility expansion &mdash; the other live strategy.</div>
+<div class="related-note">Intraday gold volatility expansion, the other live strategy.</div>
 </div>
 <div class="related-arrow">&rarr;</div>
 </a>

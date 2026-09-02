@@ -1,6 +1,6 @@
 ---
 title: "About"
-description: "Jeremy Hsu — Computer Science at Penn State, founder of Weaver Capital LP, undergraduate researcher in locomotion and robotics."
+description: "Jeremy Hsu: Computer Science at Penn State, founder of Weaver Capital LP, undergraduate researcher in locomotion and robotics."
 toc: false
 ---
 
@@ -13,7 +13,7 @@ I'm a Computer Science undergraduate at **Penn State**, graduating December 2028
 :::
 
 Most of what I do sits between software engineering and statistics. I build systematic
-trading strategies, though more of the hours go into the infrastructure — the part that
+trading strategies, though more of the hours go into the infrastructure, the part that
 keeps a strategy running unattended without quietly turning into a different strategy
 than the one I tested.
 
@@ -21,9 +21,9 @@ I founded **Weaver Capital LP** in January 2026 and run a multi-strategy systema
 portfolio there, across futures and equities on intraday, swing, and macro horizons.
 Two of the strategies are live: [Rime](rime.html), a daily ETF regime allocator, and
 [Fifth Sanctuary](fifth-sanctuary.html), an intraday gold volatility-expansion system.
-The execution infrastructure is mine too — Python and C#, with automated strategy
-synchronization, enforced risk limits, and sub-second order handling — along with the
-portfolio optimization pipelines that allocate across uncorrelated sleeves.
+I wrote the execution infrastructure too, in Python and C#, with automated strategy
+synchronization, enforced risk limits, and sub-second order handling, plus the portfolio
+optimization pipelines that allocate across uncorrelated sleeves.
 
 Since August 2026 I've also been an undergraduate researcher in the **Locomotion in
 Biology and Robotics (LiBR) Lab** under Dr. Baxi Chong, working on gait optimization in

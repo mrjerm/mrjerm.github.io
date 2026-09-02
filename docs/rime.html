@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A systematic daily allocator that rotates between leveraged Nasdaq ETF exposure, a volatility hedge, and cash.">
+<meta name="description" content="A systematic daily allocator that rotates between leveraged equity ETF exposure, a volatility hedge, and cash.">
 
 <title>Rime – Jeremy Hsu</title>
 <style>
@@ -83,10 +83,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 <meta property="og:title" content="Rime – Jeremy Hsu">
-<meta property="og:description" content="A systematic daily allocator that rotates between leveraged Nasdaq ETF exposure, a volatility hedge, and cash.">
+<meta property="og:description" content="A systematic daily allocator that rotates between leveraged equity ETF exposure, a volatility hedge, and cash.">
 <meta property="og:site_name" content="Jeremy Hsu">
 <meta name="twitter:title" content="Rime – Jeremy Hsu">
-<meta name="twitter:description" content="A systematic daily allocator that rotates between leveraged Nasdaq ETF exposure, a volatility hedge, and cash.">
+<meta name="twitter:description" content="A systematic daily allocator that rotates between leveraged equity ETF exposure, a volatility hedge, and cash.">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -340,7 +340,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#the-problem" id="toc-the-problem" class="nav-link active" data-scroll-target="#the-problem">The problem</a></li>
   <li><a href="#how-it-decides" id="toc-how-it-decides" class="nav-link" data-scroll-target="#how-it-decides">How it decides</a></li>
-  <li><a href="#the-engineering-that-matters" id="toc-the-engineering-that-matters" class="nav-link" data-scroll-target="#the-engineering-that-matters">The engineering that matters</a></li>
+  <li><a href="#the-infrastructure" id="toc-the-infrastructure" class="nav-link" data-scroll-target="#the-infrastructure">The infrastructure</a></li>
   <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation">Validation</a></li>
   <li><a href="#what-id-do-next" id="toc-what-id-do-next" class="nav-link" data-scroll-target="#what-id-do-next">What I’d do next</a></li>
   </ul>
@@ -353,12 +353,12 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Rime</h1>
-<p class="subtitle lead">A daily regime allocator for leveraged Nasdaq ETFs</p>
+<p class="subtitle lead">A daily regime allocator for leveraged equity ETFs</p>
 </div>
 
 <div>
   <div class="description">
-    A systematic daily allocator that rotates between leveraged Nasdaq ETF exposure, a volatility hedge, and cash.
+    A systematic daily allocator that rotates between leveraged equity ETF exposure, a volatility hedge, and cash.
   </div>
 </div>
 
@@ -384,36 +384,36 @@ ul.task-list li input[type="checkbox"] {
 <div class="eyebrow">
 <p>Weaver Capital LP · deployed strategy · Python, pandas, NumPy, Alpaca API, Streamlit</p>
 </div>
-<p><strong>Rime</strong> is a daily allocator. Each morning it splits capital between leveraged Nasdaq ETF exposure, a volatility hedge, and cash. It’s been running on Alpaca since April 2026.</p>
-<p>Most of the work went into the plumbing rather than the signal — making sure the code running in production is the same code that produced the backtest.</p>
+<p><strong>Rime</strong> is a daily allocator. Each morning it splits capital between leveraged equity ETF exposure, a volatility hedge, and cash. It’s been running live on Alpaca since April 2026.</p>
+<p>There are three parts to it: a base signal, a macro and risk overlay sitting on top of that, and the infrastructure that runs the whole thing unattended. The sections below take them in that order.</p>
 <div class="metrics">
 <div class="metric"><div class="metric-value">1.86</div><div class="metric-label">Sharpe, simulated</div><div class="metric-note">2012–2025 · SPY 0.92</div></div>
 <div class="metric"><div class="metric-value">1.58</div><div class="metric-label">Sharpe excluding 2020</div><div class="metric-note">the honest number</div></div>
 <div class="metric"><div class="metric-value">−17%</div><div class="metric-label">Max drawdown, simulated</div><div class="metric-note">SPY −34% same window</div></div>
 <div class="metric"><div class="metric-value">~44%</div><div class="metric-label">Average gross exposure</div><div class="metric-note">not fully invested</div></div>
 </div>
+<p>The gap between those two Sharpe figures is 2020. The volatility hedge had an enormous run during the COVID crash, and a stretch like that lifts the headline number for the whole period. Both are on this page because 1.58 is the better guide to what the strategy does in an ordinary year.</p>
 <div class="note-strip">
 <p>Figures above are <strong>simulated</strong> results from a historical backtest over 2012–2025, not live trading results. Simulated performance has inherent limitations: it is constructed with hindsight, does not reflect the impact of real order flow, and does not guarantee future results. A live track record is available on request.</p>
 </div>
 <section id="the-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem">The problem</h2>
-<p>Leveraged index ETFs decay in choppy markets. They rebalance daily, so the compounded return depends on the path and not just the endpoint — a sideways market grinds them down even when the index finishes flat. Holding one indefinitely is a bet that volatility stays low.</p>
+<p>Leveraged index ETFs decay in choppy markets. They rebalance daily, so the compounded return depends on the path and not just the endpoint. A sideways market grinds them down even when the index finishes flat. Holding one indefinitely is a bet that volatility stays low.</p>
 <p>Rime asks something narrower: can you hold that exposure only while the drag is small, and be somewhere else the rest of the time?</p>
 </section>
 <section id="how-it-decides" class="level2">
 <h2 class="anchored" data-anchor-id="how-it-decides">How it decides</h2>
-<p>The allocator is a shallow decision tree over three groups of inputs — a set of trend and volatility state variables, a macro overlay, and a volatility circuit breaker.</p>
-<p>The tree is shallow on purpose. Fourteen years of daily bars isn’t a big sample, and every extra split is another chance to fit noise.</p>
-<p>The macro overlay leans on cross-asset series that tend to move ahead of equities rather than alongside them. The circuit breaker cuts leveraged exposure when volatility spikes, and it runs on hysteresis — the level that switches it on isn’t the level that switches it off — so the allocation doesn’t thrash around a single threshold. On top of that sits a rebalance deadband: if the target hasn’t moved much, nothing trades.</p>
+<p><strong>The base signal.</strong> A shallow decision tree over a set of trend and volatility state variables. It’s shallow on purpose. Fourteen years of daily bars isn’t a big sample, and every extra split is another chance to fit noise.</p>
+<p><strong>The macro and risk overlay.</strong> The macro layer leans on cross-asset series that tend to move ahead of equities rather than alongside them. Over that sits a volatility circuit breaker, which cuts leveraged exposure when volatility spikes. It runs on hysteresis, so the level that switches it on isn’t the level that switches it off, and the allocation doesn’t thrash around a single threshold. A rebalance deadband covers everything: if the target hasn’t moved much, nothing trades.</p>
 <div class="note-strip">
 <p>The specific state variables, macro series, and thresholds aren’t published here. Happy to walk through them in an interview.</p>
 </div>
 </section>
-<section id="the-engineering-that-matters" class="level2">
-<h2 class="anchored" data-anchor-id="the-engineering-that-matters">The engineering that matters</h2>
+<section id="the-infrastructure" class="level2">
+<h2 class="anchored" data-anchor-id="the-infrastructure">The infrastructure</h2>
 <p><strong>One decision function.</strong> Research and production call the same function. There’s no notebook that approximates what the live system does, because that gap is the usual way a backtested strategy quietly stops being the strategy you tested. State persists between runs, so the live system’s view of the current regime survives a restart instead of being rebuilt from a truncated window.</p>
 <p><strong>Data quality gates.</strong> Bad ticks, stale bars, and missing sessions get caught before anything reaches the allocator. If the feed looks wrong, the system sits out.</p>
-<p><strong>47 pytest tests</strong> across the signal tree and the risk overlays — regime transitions, breaker behavior at the hysteresis boundaries, deadband logic. Mostly they exist so I can change things without guessing.</p>
+<p><strong>47 pytest tests</strong> across the signal tree and the risk overlays, covering regime transitions, breaker behavior at the hysteresis boundaries, and deadband logic. Mostly they exist so I can change things without guessing.</p>
 </section>
 <section id="validation" class="level2">
 <h2 class="anchored" data-anchor-id="validation">Validation</h2>
@@ -438,7 +438,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Both 1.86 and 1.58 are on this page because the gap between them is the finding. 2020 contributed a large share of the headline Sharpe, and quoting only the higher number would be misleading.</p>
+<p>Of those four, the 2020 split is the one that changed how I report the strategy. Quoting only the number that includes it would overstate what Rime does in a normal year, which is why both figures sit at the top of this page rather than buried down here.</p>
 </section>
 <section id="what-id-do-next" class="level2">
 <h2 class="anchored" data-anchor-id="what-id-do-next">What I’d do next</h2>
@@ -452,7 +452,7 @@ ul.task-list li input[type="checkbox"] {
 <a class="related-link" href="fifth-sanctuary.html">
 <div>
 <div class="related-title">Fifth Sanctuary</div>
-<div class="related-note">Intraday gold volatility expansion — the other live strategy.</div>
+<div class="related-note">Intraday gold volatility expansion, the other live strategy.</div>
 </div>
 <div class="related-arrow">→</div>
 </a>

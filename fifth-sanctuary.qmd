@@ -26,7 +26,7 @@ most of the time. Live since January 2026.
 
 ::: {.note-strip}
 Figures above are **simulated** results from a historical backtest on spot XAU hourly
-bars, 2004–2025 — not live trading results. Simulated performance is constructed with
+bars, 2004–2025, not live trading results. Simulated performance is constructed with
 hindsight, does not reflect real order flow, and does not guarantee future results.
 A live track record is available on request.
 :::
@@ -53,13 +53,13 @@ through the research in an interview.
 The system runs across a language boundary, which was a deliberate choice about where
 each job belongs.
 
-**Python — macro layer.** A daily script pulls a handful of macro series from FRED and
+**The macro layer, in Python.** A daily script pulls a handful of macro series from FRED and
 Yahoo and turns them into sleeve weights. Everything is T+1 shifted, so a given trading
 day can only see data that was actually published before it began. Getting this wrong
 is the standard way a macro overlay produces a beautiful backtest that dies on contact
 with production.
 
-**C#/NinjaScript — execution layer.** The live strategy takes the daily sleeve weights
+**The execution layer, in C#/NinjaScript.** The live strategy takes the daily sleeve weights
 and handles bar-by-bar execution, order management, and risk limits.
 
 **Dual-series routing.** It analyzes the full-size gold futures contract, where the
@@ -71,7 +71,7 @@ account size constrains position granularity.
 <tr><th>Instrument</th><td>Gold futures (analysis) / micro gold futures (execution)</td></tr>
 <tr><th>Timeframe</th><td>Intraday; hourly research bars</td></tr>
 <tr><th>Sleeves</th><td>Independent long and short, separately sized and filtered</td></tr>
-<tr><th>Macro inputs</th><td>A small set of rates, credit, FX and volatility series &mdash; all T+1 shifted</td></tr>
+<tr><th>Macro inputs</th><td>A small set of rates, credit, FX and volatility series, all T+1 shifted</td></tr>
 <tr><th>Simulation window</th><td>2004&ndash;2025 (22 years, spot XAU hourly)</td></tr>
 <tr><th>Live since</th><td>January 2026</td></tr>
 </table>
@@ -89,7 +89,7 @@ Being flat 82% of the time is a feature rather than an inefficiency. The capital
 committed, which is what lets this sit alongside other sleeves at the portfolio level.
 
 The 22-year window matters more to me than either ratio. It covers 2008, the 2011–2015
-gold bear market, 2020, and the 2022 rate shock — four regimes different enough that
+gold bear market, 2020, and the 2022 rate shock. Four regimes different enough that
 surviving all of them is harder to write off as an artifact of one.
 
 ## What I'd do next
@@ -104,7 +104,7 @@ surviving all of them is harder to write off as an artifact of one.
 <a class="related-link" href="rime.html">
 <div>
 <div class="related-title">Rime</div>
-<div class="related-note">Daily ETF regime allocator &mdash; the other live strategy.</div>
+<div class="related-note">Daily ETF regime allocator, the other live strategy.</div>
 </div>
 <div class="related-arrow">&rarr;</div>
 </a>
