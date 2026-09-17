@@ -1,0 +1,14 @@
+/.quarto/
+**/*.quarto_ipynb
+*.csv
+
+# Local-only background for Claude Code sessions. NOT site content, NOT for this
+# public repo — it discusses non-public performance detail. Keep it untracked.
+HANDOFF.md
+CLAUDE.md
+
+# Local Claude Code config (machine-specific paths). Not site content.
+.claude/
+
+# Git bundles used for handoff. Not site content, public repo.
+*.bundle

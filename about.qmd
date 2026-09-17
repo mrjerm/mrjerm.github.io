@@ -1,0 +1,70 @@
+---
+title: "About"
+description: "Jeremy Hsu: Computer Science at Penn State, founder of Weaver Capital LP, undergraduate researcher in locomotion and robotics."
+toc: false
+---
+
+::: {.eyebrow}
+Penn State · B.S. Computer Science, College of Engineering · Aug 2025 to May 2028 · West Chester, PA
+:::
+
+::: {.lede}
+I'm a Computer Science undergraduate at **Penn State**, College of Engineering,
+graduating May 2028.
+:::
+
+Most of what I do sits between software engineering and statistics. I build systematic
+trading strategies, though more of the hours go into the infrastructure, the part that
+keeps a strategy running unattended without quietly turning into a different strategy
+than the one I tested.
+
+I founded **Weaver Capital LP** in January 2026 and run a multi-strategy systematic
+portfolio there, across futures and equities on intraday, swing, and macro horizons.
+Two of the strategies are live: [Rime](rime.html), a daily ETF regime allocator, and
+[Fifth Sanctuary](fifth-sanctuary.html), an intraday gold volatility-expansion system.
+I wrote the execution infrastructure too, in Python and C#, with automated strategy
+synchronization, enforced position and drawdown limits, atomic state persistence across
+restarts, and sub-second order handling, plus the data pipelines and the portfolio
+optimization that allocates across uncorrelated sleeves.
+
+Since August 2026 I've also been an undergraduate researcher in the **Locomotion in
+Biology and Robotics (LiBR) Lab** under Dr. Baxi Chong, building physics simulations of
+multi-body contact dynamics in MuJoCo. I model an articulated three-section snake robot
+navigating confined tunnel geometry, evaluating gait strategies in simulation before
+hardware testing, and I'm working on scaling laws for computational versus mechanical
+cost of transport. It's a long way from futures, which is part of why I wanted it; the
+common thread is controlling a system you can only partially observe.
+
+In summer 2024 I was a research intern with the **Robot Perception and Navigation Group
+at the University of Delaware**, where I built a 2D SLAM pipeline on a TurtleBot3 in C++
+with ROS 2 and Google Cartographer, then integrated Nav2 for autonomous waypoint
+navigation on the resulting map.
+
+Before college I founded [FTC #16468 Green Lemons Robotics](robotics.html) and ran it
+for six seasons, writing the autonomous control software in Java. We finished #1 OPR
+globally among more than 8,000 teams at the 2024 World Championships.
+
+## What I'm looking for
+
+Summer 2027 internships in software engineering, quantitative development, or
+quantitative research. I'm most useful where the modeling and the systems work are the
+same problem: research infrastructure, backtesting and simulation frameworks, execution
+systems, data pipelines that have to be right.
+
+## Elsewhere
+
+```{=html}
+<table class="spec">
+<tr><th>Code</th><td><a href="https://github.com/mrjerm">github.com/mrjerm</a></td></tr>
+<tr><th>Background</th><td><a href="https://www.linkedin.com/in/jerm04/">linkedin.com/in/jerm04</a></td></tr>
+<tr><th>Email</th><td><a href="mailto:jeremyhsu2025@gmail.com">jeremyhsu2025@gmail.com</a></td></tr>
+<tr><th>Resume, SWE</th><td><a href="resume-engineering.pdf">resume-engineering.pdf</a> &middot; software engineering and robotics</td></tr>
+<tr><th>Resume, quant</th><td><a href="resume-quant.pdf">resume-quant.pdf</a> &middot; quantitative research and trading</td></tr>
+</table>
+```
+
+## About this site
+
+Built with [Quarto](https://quarto.org), hosted on GitHub Pages, source at
+[github.com/mrjerm/mrjerm.github.io](https://github.com/mrjerm/mrjerm.github.io).
+Project writeups are rendered from the same notebooks the analysis was done in.

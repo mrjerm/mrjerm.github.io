@@ -1,0 +1,1067 @@
+/*-- scss:defaults --*/
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Palantir-flavored theme. Design language notes, so future edits stay honest:
+//
+//   · One grotesque family. No serif anywhere. Hierarchy comes from SIZE and
+//     TRACKING, not from weight — display type sits at 400/500, never 700.
+//   · Tight negative tracking on large type, positive tracking on small caps.
+//   · Square. Border-radius is 0 essentially everywhere.
+//   · Hairlines carry structure. Shadows are tight and rare, never soft glows.
+//   · MONOCHROME. There is no hue anywhere. Auditing palantir.com across 1,535
+//     elements turns up exactly one designed text colour (#1e2124), white, and
+//     a grey ramp — the only chromatic values on the page are the browser's
+//     default unstyled-link blue and an error red. Colour comes from imagery,
+//     never from the palette. Do not reintroduce an accent hue.
+//   · Interaction is expressed by INVERSION, not by colour. Hovering a card or
+//     a button swaps ink and paper.
+//
+// Greys below are lifted from palantir.com's computed styles rather than
+// approximated. (Blueprint, their product design system, is a different and
+// much bluer thing — it is not what the marketing site uses.)
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ── Type ────────────────────────────────────────────────────────────────────
+// Palantir ships Alliance No.1 (text) / No.2 (display), both proprietary.
+// Inter and Inter Tight are the closest free neo-grotesques and map cleanly
+// onto that two-cut relationship.
+$font-family-sans-serif: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+  "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+$font-family-monospace: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+  Consolas, monospace !default;
+$headings-font-family: "Inter Tight", "Inter", system-ui, -apple-system,
+  "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+
+$font-size-root: 17px !default;
+$line-height-base: 1.6 !default;
+$headings-font-weight: 500 !default;
+$headings-line-height: 1.15 !default;
+
+// ── Palette (light) ─────────────────────────────────────────────────────────
+// Neutral only. $accent is deliberately the same value as $ink: the token is
+// kept so the component rules and the dark layer keep a single name for
+// "emphasis", but it must never carry a hue.
+$ink:        #1e2124 !default;  // palantir.com's text colour, 829 uses
+$paper:      #ffffff !default;
+$surface:    #ffffff !default;
+$surface-2:  #f4f4f4 !default;  // their light section fill
+$muted:      #696969 !default;  // their secondary grey — 5.9:1 on white
+$hairline:   #dcdcdc !default;
+$accent:     #1e2124 !default;  // = $ink. No hue. See the note above.
+$accent-soft:#f4f4f4 !default;
+
+$body-bg:    $paper !default;
+$body-color: $ink !default;
+$link-color: $accent !default;
+$border-color: $hairline !default;
+
+$navbar-bg:  #ffffff !default;
+$navbar-fg:  $ink !default;
+$navbar-hl:  $accent !default;
+
+$code-bg: $surface-2 !default;
+$code-color: #946638 !default;
+
+// Quarto's code BLOCK background is a separate variable from Bootstrap's inline
+// $code-bg. Left unset it falls back to a fixed light grey, which renders
+// near-white-on-light-grey in dark mode. Set both layers explicitly.
+$code-block-bg: $surface-2 !default;
+
+$toc-color: $muted !default;
+$toc-active-border: $accent !default;
+
+// ── Square everything ───────────────────────────────────────────────────────
+$border-radius:        0 !default;
+$border-radius-sm:     0 !default;
+$border-radius-lg:     0 !default;
+$border-radius-xl:     0 !default;
+$border-radius-2xl:    0 !default;
+$border-radius-pill:   0 !default;
+
+$link-decoration: none !default;
+$link-hover-decoration: underline !default;
+
+/*-- scss:rules --*/
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+// ── Custom properties so the dark layer only has to override these ──────────
+:root {
+  --jh-ink: #{$ink};
+  --jh-paper: #{$paper};
+  --jh-surface: #{$surface};
+  --jh-surface-2: #{$surface-2};
+  --jh-muted: #{$muted};
+  --jh-hairline: #{$hairline};
+  --jh-accent: #{$accent};
+  --jh-accent-soft: #{$accent-soft};
+  // Blueprint-style elevation: a hard 1px ring plus a tight drop. Never soft.
+  --jh-shadow: 0 0 0 1px rgba(17, 20, 24, 0.1), 0 1px 1px rgba(17, 20, 24, 0.2);
+  --jh-shadow-lift: 0 0 0 1px rgba(17, 20, 24, 0.1), 0 2px 4px rgba(17, 20, 24, 0.2),
+    0 8px 24px rgba(17, 20, 24, 0.2);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv05" 1, "ss01" 1; // Inter: single-storey l, humanist g
+}
+
+// Kill Bootstrap rounding that Quarto reintroduces on its own components.
+.card,
+.btn,
+.form-control,
+.alert,
+.badge,
+.callout,
+.popover,
+.tooltip-inner,
+div.sourceCode,
+pre,
+img.lightbox {
+  border-radius: 0 !important;
+}
+
+// ── Navbar ──────────────────────────────────────────────────────────────────
+.navbar {
+  background: var(--jh-paper);
+  border-bottom: 1px solid var(--jh-hairline);
+  box-shadow: none;
+  padding-block: 0.5rem;
+}
+
+.navbar-brand,
+.navbar .navbar-title {
+  font-family: #{$headings-font-family};
+  font-weight: 500;
+  font-size: 1.12rem;
+  letter-spacing: -0.022em;
+}
+
+.navbar .nav-link {
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  transition: color 0.12s ease;
+}
+
+// ── Headings ────────────────────────────────────────────────────────────────
+// Tracking tightens as size grows — the core Palantir move.
+h1,
+h2,
+h3,
+h4 {
+  font-family: #{$headings-font-family};
+}
+
+h1 {
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+h1.title {
+  font-size: 2.9rem;
+  margin-bottom: 0.2rem;
+}
+
+// No rule under the heading. Every section on the home page opens with a
+// component that carries its own top hairline (.work-grid, .awards, .metrics,
+// the first .xp-item / .skill-row), so a border here stacked a second line
+// 34px below the first at every boundary. Sections are separated by the top
+// margin and by the counter prefix instead — whitespace and scale, which is
+// how the reference does it.
+h2 {
+  font-size: 1.7rem;
+  font-weight: 400;
+  letter-spacing: -0.028em;
+  margin-top: 3rem;
+  margin-bottom: 1.1rem;
+  // Quarto's own bootstrap layer sets a bottom border and padding on h2, so
+  // this has to zero them explicitly — simply omitting the rule leaves Quarto's
+  // in place.
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+h3 {
+  font-size: 1.16rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin-top: 2rem;
+}
+
+h4 {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+// ── Section numbering ───────────────────────────────────────────────────────
+// Palantir indexes its sections. Done with counters rather than typed-in
+// numbers so headings stay editable and reorderable — the Kintoun notebook used
+// to carry hardcoded "1. ", "2. " prefixes and they had to be stripped when
+// this landed, or every heading would have been numbered twice.
+//
+// Scoped to `main.content`, which does NOT contain the TOC (that lives in
+// #quarto-margin-sidebar), so the sidebar is numbered separately below.
+main.content {
+  counter-reset: jh-section;
+}
+
+main.content h2 {
+  counter-increment: jh-section;
+
+  &::before {
+    content: counter(jh-section, decimal-leading-zero);
+    display: inline-block;
+    margin-right: 0.9rem;
+    font-family: #{$font-family-monospace};
+    font-size: 0.46em;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--jh-muted);
+    vertical-align: 0.42em; // lift the small number toward cap height
+  }
+}
+
+// ── Page title block (project pages + About) ────────────────────────────────
+header.quarto-title-block {
+  margin-bottom: 2.6rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid var(--jh-hairline);
+
+  h1.title {
+    font-size: clamp(2.4rem, 6vw, 3.7rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.042em;
+    margin: 0 0 1rem;
+  }
+
+  .subtitle,
+  p.subtitle.lead {
+    font-size: 1.24rem;
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: -0.016em;
+    color: var(--jh-ink);
+    max-width: 44rem;
+    margin: 0;
+  }
+
+  // Quarto renders the front-matter `description` here AND emits it into
+  // <head> as meta/og:description. The head copy is what matters; on screen it
+  // just restates the subtitle, so only the rendered duplicate is hidden.
+  .description {
+    display: none;
+  }
+
+  .quarto-title-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.2rem;
+    margin-top: 1.5rem;
+  }
+
+  .quarto-title-meta-heading {
+    font-family: #{$font-family-monospace};
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--jh-muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .quarto-title-meta-contents,
+  .quarto-title-meta-contents p {
+    font-family: #{$font-family-monospace};
+    font-size: 0.78rem;
+    color: var(--jh-ink);
+    margin: 0;
+  }
+}
+
+// Standfirst paragraph for pages that carry no subtitle. The `> p` is required:
+// a fenced `::: {.lede}` div wraps its content in a <p>, and Quarto sets an
+// explicit font-size on p, so the child would not inherit the size otherwise.
+.lede,
+.lede > p {
+  font-size: 1.24rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.016em;
+  color: var(--jh-ink);
+  max-width: 44rem;
+  margin-bottom: 1.7rem;
+}
+
+// ── Section eyebrow label ───────────────────────────────────────────────────
+// Palantir's "earmark": ~10px, uppercase, positive tracking, quiet colour.
+.eyebrow {
+  font-family: #{$font-family-monospace};
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--jh-muted);
+  margin-bottom: 0.7rem;
+}
+
+// ── Hero ────────────────────────────────────────────────────────────────────
+.hero {
+  padding: 2rem 0 0.75rem;
+
+  .hero-name {
+    font-family: #{$headings-font-family};
+    font-size: clamp(3rem, 8.5vw, 5.25rem);
+    font-weight: 400;
+    line-height: 0.97;
+    letter-spacing: -0.045em;
+    margin: 0 0 1.1rem;
+    color: var(--jh-ink);
+  }
+
+  .hero-line {
+    font-size: 1.32rem;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.014em;
+    color: var(--jh-ink);
+    max-width: 44rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .hero-sub {
+    font-size: 0.97rem;
+    line-height: 1.6;
+    color: var(--jh-muted);
+    max-width: 42rem;
+
+    strong {
+      color: var(--jh-ink);
+      font-weight: 500;
+    }
+  }
+}
+
+// Squared status tag. Dot aligns to the first line even when the label wraps.
+// Emphasis is weight and a filled marker — never a colour.
+.availability {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  font-family: #{$font-family-monospace};
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--jh-ink);
+  background: transparent;
+  border: 1px solid var(--jh-ink);
+  padding: 0.4rem 0.8rem;
+  margin-bottom: 1.4rem;
+
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 0;
+    background: var(--jh-ink);
+    flex: none;
+    transform: translateY(-1px);
+  }
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 1.6rem;
+}
+
+// Buttons sit in a connected rail with shared hairlines — a Palantir habit.
+.btn-jh {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--jh-hairline);
+  margin-right: -1px;
+  background: var(--jh-surface);
+  color: var(--jh-ink);
+  text-decoration: none;
+  transition: background-color 0.12s ease, color 0.12s ease,
+    border-color 0.12s ease;
+
+  // Inversion, not tinting.
+  &:hover {
+    background: var(--jh-ink);
+    border-color: var(--jh-ink);
+    color: var(--jh-paper);
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  &.btn-jh-primary {
+    background: var(--jh-ink);
+    border-color: var(--jh-ink);
+    color: var(--jh-paper);
+    position: relative;
+    z-index: 2;
+
+    &:hover {
+      background: var(--jh-paper);
+      border-color: var(--jh-ink);
+      color: var(--jh-ink);
+    }
+  }
+}
+
+// ── Metric tiles ────────────────────────────────────────────────────────────
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0;
+  border: 1px solid var(--jh-hairline);
+  overflow: hidden;
+  background: var(--jh-surface);
+  margin: 2rem 0;
+}
+
+.metric {
+  padding: 1.15rem 1.25rem 1.1rem;
+  border-right: 1px solid var(--jh-hairline);
+
+  &:last-child {
+    border-right: none;
+  }
+
+  .metric-value {
+    font-family: #{$font-family-monospace};
+    font-size: 1.6rem;
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    color: var(--jh-ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .metric-label {
+    font-size: 0.74rem;
+    line-height: 1.4;
+    color: var(--jh-muted);
+    margin-top: 0.5rem;
+  }
+
+  .metric-note {
+    font-family: #{$font-family-monospace};
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--jh-muted);
+    opacity: 0.85;
+    margin-top: 0.3rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .metric {
+    border-right: none;
+    border-bottom: 1px solid var(--jh-hairline);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+// ── Work cards ──────────────────────────────────────────────────────────────
+// Flush grid: cards share hairlines instead of floating as separate panels.
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border: 1px solid var(--jh-hairline);
+  margin: 2rem 0 0;
+
+  @media (min-width: 760px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.work-card {
+  display: flex;
+  flex-direction: column;
+  border: 0;
+  border-bottom: 1px solid var(--jh-hairline);
+  background: var(--jh-surface);
+  padding: 1.5rem 1.6rem 1.35rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.14s ease;
+
+  @media (min-width: 760px) {
+    &:nth-child(odd) {
+      border-right: 1px solid var(--jh-hairline);
+    }
+    &:nth-last-child(-n + 2) {
+      border-bottom: 0;
+    }
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  // The whole card inverts. This is Palantir's interaction language and it is
+  // why no accent hue is needed to signal affordance.
+  &:hover {
+    background: var(--jh-ink);
+    text-decoration: none;
+
+    .work-status,
+    .work-title,
+    .work-more {
+      color: var(--jh-paper);
+    }
+
+    .work-meta,
+    p {
+      color: var(--jh-paper);
+      opacity: 0.72;
+    }
+
+    .work-status::before {
+      background: var(--jh-paper);
+    }
+
+    // Needs to be stated explicitly: `.work-status.is-archive` below ties this
+    // block on specificity (0,3,0) and would win on source order, leaving grey
+    // text stranded on the inverted background.
+    .work-status.is-archive {
+      color: var(--jh-paper);
+      opacity: 0.72;
+
+      &::before {
+        background: transparent;
+        box-shadow: inset 0 0 0 1px var(--jh-paper);
+      }
+    }
+  }
+
+  // Live work carries a filled marker; archived work carries none and sits in
+  // grey. Status is encoded by mark and weight rather than by colour.
+  .work-status {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    font-family: #{$font-family-monospace};
+    font-size: 0.63rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--jh-ink);
+    margin-bottom: 0.7rem;
+
+    &::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      background: var(--jh-ink);
+      flex: none;
+      transform: translateY(-1px);
+    }
+  }
+
+  .work-status.is-archive {
+    color: var(--jh-muted);
+
+    &::before {
+      background: transparent;
+      box-shadow: inset 0 0 0 1px var(--jh-muted);
+    }
+  }
+
+  .work-title {
+    font-family: #{$headings-font-family};
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.032em;
+    line-height: 1.1;
+    color: var(--jh-ink);
+  }
+
+  .work-meta {
+    font-family: #{$font-family-monospace};
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    color: var(--jh-muted);
+    margin-bottom: 0.85rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--jh-muted);
+    margin: 0 0 1.1rem;
+  }
+
+  .work-more {
+    margin-top: auto;
+    font-family: #{$font-family-monospace};
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--jh-ink);
+  }
+
+}
+
+// ── Experience list ─────────────────────────────────────────────────────────
+.xp {
+  margin: 2rem 0 0;
+}
+
+.xp-item {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: 1.75rem;
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--jh-hairline);
+
+  &:last-child {
+    border-bottom: 1px solid var(--jh-hairline);
+  }
+
+  .xp-when {
+    font-family: #{$font-family-monospace};
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--jh-muted);
+    padding-top: 0.35rem;
+  }
+
+  .xp-role {
+    font-family: #{$headings-font-family};
+    font-weight: 500;
+    font-size: 1.08rem;
+    letter-spacing: -0.018em;
+  }
+
+  .xp-org {
+    font-size: 0.9rem;
+    color: var(--jh-muted);
+    margin-bottom: 0.55rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.05rem;
+    font-size: 0.9rem;
+    line-height: 1.62;
+
+    li {
+      margin-bottom: 0.3rem;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .xp-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+// ── Awards ──────────────────────────────────────────────────────────────────
+// Flush grid sharing hairlines, same construction as .work-grid, so the two
+// read as one system. Not interactive, so it has no inversion hover.
+.awards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border: 1px solid var(--jh-hairline);
+  margin: 2rem 0 0;
+
+  @media (min-width: 700px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.award {
+  padding: 1.25rem 1.35rem 1.15rem;
+  border-bottom: 1px solid var(--jh-hairline);
+
+  @media (min-width: 700px) {
+    &:nth-child(odd) {
+      border-right: 1px solid var(--jh-hairline);
+    }
+    // Last row carries no bottom rule. With an odd count the final item is
+    // alone on its row, so both of these have to be covered.
+    &:nth-last-child(-n + 2):nth-child(odd),
+    &:nth-last-child(-n + 2):nth-child(odd) ~ .award {
+      border-bottom: 0;
+    }
+
+    // An odd total leaves the final item alone on its row; without this its
+    // right border hangs as a rule into empty space.
+    &:last-child:nth-child(odd) {
+      border-right: 0;
+    }
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  .award-name {
+    font-family: #{$headings-font-family};
+    font-size: 1.24rem;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--jh-ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .award-detail {
+    font-family: #{$font-family-monospace};
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    color: var(--jh-muted);
+  }
+}
+
+// ── Skills ──────────────────────────────────────────────────────────────────
+.skills {
+  margin-top: 2rem;
+}
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: 1.75rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--jh-hairline);
+  align-items: start;
+
+  &:last-child {
+    border-bottom: 1px solid var(--jh-hairline);
+  }
+
+  .skill-cat {
+    font-family: #{$font-family-monospace};
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--jh-muted);
+    padding-top: 0.3rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .skill-row {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.chip {
+  font-family: #{$font-family-monospace};
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--jh-hairline);
+  background: var(--jh-surface);
+  color: var(--jh-ink);
+  text-decoration: none;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+
+  &.chip-link:hover {
+    border-color: var(--jh-ink);
+    background: var(--jh-ink);
+    color: var(--jh-paper);
+    text-decoration: none;
+  }
+}
+
+// ── Callout / note strip ────────────────────────────────────────────────────
+.note-strip {
+  border: 1px solid var(--jh-hairline);
+  border-left: 2px solid var(--jh-ink);
+  background: var(--jh-surface-2);
+  padding: 1rem 1.2rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--jh-ink);
+  margin: 1.8rem 0;
+}
+
+// ── End-of-page "next" rail ─────────────────────────────────────────────────
+// Same inversion affordance as the work cards, so the two read as one system.
+.related {
+  margin-top: 3.5rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--jh-hairline);
+}
+
+.related-label {
+  font-family: #{$font-family-monospace};
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--jh-muted);
+  margin-bottom: 0.85rem;
+}
+
+.related-link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border: 1px solid var(--jh-hairline);
+  padding: 1.15rem 1.3rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.14s ease;
+
+  &:hover {
+    background: var(--jh-ink);
+    text-decoration: none;
+
+    .related-title,
+    .related-arrow {
+      color: var(--jh-paper);
+    }
+
+    .related-note {
+      color: var(--jh-paper);
+      opacity: 0.72;
+    }
+  }
+
+  .related-title {
+    font-family: #{$headings-font-family};
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--jh-ink);
+    margin-bottom: 0.25rem;
+  }
+
+  .related-note {
+    font-size: 0.87rem;
+    line-height: 1.5;
+    color: var(--jh-muted);
+  }
+
+  .related-arrow {
+    font-family: #{$font-family-monospace};
+    font-size: 0.95rem;
+    color: var(--jh-ink);
+    flex: none;
+  }
+}
+
+// ── Spec table (project pages) ──────────────────────────────────────────────
+table.spec {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.6rem 0;
+  font-size: 0.9rem;
+
+  // Quarto appends its own `caption-top table` classes to these tables, which
+  // pulls in Bootstrap's table rules. Two of them fight this component:
+  // `.table > :not(:first-child)` puts a 2px border above <tbody> (a doubled
+  // hairline under the section heading), and the striping shim paints a
+  // background over the cells.
+  &.table > :not(:first-child) {
+    border-top: 0;
+  }
+
+  &.table > :not(caption) > * > * {
+    box-shadow: none;
+    background-color: transparent;
+  }
+
+  th,
+  td {
+    padding: 0.7rem 0.9rem 0.7rem 0;
+    border-bottom: 1px solid var(--jh-hairline);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    font-family: #{$font-family-monospace};
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--jh-muted);
+    font-weight: 500;
+    width: 11rem;
+  }
+
+  td {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// ── Footer ──────────────────────────────────────────────────────────────────
+.nav-footer {
+  border-top: 1px solid var(--jh-hairline);
+  font-size: 0.75rem;
+  color: var(--jh-muted);
+  padding-block: 2rem;
+
+  a {
+    color: var(--jh-muted);
+  }
+
+  .nav-footer-center {
+    font-size: 0.68rem;
+    line-height: 1.55;
+    opacity: 0.9;
+    max-width: 46rem;
+  }
+}
+
+// ── TOC ─────────────────────────────────────────────────────────────────────
+#TOC,
+.sidebar nav[role="doc-toc"] {
+  font-size: 0.8rem;
+
+  ul > li > a {
+    border-left: 2px solid transparent;
+  }
+
+  // Mirror the body's section numbers. Only the top level is numbered — the
+  // child selectors keep nested h3 entries out of the count.
+  > ul {
+    counter-reset: jh-toc;
+  }
+
+  > ul > li {
+    counter-increment: jh-toc;
+  }
+
+  > ul > li > a::before {
+    content: counter(jh-toc, decimal-leading-zero);
+    display: inline-block;
+    width: 1.7em;
+    font-family: #{$font-family-monospace};
+    font-size: 0.82em;
+    letter-spacing: 0.06em;
+    color: var(--jh-muted);
+  }
+
+  .toc-actions,
+  > h2,
+  .h2 {
+    font-family: #{$font-family-monospace};
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border: 0;
+  }
+}
+
+// ── Misc ────────────────────────────────────────────────────────────────────
+main.content {
+  padding-top: 1.4rem;
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--jh-hairline);
+  margin: 3rem 0 0;
+  opacity: 1;
+}
+
+code:not(.sourceCode) {
+  font-size: 0.85em;
+  padding: 0.12em 0.35em;
+  border: 1px solid var(--jh-hairline);
+}
+
+div.sourceCode {
+  border: 1px solid var(--jh-hairline);
+}
+
+// Quarto's github (light) highlight style has several tokens that miss AA on any
+// off-white block background. Darkened within the same hue family.
+//
+// Two things matter here. This file is loaded in the DARK bundle too, so these
+// MUST stay scoped to `body.quarto-light` or they would repaint the dark tokens
+// with light-mode reds. And the scope doubles as specificity: the syntax
+// highlighting stylesheet loads after this one, so a bare `code span.kw` would
+// lose the tie on source order.
+body.quarto-light {
+  code span.kw,
+  code span.cf,
+  code span.bu,
+  code span.pp {
+    color: #b31d28;
+  }
+
+  code span.va {
+    color: #a04100;
+  }
+
+  code span.co,
+  code span.do {
+    color: #57606a;
+  }
+}
+
+// Code-fold summary reads as a control, not prose.
+details > summary {
+  font-family: #{$font-family-monospace};
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--jh-muted);
+}
+
+blockquote {
+  border-left: 2px solid var(--jh-ink);
+  padding-left: 1.1rem;
+  color: var(--jh-muted);
+  font-size: 0.95rem;
+}
+
+// In a monochrome palette a link cannot be signalled by colour, so inline links
+// are always underlined — quietly by default, at full ink on hover.
+// Exclusion list covers every component whose <a> is a block/card affordance
+// rather than an inline link. A new component with an anchor root must be added
+// here, or it inherits the underline.
+main.content
+  a:not(.btn-jh):not(.work-card):not(.chip):not(.related-link):not(.anchorjs-link) {
+  color: var(--jh-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--jh-muted);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+
+  &:hover {
+    text-decoration-color: var(--jh-ink);
+    text-decoration-thickness: 2px;
+  }
+}
