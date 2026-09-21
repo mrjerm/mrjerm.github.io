@@ -1,6 +1,6 @@
 ---
 title: "Jeremy Hsu"
-description: "Computer Science at Penn State. Systematic trading research and the execution infrastructure that runs it."
+description: "Computer Science at Penn State. Systematic and algorithmic trading research, and the execution infrastructure that runs it."
 title-block-style: none
 toc: false
 page-layout: full

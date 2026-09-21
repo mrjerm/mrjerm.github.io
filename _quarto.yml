@@ -12,7 +12,12 @@ project:
 
 website:
   title: "Jeremy Hsu"
-  description: "Jeremy Hsu: Computer Science at Penn State. Systematic trading research and execution infrastructure."
+  # "algorithmic" is here deliberately. It never renders on screen (the home
+  # page hides its title block), but it goes into <meta name="description"> and
+  # og:description, where an ATS or a non-quant recruiter searching the more
+  # common job-posting phrasing can match it. The visible copy stays
+  # "systematic", which is the accurate term for the work.
+  description: "Jeremy Hsu: Computer Science at Penn State. Systematic and algorithmic trading research, and the execution infrastructure that runs it."
   site-url: "https://mrjerm.github.io"
   favicon: favicon.svg
   open-graph: true
