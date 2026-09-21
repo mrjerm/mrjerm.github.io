@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-30a214b0a28c78e5b83563390856a0f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1c836e6e0ba5b7f37bcdb98f73f9540d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3f0ecea4ea852b0c5cd63366263de782.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -844,14 +844,19 @@ ul.task-list li input[type="checkbox"] {
           }
         },
         interactivity: {
-          detect_on: "canvas",
-          // Pointer interaction is off: #particles-js is
-          // pointer-events:none, so the canvas must never try to claim
-          // clicks meant for the hero links above it.
+          // "window", not "canvas". #particles-js stays
+          // pointer-events:none so it can never claim a click meant for
+          // the hero links above it, which also means the canvas never
+          // receives mouse events of its own — binding to the window
+          // lets the field react to the pointer without intercepting it.
+          detect_on: "window",
           events: {
-            onhover: { enable: false },
+            onhover: { enable: true, mode: "grab" },
             onclick: { enable: false },
             resize: true
+          },
+          modes: {
+            grab: { distance: 170, line_linked: { opacity: 0.45 } }
           }
         },
         retina_detect: true
