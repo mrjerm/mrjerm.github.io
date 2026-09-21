@@ -110,7 +110,7 @@ format:
             if (reduce) {
               html.classList.remove("jh-js");
             } else {
-              var rise = [].slice.call(document.querySelectorAll(".jh-rise"));
+              var rise = [].slice.call(document.querySelectorAll(".jh-rise, .panel-canvas"));
               if (!rise.length || !("IntersectionObserver" in window)) {
                 html.classList.remove("jh-js");
               } else {

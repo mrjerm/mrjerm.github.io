@@ -63,8 +63,8 @@ stops a noisy signal near the threshold from triggering it repeatedly. A rebalan
 deadband covers everything else: if the target hasn't moved much, nothing trades.
 
 ::: {.note-strip}
-I don't publish the specific state variables, macro series, or thresholds here. Happy to
-walk through them in an interview.
+I keep the specific state variables, macro series, and thresholds off a public page.
+Happy to walk through them in an interview.
 :::
 
 ## The infrastructure

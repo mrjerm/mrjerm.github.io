@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-30a214b0a28c78e5b83563390856a0f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-3f0ecea4ea852b0c5cd63366263de782.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3f4908d92d0c2b14c6577d6c383bc2d4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -227,31 +227,29 @@ ul.task-list li input[type="checkbox"] {
 <div class="eyebrow">
 <p>Weaver Capital LP · deployed strategy · Python, C#/NinjaScript, MQL5</p>
 </div>
-<p><strong>Fifth Sanctuary</strong> is an intraday volatility-expansion system on gold. It runs long and short as two separate sleeves, each sized by a macro state vector, and it’s flat most of the time. Live since January 2026.</p>
+<p><strong>Fifth Sanctuary</strong> is an intraday volatility-expansion system on gold. It runs long and short as two separate sleeves, each sized by a macro state vector, and it’s only in the market about 18% of the time. Live since January 2026.</p>
 <div class="metrics">
 <div class="metric"><div class="metric-value">1.48</div><div class="metric-label">Profit factor, simulated</div><div class="metric-note">2004–2025 · 22 years</div></div>
 <div class="metric"><div class="metric-value">1.38</div><div class="metric-label">Sharpe, simulated</div><div class="metric-note">spot XAU, hourly bars</div></div>
 <div class="metric"><div class="metric-value">~18%</div><div class="metric-label">Time in market</div><div class="metric-note">flat the other 82%</div></div>
-<div class="metric"><div class="metric-value">42% / 2:1</div><div class="metric-label">Win rate / payoff ratio</div><div class="metric-note">loses more often than it wins</div></div>
+<div class="metric"><div class="metric-value">42% / 2:1</div><div class="metric-label">Win rate / payoff ratio</div><div class="metric-note">payoff carries it, not accuracy</div></div>
 </div>
 <div class="note-strip">
 <p>Figures above are <strong>simulated</strong> results from a historical backtest on spot XAU hourly bars, 2004–2025, not live trading results. Simulated performance is constructed with hindsight, does not reflect real order flow, and does not guarantee future results. A live track record is available on request.</p>
 </div>
 <section id="the-asymmetry-that-shaped-the-design" class="level2">
 <h2 class="anchored" data-anchor-id="the-asymmetry-that-shaped-the-design">The asymmetry that shaped the design</h2>
-<p>My first version treated long and short the same way. That was a mistake.</p>
-<p>Gold doesn’t behave symmetrically, and the results showed it clearly. The short sleeve wasn’t just weaker. It lost money consistently under a particular set of macro conditions, for a reason that made sense once I went looking for it. So instead of tuning the shorts, I filtered them out of those conditions entirely.</p>
+<p>My first version treated long and short the same way, but gold doesn’t behave symmetrically. The short sleeve wasn’t just weaker: it lost money consistently under a particular set of macro conditions, for a reason that made sense once I went looking for it. So I filtered them out of those conditions entirely.</p>
 <p>That one change did more for the system than anything else I tried. I found it by asking why a component was losing, instead of going straight to parameter tuning.</p>
 <div class="note-strip">
-<p>I don’t publish which conditions, or the macro series behind them. Happy to go through the research in an interview.</p>
+<p>I keep the specific conditions, and the macro series behind them, off a public page. Happy to walk through the research in an interview.</p>
 </div>
 </section>
 <section id="architecture" class="level2">
 <h2 class="anchored" data-anchor-id="architecture">Architecture</h2>
-<p>The system runs across a language boundary. That was deliberate, and it comes down to where each job belongs.</p>
-<p><strong>The macro layer, in Python.</strong> A daily script pulls a handful of macro series from FRED and Yahoo and turns them into sleeve weights. Everything is T+1 shifted, so a given trading day can only see data that was actually published before it began. Getting this wrong is the standard way a macro overlay backtests well and then fails live.</p>
+<p><strong>The macro layer, in Python.</strong> A daily script pulls a handful of macro series from FRED and Yahoo and transforms them into sleeve weights. Everything is T+1 shifted, so a given trading day can only see data that was actually published before it began. Getting this wrong is a common way a macro overlay backtests well and then fails live.</p>
 <p><strong>The execution layer, in C#/NinjaScript.</strong> The live strategy takes the daily sleeve weights and handles bar-by-bar execution, order management, and risk limits.</p>
-<p><strong>Dual-series routing.</strong> I analyze the full-size gold futures contract, where the liquidity and the cleanest price signal are, but execute on micro contracts because account size constrains position granularity.</p>
+<p><strong>Dual-series routing.</strong> It analyzes the full-size gold futures contract, where the liquidity and the cleanest price signal are, but executes on micro contracts, which are small enough to size positions properly on a smaller account.</p>
 <table class="spec caption-top table">
 <tbody>
 <tr class="odd">
@@ -284,8 +282,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="reading-the-numbers-honestly" class="level2">
 <h2 class="anchored" data-anchor-id="reading-the-numbers-honestly">Reading the numbers honestly</h2>
 <p>A 42% win rate means this thing is wrong more often than it’s right. For a volatility-expansion system that’s expected. It takes a lot of small losses waiting for an expansion and makes its money on the ones that follow through, at roughly 2:1. The number I actually watch is the payoff ratio, since that’s what would erode first if market character changed.</p>
-<p>Being flat 82% of the time is a feature. The capital isn’t committed, which is what lets this sit alongside other sleeves at the portfolio level.</p>
-<p>The 22-year window matters more to me than either ratio. It covers 2008, the 2011–2015 gold bear market, 2020, and the 2022 rate shock. Those are four regimes different enough that surviving all of them is harder to write off as an artifact of one.</p>
+<p>Being flat that often is a feature. The capital isn’t committed, which is what lets this sit alongside other sleeves at the portfolio level.</p>
+<p>The 22-year window matters more to me than either ratio. It covers 2008, the 2011–2015 gold bear market, 2020, and the 2022 rate shock. You can curve-fit one regime by accident. Four that different is a much higher bar.</p>
 </section>
 <section id="what-id-do-next" class="level2">
 <h2 class="anchored" data-anchor-id="what-id-do-next">What I’d do next</h2>
@@ -750,7 +748,7 @@ ul.task-list li input[type="checkbox"] {
     if (reduce) {
       html.classList.remove("jh-js");
     } else {
-      var rise = [].slice.call(document.querySelectorAll(".jh-rise"));
+      var rise = [].slice.call(document.querySelectorAll(".jh-rise, .panel-canvas"));
       if (!rise.length || !("IntersectionObserver" in window)) {
         html.classList.remove("jh-js");
       } else {

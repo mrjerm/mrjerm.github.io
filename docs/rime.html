@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-30a214b0a28c78e5b83563390856a0f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-3f0ecea4ea852b0c5cd63366263de782.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-3f4908d92d0c2b14c6577d6c383bc2d4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -250,7 +250,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>The base signal.</strong> A shallow decision tree over a set of trend and volatility state variables. I kept it shallow on purpose. Fourteen years of daily bars isn’t a big sample, and every extra split is another chance to fit noise.</p>
 <p><strong>The macro and risk overlay.</strong> The macro layer uses cross-asset series that tend to move ahead of equities instead of alongside them. On top of that sits a volatility circuit breaker that cuts leveraged exposure when volatility spikes. It runs on hysteresis, so the level that switches it on isn’t the level that switches it off. That stops a noisy signal near the threshold from triggering it repeatedly. A rebalance deadband covers everything else: if the target hasn’t moved much, nothing trades.</p>
 <div class="note-strip">
-<p>I don’t publish the specific state variables, macro series, or thresholds here. Happy to walk through them in an interview.</p>
+<p>I keep the specific state variables, macro series, and thresholds off a public page. Happy to walk through them in an interview.</p>
 </div>
 </section>
 <section id="the-infrastructure" class="level2">
@@ -749,7 +749,7 @@ ul.task-list li input[type="checkbox"] {
     if (reduce) {
       html.classList.remove("jh-js");
     } else {
-      var rise = [].slice.call(document.querySelectorAll(".jh-rise"));
+      var rise = [].slice.call(document.querySelectorAll(".jh-rise, .panel-canvas"));
       if (!rise.length || !("IntersectionObserver" in window)) {
         html.classList.remove("jh-js");
       } else {
