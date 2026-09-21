@@ -44,14 +44,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e02e479d25f0a4a5979a5a33258b8987.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-30a214b0a28c78e5b83563390856a0f6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-e02e479d25f0a4a5979a5a33258b8987.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-30a214b0a28c78e5b83563390856a0f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-83f6319847c6c5b7dac28f1c979e15c3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-e0ab40cdac460190265b2c5bc818fe27.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-83f6319847c6c5b7dac28f1c979e15c3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-330b9470ea8ac678a04cc8e5b607aa02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -80,6 +76,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script>document.documentElement.classList.add("jh-js");</script>
 
 
 <meta property="og:title" content="Green Lemons Robotics – Jeremy Hsu">
@@ -90,169 +87,7 @@ ul.task-list li input[type="checkbox"] {
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
-    const toggleBodyColorMode = (bsSheetEl) => {
-      const mode = bsSheetEl.getAttribute("data-mode");
-      const bodyEl = window.document.querySelector("body");
-      if (mode === "dark") {
-        bodyEl.classList.add("quarto-dark");
-        bodyEl.classList.remove("quarto-light");
-      } else {
-        bodyEl.classList.add("quarto-light");
-        bodyEl.classList.remove("quarto-dark");
-      }
-    }
-    const toggleBodyColorPrimary = () => {
-      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
-      if (bsSheetEl) {
-        toggleBodyColorMode(bsSheetEl);
-      }
-    }
-    const setColorSchemeToggle = (alternate) => {
-      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
-      for (let i=0; i < toggles.length; i++) {
-        const toggle = toggles[i];
-        if (toggle) {
-          if (alternate) {
-            toggle.classList.add("alternate");
-          } else {
-            toggle.classList.remove("alternate");
-          }
-        }
-      }
-    };
-    const toggleColorMode = (alternate) => {
-      // Switch the stylesheets
-      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
-      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
-      manageTransitions('#quarto-margin-sidebar .nav-link', false);
-      if (alternate) {
-        // note: dark is layered on light, we don't disable primary!
-        enableStylesheet(alternateStylesheets);
-        for (const sheetNode of alternateStylesheets) {
-          if (sheetNode.id === "quarto-bootstrap") {
-            toggleBodyColorMode(sheetNode);
-          }
-        }
-      } else {
-        disableStylesheet(alternateStylesheets);
-        enableStylesheet(primaryStylesheets)
-        toggleBodyColorPrimary();
-      }
-      manageTransitions('#quarto-margin-sidebar .nav-link', true);
-      // Switch the toggles
-      setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
-      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
-        manageTransitions("body", false);
-        window.scrollTo(0, 1);
-        setTimeout(() => {
-          window.scrollTo(0, 0);
-          manageTransitions("body", true);
-        }, 40);
-      }
-    }
-    const disableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        stylesheet.rel = 'disabled-stylesheet';
-      }
-    }
-    const enableStylesheet = (stylesheets) => {
-      for (let i=0; i < stylesheets.length; i++) {
-        const stylesheet = stylesheets[i];
-        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
-          stylesheet.rel = 'stylesheet';
-        }
-      }
-    }
-    const manageTransitions = (selector, allowTransitions) => {
-      const els = window.document.querySelectorAll(selector);
-      for (let i=0; i < els.length; i++) {
-        const el = els[i];
-        if (allowTransitions) {
-          el.classList.remove('notransition');
-        } else {
-          el.classList.add('notransition');
-        }
-      }
-    }
-    const isFileUrl = () => {
-      return window.location.protocol === 'file:';
-    }
-    const hasAlternateSentinel = () => {
-      let styleSentinel = getColorSchemeSentinel();
-      if (styleSentinel !== null) {
-        return styleSentinel === "alternate";
-      } else {
-        return false;
-      }
-    }
-    const setStyleSentinel = (alternate) => {
-      const value = alternate ? "alternate" : "default";
-      if (!isFileUrl()) {
-        window.localStorage.setItem("quarto-color-scheme", value);
-      } else {
-        localAlternateSentinel = value;
-      }
-    }
-    const getColorSchemeSentinel = () => {
-      if (!isFileUrl()) {
-        const storageValue = window.localStorage.getItem("quarto-color-scheme");
-        return storageValue != null ? storageValue : localAlternateSentinel;
-      } else {
-        return localAlternateSentinel;
-      }
-    }
-    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-      let newTheme = '';
-      if(authorPrefersDark) {
-        newTheme = isAlternate ? baseTheme : alternateTheme;
-      } else {
-        newTheme = isAlternate ? alternateTheme : baseTheme;
-      }
-      const changeGiscusTheme = () => {
-        // From: https://github.com/giscus/giscus/issues/336
-        const sendMessage = (message) => {
-          const iframe = document.querySelector('iframe.giscus-frame');
-          if (!iframe) return;
-          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-        }
-        sendMessage({
-          setConfig: {
-            theme: newTheme
-          }
-        });
-      }
-      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-      if (isGiscussLoaded) {
-        changeGiscusTheme();
-      }
-    };
-    const authorPrefersDark = false;
-    const darkModeDefault = authorPrefersDark;
-      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
-    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
-    // Dark / light mode switch
-    window.quartoToggleColorScheme = () => {
-      // Read the current dark / light value
-      let toAlternate = !hasAlternateSentinel();
-      toggleColorMode(toAlternate);
-      setStyleSentinel(toAlternate);
-      toggleGiscusIfUsed(toAlternate, darkModeDefault);
-      window.dispatchEvent(new Event('resize'));
-    };
-    // Switch to dark mode if need be
-    if (hasAlternateSentinel()) {
-      toggleColorMode(true);
-    } else {
-      toggleColorMode(false);
-    }
-  </script>
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -335,7 +170,6 @@ ul.task-list li input[type="checkbox"] {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -356,7 +190,6 @@ ul.task-list li input[type="checkbox"] {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -400,15 +233,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="why-this-is-on-a-quants-website" class="level2">
 <h2 class="anchored" data-anchor-id="why-this-is-on-a-quants-website">Why this is on a quant’s website</h2>
-<p>Two reasons: the autonomous period is a control and estimation problem on a hard deadline, and OPR is a statistic.</p>
-<p><strong>OPR</strong>, Offensive Power Rating, is a least-squares estimate. Alliance scores are observed, individual contributions aren’t, so you solve for the per-team contribution vector that best explains the observed alliance totals across the match schedule. Finishing #1 on it among 8,000+ teams means the model attributed more scoring to this robot than to any other, over a season of matches nobody got to choose.</p>
-<p><strong>The autonomous stack</strong> was a real software problem. Thirty seconds, no driver input, and a robot that has to localize itself, decide, and act. Vision-based navigation meant turning camera input into a position estimate good enough to act on and robust enough not to fall apart under a different venue’s lighting. Odometry meant fusing that against wheel and encoder state when vision dropped out. Path planning meant getting from that estimate to motion inside the control loop’s budget.</p>
-<p>The same problem came up again at Delaware in summer 2024, while I was still running the team, when I built a SLAM pipeline for a research group there. The FTC version was the hand-rolled one; ROS 2, Cartographer, and Nav2 are what it looks like with real tooling under it.</p>
-<p>The failure modes are the ones I still care about. Sensor input that’s noisy, occasionally corrupt, and never quite what you calibrated against. A system that has to keep working when a component returns something wrong instead of acting on it confidently. And the gap between the practice field and the competition field, which behaves a lot like the gap between a backtest and live execution.</p>
+<p>Two reasons. The autonomous period is a control and estimation problem on a hard deadline, and OPR is a statistic.</p>
+<p><strong>OPR</strong>, Offensive Power Rating, is a least-squares estimate. Alliance scores are observed and individual contributions are not, so you solve for the per-team contribution vector that best explains the observed alliance totals across the match schedule. Finishing #1 on it among 8,000+ teams means the model attributed more scoring to this robot than to any other, over a season of matches nobody got to choose.</p>
+<p><strong>The autonomous stack</strong> was a real software problem. Thirty seconds, no driver input, and a robot that has to localize itself, decide, and act. Vision-based navigation meant turning camera input into a position estimate good enough to act on, and robust enough not to fall apart under a different venue’s lighting. Odometry meant fusing that against wheel and encoder state when vision dropped out. Path planning meant getting from that estimate to motion inside the control loop’s budget.</p>
+<p>The same problem came up again at Delaware in summer 2024, while I was still running the team, when I built a SLAM pipeline for a research group there. The FTC version was the hand-rolled one. ROS 2, Cartographer, and Nav2 are what it looks like with real tooling under it.</p>
+<p>I still care about the failure modes. Sensor input is noisy, occasionally corrupt, and never quite what you calibrated against. The system has to keep working when a component returns something wrong instead of acting on it confidently. And there is a gap between the practice field and the competition field that behaves a lot like the gap between a backtest and live execution.</p>
 </section>
 <section id="the-part-that-wasnt-software" class="level2">
 <h2 class="anchored" data-anchor-id="the-part-that-wasnt-software">The part that wasn’t software</h2>
-<p>Six seasons, from nothing to fourteen people. Recruiting, teaching people who’d never built anything before, keeping it going through seasons that went badly, and handing it off still working. Running a team for six years is a different skill from writing its code.</p>
+<p>Six seasons, from nothing to fourteen people. Recruiting, teaching people who had never built anything before, keeping it going through seasons that went badly, and handing it off still working. Running a team for six years is a different skill from writing its code.</p>
 <div class="related">
 <div class="related-label">Next</div>
 <a class="related-link" href="rime.html">
@@ -426,19 +259,6 @@ ul.task-list li input[type="checkbox"] {
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
-    // Ensure there is a toggle, if there isn't float one in the top right
-    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
-      const i = window.document.createElement("i");
-      i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
-    }
-    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -864,6 +684,130 @@ ul.task-list li input[type="checkbox"] {
     </div>
   </div>
 </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" integrity="sha512-Kef5sc7gfTacR7TZKelcrRs15ipf7+t+n7Zh6mKNJbmW+/RRdCW9nwfLn4YX0s2nO6Kv5Y2ChqgIakaC6PW09A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+(function () {
+  var html = document.documentElement;
+  var reduce = false;
+  try {
+    reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch (e) {}
+
+  // Scroll arrivals.
+  try {
+    if (reduce) {
+      html.classList.remove("jh-js");
+    } else {
+      var rise = [].slice.call(document.querySelectorAll(".jh-rise"));
+      if (!rise.length || !("IntersectionObserver" in window)) {
+        html.classList.remove("jh-js");
+      } else {
+        var riseObs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            var el = e.target;
+            var sibs = el.parentNode
+              ? [].slice.call(el.parentNode.children)
+              : [];
+            el.style.transitionDelay =
+              Math.min(Math.max(sibs.indexOf(el), 0), 5) * 80 + "ms";
+            el.classList.add("is-in");
+            riseObs.unobserve(el);
+          });
+        }, { rootMargin: "0px 0px -10% 0px", threshold: 0.08 });
+        rise.forEach(function (el) { riseObs.observe(el); });
+      }
+    }
+  } catch (err) {
+    // Never let a motion bug cost anyone the content.
+    html.classList.remove("jh-js");
+  }
+
+  // Dot navigation + navbar docking.
+  try {
+    var panels = [].slice.call(document.querySelectorAll(".panel[id]"));
+    var dots = [].slice.call(document.querySelectorAll(".dot-nav a"));
+    var navbar = document.querySelector(".navbar");
+
+    if (panels.length && "IntersectionObserver" in window) {
+      var navObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var id = e.target.id;
+          dots.forEach(function (d) {
+            // `.hash` rather than getAttribute("href"): the rendered
+            // href comes back resolved to an absolute URL, so a string
+            // compare against "#id" never matched and no dot ever lit.
+            var on = d.hash === "#" + id;
+            d.classList.toggle("is-active", on);
+            // The dot list is a nav landmark, so mark the current one
+            // for assistive tech and not only visually.
+            if (on) {
+              d.setAttribute("aria-current", "true");
+            } else {
+              d.removeAttribute("aria-current");
+            }
+          });
+          // The hero is the only panel the bar may float over
+          // transparently; everything below it needs a ground.
+          if (navbar) {
+            navbar.classList.toggle("is-docked", id !== "hero");
+          }
+        });
+      }, { threshold: 0.5 });
+      panels.forEach(function (p) { navObs.observe(p); });
+    }
+  } catch (err) {}
+
+  // Particle field. Guarded three ways: the container only exists on the
+  // home page, the library is absent if the CDN is blocked or the SRI
+  // check fails, and it is skipped entirely under reduced-motion (the
+  // hero still reads fine — this is a background, not content).
+  try {
+    if (!reduce &&
+        document.getElementById("particles-js") &&
+        typeof window.particlesJS === "function") {
+      window.particlesJS("particles-js", {
+        particles: {
+          number: { value: 70, density: { enable: true, value_area: 900 } },
+          color: { value: "#99aec2" },
+          shape: { type: "circle" },
+          opacity: { value: 0.5, random: true, anim: { enable: false } },
+          size: { value: 2.2, random: true, anim: { enable: false } },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#7d93a7",
+            opacity: 0.32,
+            width: 1
+          },
+          move: {
+            enable: true,
+            speed: 0.9,
+            direction: "none",
+            random: true,
+            straight: false,
+            out_mode: "out",
+            bounce: false
+          }
+        },
+        interactivity: {
+          detect_on: "canvas",
+          // Pointer interaction is off: #particles-js is
+          // pointer-events:none, so the canvas must never try to claim
+          // clicks meant for the hero links above it.
+          events: {
+            onhover: { enable: false },
+            onclick: { enable: false },
+            resize: true
+          }
+        },
+        retina_detect: true
+      });
+    }
+  } catch (err) {}
+})();
+</script>
 
 
 

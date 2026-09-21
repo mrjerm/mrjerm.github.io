@@ -12,12 +12,11 @@ Weaver Capital LP · deployed strategy · Python, pandas, NumPy, Alpaca API, Str
 :::
 
 **Rime** is a daily allocator. Each morning it splits capital between leveraged equity
-ETF exposure, a volatility hedge, and cash. It's been running live on Alpaca since
+ETF exposure, a volatility hedge, and cash. It has been running live on Alpaca since
 April 2026.
 
-There are three parts to it: a base signal, a macro and risk overlay sitting on top of
-that, and the infrastructure that runs the whole thing unattended. The sections below
-take them in that order.
+There are three parts to it: a base signal, a macro and risk overlay on top of that, and
+the infrastructure that runs the whole thing unattended. I take them in that order below.
 
 ```{=html}
 <div class="metrics">
@@ -28,10 +27,10 @@ take them in that order.
 </div>
 ```
 
-The gap between those two Sharpe figures is 2020. The volatility hedge had an enormous
-run during the COVID crash, and a stretch like that lifts the headline number for the
-whole period. Both are on this page because 1.58 is the better guide to what the
-strategy does in an ordinary year.
+The gap between those two Sharpe figures is 2020. The volatility hedge had a huge run
+during the COVID crash, and a stretch like that lifts the headline number for the entire
+period. I publish both because 1.58 is the better guide to what the strategy does in an
+ordinary year.
 
 ::: {.note-strip}
 Figures above are **simulated** results from a historical backtest over 2012–2025,
@@ -47,54 +46,54 @@ return depends on the path and not just the endpoint. A sideways market grinds t
 even when the index finishes flat. Holding one indefinitely is a bet that volatility
 stays low.
 
-Rime asks something narrower: can you hold that exposure only while the drag is small,
-and be somewhere else the rest of the time?
+So I asked something narrower: can I hold that exposure only while the drag is small, and
+sit somewhere else the rest of the time?
 
 ## How it decides
 
 **The base signal.** A shallow decision tree over a set of trend and volatility state
-variables. It's shallow on purpose. Fourteen years of daily bars isn't a big sample, and
-every extra split is another chance to fit noise.
+variables. I kept it shallow on purpose. Fourteen years of daily bars is not a big
+sample, and every extra split is another chance to fit noise.
 
-**The macro and risk overlay.** The macro layer leans on cross-asset series that tend to
-move ahead of equities rather than alongside them. Over that sits a volatility circuit
-breaker, which cuts leveraged exposure when volatility spikes. It runs on hysteresis, so
-the level that switches it on isn't the level that switches it off, and the allocation
-doesn't thrash around a single threshold. A rebalance deadband covers everything: if the
-target hasn't moved much, nothing trades.
+**The macro and risk overlay.** The macro layer uses cross-asset series that tend to move
+ahead of equities instead of alongside them. On top of that sits a volatility circuit
+breaker that cuts leveraged exposure when volatility spikes. It runs on hysteresis, so
+the level that switches it on is not the level that switches it off. Without that, the
+allocation thrashes around a single threshold. A rebalance deadband covers everything
+else: if the target has not moved much, nothing trades.
 
 ::: {.note-strip}
-The specific state variables, macro series, and thresholds aren't published here.
+I do not publish the specific state variables, macro series, or thresholds here.
 Happy to walk through them in an interview.
 :::
 
 ## The infrastructure
 
-**One decision function.** Research and production call the same function. There's no
-notebook that approximates what the live system does, because that gap is the usual way
-a backtested strategy quietly stops being the strategy you tested.
+**One decision function.** Research and production call the same function. There is no
+separate notebook that approximates the live system. That gap is how a backtested
+strategy quietly stops being the strategy you tested.
 
-**State that survives a crash.** State persists between runs through a JSON-backed store
+**State that survives a crash.** State persists between runs in a JSON-backed store
 written atomically, so an interrupted run resumes cleanly instead of rebuilding its view
-of the current regime from a truncated window. Order handling is idempotent: a retry
-after a partial failure doesn't double-submit.
+of the current regime from a truncated window. Order handling is idempotent, so a retry
+after a partial failure does not double-submit.
 
-**Data quality gates.** Market and macro feeds arrive through a pipeline with Parquet
+**Data quality gates.** Market and macro feeds come through a pipeline with Parquet
 caching, data-quality checks, and lookahead-safe time alignment. Bad ticks, stale bars,
 and missing sessions get caught before anything reaches the allocator. If the feed looks
 wrong, the system sits out.
 
 **47 pytest tests** across the decision tree, state transitions, gating logic, and the
-risk overlays, covering regime transitions, breaker behavior at the hysteresis
+risk overlays. They cover regime transitions, breaker behavior at the hysteresis
 boundaries, and deadband logic. Mostly they exist so I can change things without
 guessing.
 
 **Monitoring.** A Streamlit and Plotly dashboard surfaces live positions, system state,
-and performance. Something running unattended needs to be legible when it looks wrong.
+and performance. Anything running unattended needs to be legible when it looks wrong.
 
 ## Validation
 
-One backtest number doesn't tell you much, so I put it through a few things that could
+One backtest number does not tell you much, so I put it through a few things that could
 have killed it:
 
 ```{=html}
@@ -107,14 +106,14 @@ have killed it:
 ```
 
 Of those four, the 2020 split is the one that changed how I report the strategy. Quoting
-only the number that includes it would overstate what Rime does in a normal year, which
-is why both figures sit at the top of this page rather than buried down here.
+only the number that includes 2020 would overstate what Rime does in a normal year. That
+is why both figures are at the top of this page instead of buried down here.
 
 ## What I'd do next
 
 - Swap the shallow tree for a probabilistic regime model, and check honestly whether it beats the rules instead of assuming it will.
-- Model execution against intraday liquidity rather than assuming a fill at the daily close.
-- Widen the macro overlay carefully. More inputs are more degrees of freedom.
+- Model execution against intraday liquidity instead of assuming a fill at the daily close.
+- Widen the macro overlay carefully. More inputs means more degrees of freedom.
 
 ```{=html}
 <div class="related">

@@ -14,9 +14,9 @@ graduating May 2028.
 :::
 
 Most of what I do sits between software engineering and statistics. I build systematic
-trading strategies, though more of the hours go into the infrastructure, the part that
-keeps a strategy running unattended without quietly turning into a different strategy
-than the one I tested.
+trading strategies, but more of the hours go into the infrastructure. That is the part
+that keeps a strategy running unattended without quietly turning into a different
+strategy than the one I tested.
 
 I founded **Weaver Capital LP** in January 2026 and run a multi-strategy systematic
 portfolio there, across futures and equities on intraday, swing, and macro horizons.
@@ -24,15 +24,15 @@ Two of the strategies are live: [Rime](rime.html), a daily ETF regime allocator,
 [Fifth Sanctuary](fifth-sanctuary.html), an intraday gold volatility-expansion system.
 I wrote the execution infrastructure too, in Python and C#, with automated strategy
 synchronization, enforced position and drawdown limits, atomic state persistence across
-restarts, and sub-second order handling, plus the data pipelines and the portfolio
-optimization that allocates across uncorrelated sleeves.
+restarts, and sub-second order handling. I also built the data pipelines and the
+portfolio optimization that allocates capital across uncorrelated sleeves.
 
-Since August 2026 I've also been an undergraduate researcher in the **Locomotion in
+Since August 2026 I have also been an undergraduate researcher in the **Locomotion in
 Biology and Robotics (LiBR) Lab** under Dr. Baxi Chong, building physics simulations of
 multi-body contact dynamics in MuJoCo. I model an articulated three-section snake robot
 navigating confined tunnel geometry, evaluating gait strategies in simulation before
-hardware testing, and I'm working on scaling laws for computational versus mechanical
-cost of transport. It's a long way from futures, which is part of why I wanted it; the
+hardware testing, and I am working on scaling laws for computational versus mechanical
+cost of transport. It is a long way from futures, which is part of why I wanted it. The
 common thread is controlling a system you can only partially observe.
 
 In summer 2024 I was a research intern with the **Robot Perception and Navigation Group
@@ -47,9 +47,9 @@ globally among more than 8,000 teams at the 2024 World Championships.
 ## What I'm looking for
 
 Summer 2027 internships in software engineering, quantitative development, or
-quantitative research. I'm most useful where the modeling and the systems work are the
+quantitative research. I am most useful where the modeling and the systems work are the
 same problem: research infrastructure, backtesting and simulation frameworks, execution
-systems, data pipelines that have to be right.
+systems, and data pipelines that have to be correct.
 
 ## Elsewhere
 

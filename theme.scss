@@ -1,113 +1,141 @@
 /*-- scss:defaults --*/
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Palantir-flavored theme. Design language notes, so future edits stay honest:
+// Dark slate theme, Sept 2026. Modelled on Nathan Riley's personal site
+// (dribbble.com/shots/2050775), which Jeremy picked as the reference.
 //
-//   · One grotesque family. No serif anywhere. Hierarchy comes from SIZE and
-//     TRACKING, not from weight — display type sits at 400/500, never 700.
-//   · Tight negative tracking on large type, positive tracking on small caps.
-//   · Square. Border-radius is 0 essentially everywhere.
-//   · Hairlines carry structure. Shadows are tight and rare, never soft glows.
-//   · MONOCHROME. There is no hue anywhere. Auditing palantir.com across 1,535
-//     elements turns up exactly one designed text colour (#1e2124), white, and
-//     a grey ramp — the only chromatic values on the page are the browser's
-//     default unstyled-link blue and an error red. Colour comes from imagery,
-//     never from the palette. Do not reintroduce an accent hue.
-//   · Interaction is expressed by INVERSION, not by colour. Hovering a card or
-//     a button swaps ink and paper.
+// This REPLACES two earlier design languages wholesale — the Palantir
+// monochrome theme and the Kononenko full-bleed grid. Neither survives; do not
+// reintroduce rules from them. What defines this one:
 //
-// Greys below are lifted from palantir.com's computed styles rather than
-// approximated. (Blueprint, their product design system, is a different and
-// much bluer thing — it is not what the marketing site uses.)
+//   · DARK ONLY. There is no light variant and no colour-scheme toggle. A light
+//     version of this design would be a second design, not a palette swap.
+//   · A slate base with a blue-grey ramp, plus ONE warm accent (tan) used for
+//     the name, section numbers and hover states. Palette values are the ones
+//     Dribbble extracted from the reference: #23323D, #687D93, #7D93A7,
+//     #92A1AF, #99AEC2, #83A5BD.
+//   · Full-viewport panels. The home page is a one-pager: each panel fills the
+//     screen, alternates slate/teal, and is tracked by a fixed dot nav.
+//   · A Didone display serif (Bodoni Moda) for names and panel titles, Inter
+//     for everything else, and letterspaced uppercase for eyebrow labels.
+//   · Contrast is managed PER PANEL. Secondary text that passes on slate fails
+//     on teal, so every panel declares its own ink/muted pair and components
+//     read those rather than global tokens. See the .panel block.
 // ═══════════════════════════════════════════════════════════════════════════
 
 // ── Type ────────────────────────────────────────────────────────────────────
-// Palantir ships Alliance No.1 (text) / No.2 (display), both proprietary.
-// Inter and Inter Tight are the closest free neo-grotesques and map cleanly
-// onto that two-cut relationship.
+// Bodoni Moda is the closest free Didone to the reference's display face:
+// vertical stress, extreme thick/thin, ball terminals. It is optical-size aware
+// (6..96) so it holds up at both 18px and 120px. Display sizes only — never set
+// body copy in it.
 $font-family-sans-serif: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
   "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
 $font-family-monospace: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
   Consolas, monospace !default;
-$headings-font-family: "Inter Tight", "Inter", system-ui, -apple-system,
-  "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+$font-family-serif: "Bodoni Moda", Didot, "Bodoni MT", Georgia, serif !default;
+$headings-font-family: $font-family-serif !default;
 
 $font-size-root: 17px !default;
-$line-height-base: 1.6 !default;
-$headings-font-weight: 500 !default;
-$headings-line-height: 1.15 !default;
+$line-height-base: 1.65 !default;
+$headings-font-weight: 400 !default;
+$headings-line-height: 1.1 !default;
 
-// ── Palette (light) ─────────────────────────────────────────────────────────
-// Neutral only. $accent is deliberately the same value as $ink: the token is
-// kept so the component rules and the dark layer keep a single name for
-// "emphasis", but it must never carry a hue.
-$ink:        #1e2124 !default;  // palantir.com's text colour, 829 uses
-$paper:      #ffffff !default;
-$surface:    #ffffff !default;
-$surface-2:  #f4f4f4 !default;  // their light section fill
-$muted:      #696969 !default;  // their secondary grey — 5.9:1 on white
-$hairline:   #dcdcdc !default;
-$accent:     #1e2124 !default;  // = $ink. No hue. See the note above.
-$accent-soft:#f4f4f4 !default;
+// ── Palette ─────────────────────────────────────────────────────────────────
+$slate:      #23323d !default;   // the reference's base
+$slate-deep: #1a2630 !default;   // recessed wells
+$slate-lift: #2a3a46 !default;   // raised surfaces
+$teal:       #1b5a72 !default;   // alternating panel
+$ink:        #edf1f4 !default;   // primary text
+$muted:      #99aec2 !default;   // secondary, from the extracted palette
+$hairline:   #3c4d5a !default;
+$accent:     #c9b392 !default;   // the one warm value: name, numbers, hovers
 
-$body-bg:    $paper !default;
+$body-bg:    $slate !default;
 $body-color: $ink !default;
 $link-color: $accent !default;
 $border-color: $hairline !default;
 
-$navbar-bg:  #ffffff !default;
+$navbar-bg:  transparent !default;
 $navbar-fg:  $ink !default;
 $navbar-hl:  $accent !default;
 
-$code-bg: $surface-2 !default;
-$code-color: #946638 !default;
-
-// Quarto's code BLOCK background is a separate variable from Bootstrap's inline
-// $code-bg. Left unset it falls back to a fixed light grey, which renders
-// near-white-on-light-grey in dark mode. Set both layers explicitly.
-$code-block-bg: $surface-2 !default;
+$code-bg: $slate-deep !default;
+$code-color: #d8c3a2 !default;
+$code-block-bg: $slate-deep !default;
 
 $toc-color: $muted !default;
 $toc-active-border: $accent !default;
 
-// ── Square everything ───────────────────────────────────────────────────────
-$border-radius:        0 !default;
-$border-radius-sm:     0 !default;
-$border-radius-lg:     0 !default;
-$border-radius-xl:     0 !default;
-$border-radius-2xl:    0 !default;
-$border-radius-pill:   0 !default;
+// Square, like both predecessors. The reference's only round things are the
+// social buttons and the nav dots, which opt back in explicitly.
+$border-radius:      0 !default;
+$border-radius-sm:   0 !default;
+$border-radius-lg:   0 !default;
+$border-radius-xl:   0 !default;
+$border-radius-2xl:  0 !default;
+$border-radius-pill: 0 !default;
 
 $link-decoration: none !default;
-$link-hover-decoration: underline !default;
+$link-hover-decoration: none !default;
 
 /*-- scss:rules --*/
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap");
 
-// ── Custom properties so the dark layer only has to override these ──────────
 :root {
+  --jh-slate: #{$slate};
+  --jh-slate-deep: #{$slate-deep};
+  --jh-slate-lift: #{$slate-lift};
+  --jh-teal: #{$teal};
   --jh-ink: #{$ink};
-  --jh-paper: #{$paper};
-  --jh-surface: #{$surface};
-  --jh-surface-2: #{$surface-2};
   --jh-muted: #{$muted};
   --jh-hairline: #{$hairline};
   --jh-accent: #{$accent};
-  --jh-accent-soft: #{$accent-soft};
-  // Blueprint-style elevation: a hard 1px ring plus a tight drop. Never soft.
-  --jh-shadow: 0 0 0 1px rgba(17, 20, 24, 0.1), 0 1px 1px rgba(17, 20, 24, 0.2);
-  --jh-shadow-lift: 0 0 0 1px rgba(17, 20, 24, 0.1), 0 2px 4px rgba(17, 20, 24, 0.2),
-    0 8px 24px rgba(17, 20, 24, 0.2);
+
+  // Kept under the old names so the project-page components below read the same
+  // tokens they always have.
+  --jh-paper: #{$slate};
+  --jh-surface: #{$slate-lift};
+  --jh-surface-2: #{$slate-deep};
+
+  --jh-serif: #{$font-family-serif};
+  --jh-sans: #{$font-family-sans-serif};
+  --jh-mono: #{$font-family-monospace};
+
+  --jh-gutter: clamp(1.25rem, 4vw, 4rem);
+  --jh-measure: 74rem;
+
+  // Panel-local defaults. Every .panel re-declares these; components read them
+  // so one component is legible on slate and on teal without per-panel
+  // overrides. See the contrast note at the top of this file.
+  --panel-ink: #{$ink};
+  --panel-muted: #{$muted};
+  --panel-rule: #{$hairline};
+}
+
+html {
+  // Proximity, not mandatory: a panel whose content is taller than the viewport
+  // (experience) must stay freely scrollable, and mandatory snapping traps the
+  // reader inside it.
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+  }
 }
 
 body {
+  background: var(--jh-slate);
+  color: var(--jh-ink);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "cv05" 1, "ss01" 1; // Inter: single-storey l, humanist g
+  font-feature-settings: "cv05" 1, "ss01" 1;
 }
 
-// Kill Bootstrap rounding that Quarto reintroduces on its own components.
 .card,
 .btn,
 .form-control,
@@ -117,140 +145,657 @@ body {
 .popover,
 .tooltip-inner,
 div.sourceCode,
-pre,
-img.lightbox {
+pre {
   border-radius: 0 !important;
 }
 
 // ── Navbar ──────────────────────────────────────────────────────────────────
+// Transparent and floating over the hero, as the reference does. Quarto's
+// markup is kept so the dropdowns, the mobile collapse and search still work.
 .navbar {
-  background: var(--jh-paper);
-  border-bottom: 1px solid var(--jh-hairline);
+  background: transparent;
+  border-bottom: 0;
   box-shadow: none;
-  padding-block: 0.5rem;
+  padding-block: 1rem;
+  transition: background-color 0.25s ease;
+
+  // Once past the hero the bar needs a ground or the links sit on panel
+  // artwork. Applied by the scroll script in _quarto.yml.
+  &.is-docked {
+    background: rgba(26, 38, 48, 0.92);
+    backdrop-filter: blur(8px);
+  }
+}
+
+.navbar > .navbar-container {
+  padding-inline: var(--jh-gutter);
+}
+
+.navbar .navbar-brand-container.mx-auto {
+  margin-left: 0 !important;
+  margin-right: auto !important;
 }
 
 .navbar-brand,
 .navbar .navbar-title {
-  font-family: #{$headings-font-family};
-  font-weight: 500;
-  font-size: 1.12rem;
-  letter-spacing: -0.022em;
+  font-family: var(--jh-serif);
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: 0.01em;
+  color: var(--jh-ink);
 }
 
 .navbar .nav-link {
-  font-size: 0.88rem;
-  font-weight: 400;
-  letter-spacing: 0.005em;
-  transition: color 0.12s ease;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--jh-muted);
+  transition: color 0.15s ease;
+
+  &:hover,
+  &.active {
+    color: var(--jh-accent);
+  }
 }
 
-// ── Headings ────────────────────────────────────────────────────────────────
-// Tracking tightens as size grows — the core Palantir move.
+.navbar .dropdown-menu {
+  background: var(--jh-slate-lift);
+  border: 1px solid var(--jh-hairline);
+
+  .dropdown-item {
+    color: var(--jh-muted);
+
+    &:hover,
+    &:focus {
+      background: var(--jh-slate-deep);
+      color: var(--jh-accent);
+    }
+  }
+}
+
+// ── Panels (home one-pager) ─────────────────────────────────────────────────
+// Full-viewport panels need the full viewport. `page-layout: full` is not
+// enough on its own: Quarto still nests main inside its #quarto-content
+// `page-columns` grid, whose named lines cap the body at roughly 925px, and
+// main.content adds its own padding on top. Both are undone here, scoped to
+// .page-layout-full so the project pages keep Quarto's column machinery.
+#quarto-content.page-layout-full {
+  display: block;
+
+  // Quarto sets margin and padding on main through id-scoped rules
+  // (#quarto-document-content), which a class selector cannot outrank, and they
+  // pushed the hero 31px down the page. !important is the honest override.
+  > main.content {
+    max-width: none;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+// The navbar is transparent and floats over the hero, so the body must not
+// reserve 82px of space for it. Scoped with :has() to the one-pager — project
+// pages still need the offset, because their content starts under the bar.
+body.nav-fixed:has(#quarto-content.page-layout-full) {
+  padding-top: 0 !important;
+}
+
+.panels {
+  margin: 0;
+}
+
+.panel {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  scroll-snap-align: start;
+  padding: clamp(4.5rem, 9vh, 7.5rem) var(--jh-gutter) clamp(3rem, 7vh, 5rem);
+  background: var(--jh-slate);
+
+  // Panel-local contrast pair. #99aec2 clears AA on slate (5.7:1) but only
+  // reaches 3.3:1 on teal, so the teal panel lifts its own secondary colour
+  // rather than letting body copy fall below AA.
+  --panel-ink: var(--jh-ink);
+  --panel-muted: var(--jh-muted);
+  --panel-rule: var(--jh-hairline);
+
+  color: var(--panel-ink);
+
+  &.panel-teal {
+    background: var(--jh-teal);
+    --panel-muted: #c6d4df;
+    --panel-rule: rgba(237, 241, 244, 0.28);
+  }
+
+  &.panel-deep {
+    background: var(--jh-slate-deep);
+  }
+}
+
+.panel-inner {
+  width: 100%;
+  max-width: var(--jh-measure);
+  margin-inline: auto;
+}
+
+// Eyebrow over a short rule — the reference's label treatment.
+.panel-eyebrow {
+  font-family: var(--jh-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--jh-accent);
+  margin-bottom: 0.9rem;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 2.6rem;
+    height: 1px;
+    background: currentColor;
+    margin-top: 0.9rem;
+    opacity: 0.7;
+  }
+}
+
+.panel-title {
+  font-family: var(--jh-serif);
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.012em;
+  color: var(--panel-ink);
+  margin: 0 0 1.1rem;
+}
+
+.panel-lede {
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  line-height: 1.7;
+  color: var(--panel-muted);
+  max-width: 40rem;
+  margin: 0 0 1.6rem;
+}
+
+.panel-meta {
+  font-family: var(--jh-sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--panel-muted);
+  margin-bottom: 2rem;
+}
+
+// Two-column panel: text left, figure right. Collapses under 900px.
+.panel-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+
+  @media (min-width: 900px) {
+    // Weighted toward the figure: these are mechanism diagrams, and at parity
+    // they read as decoration next to the text rather than as the evidence.
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  }
+}
+
+// The reference sets each project's artwork in a device frame, which is what
+// gives it mass against the text column. These drawings are 4:1 strips, so
+// without a frame they read as a thin band; the inset panel supplies the weight
+// without redrawing every figure at a new aspect ratio.
+.panel-fig {
+  color: var(--panel-muted);
+  opacity: 0.95;
+  padding: clamp(1rem, 1.8vw, 1.5rem);
+  border: 1px solid var(--panel-rule);
+  background: rgba(237, 241, 244, 0.04);
+}
+
+.panel-figcap {
+  font-family: var(--jh-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--panel-muted);
+  margin-top: 1rem;
+  opacity: 0.85;
+}
+
+// ── Link affordance ─────────────────────────────────────────────────────────
+// The reference underlines nothing; it signals with the accent and a rule that
+// widens on hover. Used for the "read the writeup" links out of each panel.
+.panel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--jh-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--jh-accent);
+  text-decoration: none;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid currentColor;
+  transition: gap 0.18s ease, color 0.18s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--panel-ink);
+    gap: 1rem;
+    text-decoration: none;
+  }
+}
+
+// ── Hero ────────────────────────────────────────────────────────────────────
+.hero-panel {
+  background: var(--jh-slate);
+  text-align: center;
+  // Only the hero clips: it has to contain the particle canvas and the
+  // vignette. Content panels must stay visible so a panel taller than the
+  // viewport scrolls instead of being cropped.
+  overflow: hidden;
+
+  // Vignette so the particle field falls away at the edges instead of ending on
+  // a hard line.
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(35, 50, 61, 0) 35%,
+      rgba(26, 38, 48, 0.85) 100%
+    );
+    z-index: 1;
+  }
+
+  .panel-inner {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+// Particles.js draws into this. It sits behind the hero content and is inert to
+// the pointer so it can never eat a click on the links above it.
+#particles-js {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-name {
+  font-family: var(--jh-serif);
+  font-size: clamp(3rem, 9vw, 7.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  color: var(--jh-accent);
+  margin: 0 0 1rem;
+}
+
+.hero-role {
+  font-family: var(--jh-serif);
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--jh-ink);
+  margin: 0 auto 2.2rem;
+  max-width: 34rem;
+}
+
+.hero-social {
+  display: flex;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-bottom: 2.5rem;
+}
+
+// The one place radius comes back, as in the reference.
+.social-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  border: 1px solid var(--jh-hairline);
+  color: var(--jh-muted);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: border-color 0.18s ease, color 0.18s ease,
+    background-color 0.18s ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--jh-accent);
+    color: var(--jh-slate);
+    background: var(--jh-accent);
+    text-decoration: none;
+  }
+}
+
+.hero-availability {
+  font-family: var(--jh-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--jh-muted);
+}
+
+// ── Dot navigation ──────────────────────────────────────────────────────────
+// Fixed to the right edge, one dot per panel, active dot filled. Hidden on
+// narrow screens where it would sit on top of the content.
+.dot-nav {
+  position: fixed;
+  right: clamp(0.9rem, 2vw, 1.8rem);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1030;
+  display: none;
+  flex-direction: column;
+  gap: 0.85rem;
+
+  @media (min-width: 992px) {
+    display: flex;
+  }
+}
+
+.dot-nav a {
+  position: relative;
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--jh-muted);
+  background: transparent;
+  opacity: 0.65;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    opacity 0.2s ease, transform 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+
+  &.is-active {
+    background: var(--jh-accent);
+    border-color: var(--jh-accent);
+    opacity: 1;
+  }
+
+  // Accessible name for each dot, revealed on hover.
+  .dot-label {
+    position: absolute;
+    right: 1.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-family: var(--jh-sans);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--jh-accent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+  }
+
+  &:hover .dot-label,
+  &:focus-visible .dot-label {
+    opacity: 1;
+  }
+}
+
+// ── Scroll cue ──────────────────────────────────────────────────────────────
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.5rem, 4vh, 3rem);
+  transform: translateX(-50%);
+  z-index: 2;
+  font-family: var(--jh-sans);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--jh-muted);
+  text-decoration: none;
+  opacity: 0.75;
+  transition: color 0.18s ease, opacity 0.18s ease;
+
+  &:hover {
+    color: var(--jh-accent);
+    opacity: 1;
+    text-decoration: none;
+  }
+
+  &::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 2.2rem;
+    margin: 0.7rem auto 0;
+    background: currentColor;
+    animation: cue-drift 2.4s ease-in-out infinite;
+    transform-origin: top;
+  }
+}
+
+@keyframes cue-drift {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue::after {
+    animation: none;
+    transform: scaleY(1);
+  }
+}
+
+// ── Panel stat row ──────────────────────────────────────────────────────────
+.panel-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.4rem;
+  margin: 0 0 2.2rem;
+  max-width: 34rem;
+
+  @media (max-width: 560px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.panel-stat {
+  .stat-value {
+    font-family: var(--jh-sans);
+    font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--jh-accent);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .stat-label {
+    font-family: var(--jh-sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--panel-muted);
+    margin-top: 0.55rem;
+  }
+}
+
+// ── Compact experience list (home panel) ────────────────────────────────────
+.roster {
+  border-top: 1px solid var(--panel-rule);
+}
+
+.roster-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.25rem 2rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--panel-rule);
+
+  @media (min-width: 760px) {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    align-items: baseline;
+  }
+
+  .roster-when {
+    font-family: var(--jh-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--panel-muted);
+  }
+
+  .roster-role {
+    font-family: var(--jh-serif);
+    font-size: 1.24rem;
+    line-height: 1.25;
+    color: var(--panel-ink);
+  }
+
+  .roster-org {
+    font-size: 0.88rem;
+    color: var(--panel-muted);
+    margin-top: 0.15rem;
+  }
+}
+
+// ── Drawn figures ───────────────────────────────────────────────────────────
+// Inline SVG on currentColor, so one drawing works on slate and on teal.
+.jh-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+
+  text {
+    font-family: var(--jh-sans);
+    fill: currentColor;
+    letter-spacing: 0.06em;
+  }
+
+  // CSS `fill` beats a `fill=` presentation attribute, so anything reversed out
+  // of a filled node has to opt out here or it renders ink-on-ink.
+  text.on-ink {
+    fill: var(--jh-slate);
+  }
+
+  [stroke] {
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Project pages (rime, fifth-sanctuary, robotics, about, the notebook).
+// These keep Quarto's ordinary article layout — only the palette and type
+// change. The one-pager above does not apply to them.
+// ═══════════════════════════════════════════════════════════════════════════
+
+main.content {
+  padding-top: 2rem;
+}
+
 h1,
 h2,
 h3,
 h4 {
-  font-family: #{$headings-font-family};
+  font-family: var(--jh-serif);
+  color: var(--jh-ink);
 }
 
 h1 {
   font-weight: 400;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.01em;
 }
 
-h1.title {
-  font-size: 2.9rem;
-  margin-bottom: 0.2rem;
-}
-
-// No rule under the heading. Every section on the home page opens with a
-// component that carries its own top hairline (.work-grid, .awards, .metrics,
-// the first .xp-item / .skill-row), so a border here stacked a second line
-// 34px below the first at every boundary. Sections are separated by the top
-// margin and by the counter prefix instead — whitespace and scale, which is
-// how the reference does it.
 h2 {
-  font-size: 1.7rem;
+  font-size: 1.9rem;
   font-weight: 400;
-  letter-spacing: -0.028em;
-  margin-top: 3rem;
+  margin-top: 3.2rem;
   margin-bottom: 1.1rem;
-  // Quarto's own bootstrap layer sets a bottom border and padding on h2, so
-  // this has to zero them explicitly — simply omitting the rule leaves Quarto's
-  // in place.
   padding-bottom: 0;
+  // Quarto's bootstrap layer puts a border under h2; it has to be zeroed
+  // explicitly, not just omitted.
   border-bottom: 0;
 }
 
 h3 {
-  font-size: 1.16rem;
-  font-weight: 500;
-  letter-spacing: -0.015em;
+  font-size: 1.3rem;
   margin-top: 2rem;
 }
 
-h4 {
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
-// ── Section numbering ───────────────────────────────────────────────────────
-// Palantir indexes its sections. Done with counters rather than typed-in
-// numbers so headings stay editable and reorderable — the Kintoun notebook used
-// to carry hardcoded "1. ", "2. " prefixes and they had to be stripped when
-// this landed, or every heading would have been numbered twice.
-//
-// Scoped to `main.content`, which does NOT contain the TOC (that lives in
-// #quarto-margin-sidebar), so the sidebar is numbered separately below.
+// Sections are numbered by counter, never by hand. Typing a number into a
+// heading double-numbers it.
 main.content {
   counter-reset: jh-section;
 }
 
-main.content h2 {
+main.content h2:not(.panel-title) {
   counter-increment: jh-section;
 
   &::before {
     content: counter(jh-section, decimal-leading-zero);
     display: inline-block;
-    margin-right: 0.9rem;
-    font-family: #{$font-family-monospace};
-    font-size: 0.46em;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    color: var(--jh-muted);
-    vertical-align: 0.42em; // lift the small number toward cap height
+    margin-right: 0.85rem;
+    font-family: var(--jh-sans);
+    font-size: 0.4em;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--jh-accent);
+    vertical-align: 0.5em;
   }
 }
 
-// ── Page title block (project pages + About) ────────────────────────────────
 header.quarto-title-block {
   margin-bottom: 2.6rem;
   padding-bottom: 1.6rem;
   border-bottom: 1px solid var(--jh-hairline);
 
   h1.title {
-    font-size: clamp(2.4rem, 6vw, 3.7rem);
-    font-weight: 400;
-    line-height: 1;
-    letter-spacing: -0.042em;
+    font-size: clamp(2.4rem, 6vw, 3.8rem);
+    line-height: 1.02;
     margin: 0 0 1rem;
   }
 
   .subtitle,
   p.subtitle.lead {
-    font-size: 1.24rem;
-    font-weight: 400;
-    line-height: 1.35;
-    letter-spacing: -0.016em;
-    color: var(--jh-ink);
+    font-size: 1.2rem;
+    line-height: 1.45;
+    color: var(--jh-muted);
     max-width: 44rem;
     margin: 0;
   }
 
-  // Quarto renders the front-matter `description` here AND emits it into
-  // <head> as meta/og:description. The head copy is what matters; on screen it
-  // just restates the subtitle, so only the rendered duplicate is hidden.
+  // Quarto prints the front-matter description here AND in <head>. The head
+  // copy is what matters; on screen it just restates the subtitle.
   .description {
     display: none;
   }
@@ -263,208 +808,86 @@ header.quarto-title-block {
   }
 
   .quarto-title-meta-heading {
-    font-family: #{$font-family-monospace};
-    font-size: 0.62rem;
-    font-weight: 500;
-    letter-spacing: 0.16em;
+    font-family: var(--jh-sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--jh-muted);
+    color: var(--jh-accent);
     margin-bottom: 0.3rem;
   }
 
   .quarto-title-meta-contents,
   .quarto-title-meta-contents p {
-    font-family: #{$font-family-monospace};
-    font-size: 0.78rem;
-    color: var(--jh-ink);
+    font-size: 0.85rem;
+    color: var(--jh-muted);
     margin: 0;
   }
 }
 
-// Standfirst paragraph for pages that carry no subtitle. The `> p` is required:
-// a fenced `::: {.lede}` div wraps its content in a <p>, and Quarto sets an
-// explicit font-size on p, so the child would not inherit the size otherwise.
+.eyebrow {
+  font-family: var(--jh-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--jh-accent);
+  margin-bottom: 0.9rem;
+}
+
 .lede,
 .lede > p {
-  font-size: 1.24rem;
-  font-weight: 400;
-  line-height: 1.45;
-  letter-spacing: -0.016em;
+  font-size: 1.2rem;
+  line-height: 1.5;
   color: var(--jh-ink);
   max-width: 44rem;
   margin-bottom: 1.7rem;
 }
 
-// ── Section eyebrow label ───────────────────────────────────────────────────
-// Palantir's "earmark": ~10px, uppercase, positive tracking, quiet colour.
-.eyebrow {
-  font-family: #{$font-family-monospace};
-  font-size: 0.64rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--jh-muted);
-  margin-bottom: 0.7rem;
-}
-
-// ── Hero ────────────────────────────────────────────────────────────────────
-.hero {
-  padding: 2rem 0 0.75rem;
-
-  .hero-name {
-    font-family: #{$headings-font-family};
-    font-size: clamp(3rem, 8.5vw, 5.25rem);
-    font-weight: 400;
-    line-height: 0.97;
-    letter-spacing: -0.045em;
-    margin: 0 0 1.1rem;
-    color: var(--jh-ink);
-  }
-
-  .hero-line {
-    font-size: 1.32rem;
-    font-weight: 400;
-    line-height: 1.4;
-    letter-spacing: -0.014em;
-    color: var(--jh-ink);
-    max-width: 44rem;
-    margin-bottom: 1.1rem;
-  }
-
-  .hero-sub {
-    font-size: 0.97rem;
-    line-height: 1.6;
-    color: var(--jh-muted);
-    max-width: 42rem;
-
-    strong {
-      color: var(--jh-ink);
-      font-weight: 500;
-    }
-  }
-}
-
-// Squared status tag. Dot aligns to the first line even when the label wraps.
-// Emphasis is weight and a filled marker — never a colour.
-.availability {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.55rem;
-  font-family: #{$font-family-monospace};
-  font-size: 0.66rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--jh-ink);
-  background: transparent;
-  border: 1px solid var(--jh-ink);
-  padding: 0.4rem 0.8rem;
-  margin-bottom: 1.4rem;
-
-  &::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 0;
-    background: var(--jh-ink);
-    flex: none;
-    transform: translateY(-1px);
-  }
-}
-
-.hero-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  margin-top: 1.6rem;
-}
-
-// Buttons sit in a connected rail with shared hairlines — a Palantir habit.
-.btn-jh {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  padding: 0.55rem 1.1rem;
-  border: 1px solid var(--jh-hairline);
-  margin-right: -1px;
-  background: var(--jh-surface);
-  color: var(--jh-ink);
-  text-decoration: none;
-  transition: background-color 0.12s ease, color 0.12s ease,
-    border-color 0.12s ease;
-
-  // Inversion, not tinting.
-  &:hover {
-    background: var(--jh-ink);
-    border-color: var(--jh-ink);
-    color: var(--jh-paper);
-    text-decoration: none;
-    position: relative;
-    z-index: 1;
-  }
-
-  &.btn-jh-primary {
-    background: var(--jh-ink);
-    border-color: var(--jh-ink);
-    color: var(--jh-paper);
-    position: relative;
-    z-index: 2;
-
-    &:hover {
-      background: var(--jh-paper);
-      border-color: var(--jh-ink);
-      color: var(--jh-ink);
-    }
-  }
-}
-
 // ── Metric tiles ────────────────────────────────────────────────────────────
 .metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 0;
   border: 1px solid var(--jh-hairline);
-  overflow: hidden;
-  background: var(--jh-surface);
+  background: var(--jh-slate-lift);
   margin: 2rem 0;
 }
 
 .metric {
-  padding: 1.15rem 1.25rem 1.1rem;
+  padding: 1.3rem 1.35rem 1.2rem;
   border-right: 1px solid var(--jh-hairline);
 
   &:last-child {
     border-right: none;
   }
 
+  // Sans, not Bodoni: a Didone's hairlines wash out at this size in tan on a
+  // dark ground. Same reason .stat-value is sans on the one-pager.
   .metric-value {
-    font-family: #{$font-family-monospace};
-    font-size: 1.6rem;
-    font-weight: 400;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-    color: var(--jh-ink);
+    font-family: var(--jh-sans);
+    font-size: 1.9rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--jh-accent);
     font-variant-numeric: tabular-nums;
   }
 
   .metric-label {
-    font-size: 0.74rem;
+    font-size: 0.8rem;
     line-height: 1.4;
-    color: var(--jh-muted);
-    margin-top: 0.5rem;
+    color: var(--jh-ink);
+    margin-top: 0.6rem;
   }
 
   .metric-note {
-    font-family: #{$font-family-monospace};
-    font-size: 0.64rem;
-    letter-spacing: 0.06em;
+    font-family: var(--jh-sans);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--jh-muted);
-    opacity: 0.85;
-    margin-top: 0.3rem;
+    margin-top: 0.35rem;
   }
 }
 
@@ -479,151 +902,7 @@ header.quarto-title-block {
   }
 }
 
-// ── Work cards ──────────────────────────────────────────────────────────────
-// Flush grid: cards share hairlines instead of floating as separate panels.
-.work-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-  border: 1px solid var(--jh-hairline);
-  margin: 2rem 0 0;
-
-  @media (min-width: 760px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.work-card {
-  display: flex;
-  flex-direction: column;
-  border: 0;
-  border-bottom: 1px solid var(--jh-hairline);
-  background: var(--jh-surface);
-  padding: 1.5rem 1.6rem 1.35rem;
-  text-decoration: none;
-  color: inherit;
-  transition: background-color 0.14s ease;
-
-  @media (min-width: 760px) {
-    &:nth-child(odd) {
-      border-right: 1px solid var(--jh-hairline);
-    }
-    &:nth-last-child(-n + 2) {
-      border-bottom: 0;
-    }
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  // The whole card inverts. This is Palantir's interaction language and it is
-  // why no accent hue is needed to signal affordance.
-  &:hover {
-    background: var(--jh-ink);
-    text-decoration: none;
-
-    .work-status,
-    .work-title,
-    .work-more {
-      color: var(--jh-paper);
-    }
-
-    .work-meta,
-    p {
-      color: var(--jh-paper);
-      opacity: 0.72;
-    }
-
-    .work-status::before {
-      background: var(--jh-paper);
-    }
-
-    // Needs to be stated explicitly: `.work-status.is-archive` below ties this
-    // block on specificity (0,3,0) and would win on source order, leaving grey
-    // text stranded on the inverted background.
-    .work-status.is-archive {
-      color: var(--jh-paper);
-      opacity: 0.72;
-
-      &::before {
-        background: transparent;
-        box-shadow: inset 0 0 0 1px var(--jh-paper);
-      }
-    }
-  }
-
-  // Live work carries a filled marker; archived work carries none and sits in
-  // grey. Status is encoded by mark and weight rather than by colour.
-  .work-status {
-    display: flex;
-    align-items: baseline;
-    gap: 0.45rem;
-    font-family: #{$font-family-monospace};
-    font-size: 0.63rem;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--jh-ink);
-    margin-bottom: 0.7rem;
-
-    &::before {
-      content: "";
-      width: 5px;
-      height: 5px;
-      background: var(--jh-ink);
-      flex: none;
-      transform: translateY(-1px);
-    }
-  }
-
-  .work-status.is-archive {
-    color: var(--jh-muted);
-
-    &::before {
-      background: transparent;
-      box-shadow: inset 0 0 0 1px var(--jh-muted);
-    }
-  }
-
-  .work-title {
-    font-family: #{$headings-font-family};
-    font-size: 1.5rem;
-    font-weight: 400;
-    margin: 0 0 0.4rem;
-    letter-spacing: -0.032em;
-    line-height: 1.1;
-    color: var(--jh-ink);
-  }
-
-  .work-meta {
-    font-family: #{$font-family-monospace};
-    font-size: 0.68rem;
-    letter-spacing: 0.03em;
-    color: var(--jh-muted);
-    margin-bottom: 0.85rem;
-  }
-
-  p {
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: var(--jh-muted);
-    margin: 0 0 1.1rem;
-  }
-
-  .work-more {
-    margin-top: auto;
-    font-family: #{$font-family-monospace};
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--jh-ink);
-  }
-
-}
-
-// ── Experience list ─────────────────────────────────────────────────────────
+// ── Experience list (project/about pages) ───────────────────────────────────
 .xp {
   margin: 2rem 0 0;
 }
@@ -640,19 +919,19 @@ header.quarto-title-block {
   }
 
   .xp-when {
-    font-family: #{$font-family-monospace};
-    font-size: 0.68rem;
-    letter-spacing: 0.08em;
+    font-family: var(--jh-sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--jh-muted);
     padding-top: 0.35rem;
   }
 
   .xp-role {
-    font-family: #{$headings-font-family};
-    font-weight: 500;
-    font-size: 1.08rem;
-    letter-spacing: -0.018em;
+    font-family: var(--jh-serif);
+    font-size: 1.24rem;
+    line-height: 1.25;
   }
 
   .xp-org {
@@ -664,6 +943,7 @@ header.quarto-title-block {
   ul {
     margin: 0;
     padding-left: 1.05rem;
+    max-width: 46rem;
     font-size: 0.9rem;
     line-height: 1.62;
 
@@ -677,67 +957,6 @@ header.quarto-title-block {
   .xp-item {
     grid-template-columns: 1fr;
     gap: 0.5rem;
-  }
-}
-
-// ── Awards ──────────────────────────────────────────────────────────────────
-// Flush grid sharing hairlines, same construction as .work-grid, so the two
-// read as one system. Not interactive, so it has no inversion hover.
-.awards {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-  border: 1px solid var(--jh-hairline);
-  margin: 2rem 0 0;
-
-  @media (min-width: 700px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.award {
-  padding: 1.25rem 1.35rem 1.15rem;
-  border-bottom: 1px solid var(--jh-hairline);
-
-  @media (min-width: 700px) {
-    &:nth-child(odd) {
-      border-right: 1px solid var(--jh-hairline);
-    }
-    // Last row carries no bottom rule. With an odd count the final item is
-    // alone on its row, so both of these have to be covered.
-    &:nth-last-child(-n + 2):nth-child(odd),
-    &:nth-last-child(-n + 2):nth-child(odd) ~ .award {
-      border-bottom: 0;
-    }
-
-    // An odd total leaves the final item alone on its row; without this its
-    // right border hangs as a rule into empty space.
-    &:last-child:nth-child(odd) {
-      border-right: 0;
-    }
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  .award-name {
-    font-family: #{$headings-font-family};
-    font-size: 1.24rem;
-    font-weight: 400;
-    letter-spacing: -0.03em;
-    line-height: 1.15;
-    color: var(--jh-ink);
-    margin-bottom: 0.4rem;
-  }
-
-  .award-detail {
-    font-family: #{$font-family-monospace};
-    font-size: 0.66rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    line-height: 1.5;
-    color: var(--jh-muted);
   }
 }
 
@@ -759,11 +978,12 @@ header.quarto-title-block {
   }
 
   .skill-cat {
-    font-family: #{$font-family-monospace};
-    font-size: 0.66rem;
-    letter-spacing: 0.14em;
+    font-family: var(--jh-sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--jh-muted);
+    color: var(--jh-accent);
     padding-top: 0.3rem;
   }
 }
@@ -778,42 +998,83 @@ header.quarto-title-block {
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
 .chip {
-  font-family: #{$font-family-monospace};
-  font-size: 0.72rem;
-  letter-spacing: 0.02em;
-  padding: 0.25rem 0.6rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+  padding: 0.28rem 0.65rem;
   border: 1px solid var(--jh-hairline);
-  background: var(--jh-surface);
-  color: var(--jh-ink);
-  text-decoration: none;
-  transition: background-color 0.12s ease, border-color 0.12s ease;
+  background: var(--jh-slate-lift);
+  color: var(--jh-muted);
+}
 
-  &.chip-link:hover {
-    border-color: var(--jh-ink);
-    background: var(--jh-ink);
-    color: var(--jh-paper);
-    text-decoration: none;
+// ── Awards ──────────────────────────────────────────────────────────────────
+.awards {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid var(--jh-hairline);
+  margin: 2rem 0 0;
+
+  @media (min-width: 700px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-// ── Callout / note strip ────────────────────────────────────────────────────
+.award {
+  padding: 1.3rem 1.4rem 1.2rem;
+  border-bottom: 1px solid var(--jh-hairline);
+
+  @media (min-width: 700px) {
+    &:nth-child(odd) {
+      border-right: 1px solid var(--jh-hairline);
+    }
+    &:last-child:nth-child(odd) {
+      border-right: 0;
+    }
+  }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  .award-name {
+    font-family: var(--jh-serif);
+    font-size: 1.32rem;
+    line-height: 1.15;
+    color: var(--jh-ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .award-detail {
+    font-family: var(--jh-sans);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    line-height: 1.5;
+    color: var(--jh-muted);
+  }
+}
+
+// ── Note strip ──────────────────────────────────────────────────────────────
 .note-strip {
   border: 1px solid var(--jh-hairline);
-  border-left: 2px solid var(--jh-ink);
-  background: var(--jh-surface-2);
+  border-left: 2px solid var(--jh-accent);
+  background: var(--jh-slate-deep);
   padding: 1rem 1.2rem;
   font-size: 0.88rem;
   line-height: 1.6;
-  color: var(--jh-ink);
+  color: var(--jh-muted);
   margin: 1.8rem 0;
+
+  strong {
+    color: var(--jh-ink);
+  }
 }
 
 // ── End-of-page "next" rail ─────────────────────────────────────────────────
-// Same inversion affordance as the work cards, so the two read as one system.
 .related {
   margin-top: 3.5rem;
   padding-top: 1.6rem;
@@ -821,12 +1082,12 @@ header.quarto-title-block {
 }
 
 .related-label {
-  font-family: #{$font-family-monospace};
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-family: var(--jh-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--jh-muted);
+  color: var(--jh-accent);
   margin-bottom: 0.85rem;
 }
 
@@ -836,34 +1097,28 @@ header.quarto-title-block {
   justify-content: space-between;
   gap: 1.5rem;
   border: 1px solid var(--jh-hairline);
-  padding: 1.15rem 1.3rem;
+  padding: 1.2rem 1.3rem;
   text-decoration: none;
   color: inherit;
-  transition: background-color 0.14s ease;
+  transition: background-color 0.16s ease, border-color 0.16s ease;
 
   &:hover {
-    background: var(--jh-ink);
+    background: var(--jh-slate-lift);
+    border-color: var(--jh-accent);
     text-decoration: none;
 
-    .related-title,
-    .related-arrow {
-      color: var(--jh-paper);
-    }
-
-    .related-note {
-      color: var(--jh-paper);
-      opacity: 0.72;
+    .related-title {
+      color: var(--jh-accent);
     }
   }
 
   .related-title {
-    font-family: #{$headings-font-family};
-    font-size: 1.3rem;
-    font-weight: 400;
-    letter-spacing: -0.03em;
+    font-family: var(--jh-serif);
+    font-size: 1.35rem;
     line-height: 1.15;
     color: var(--jh-ink);
     margin-bottom: 0.25rem;
+    transition: color 0.16s ease;
   }
 
   .related-note {
@@ -873,25 +1128,21 @@ header.quarto-title-block {
   }
 
   .related-arrow {
-    font-family: #{$font-family-monospace};
-    font-size: 0.95rem;
-    color: var(--jh-ink);
+    font-size: 1rem;
+    color: var(--jh-accent);
     flex: none;
   }
 }
 
-// ── Spec table (project pages) ──────────────────────────────────────────────
+// ── Spec table ──────────────────────────────────────────────────────────────
 table.spec {
   width: 100%;
   border-collapse: collapse;
   margin: 1.6rem 0;
   font-size: 0.9rem;
 
-  // Quarto appends its own `caption-top table` classes to these tables, which
-  // pulls in Bootstrap's table rules. Two of them fight this component:
-  // `.table > :not(:first-child)` puts a 2px border above <tbody> (a doubled
-  // hairline under the section heading), and the striping shim paints a
-  // background over the cells.
+  // Quarto appends `caption-top table`, which drags in Bootstrap's table rules:
+  // a 2px border above <tbody> and a striping shim that paints over the cells.
   &.table > :not(:first-child) {
     border-top: 0;
   }
@@ -899,40 +1150,49 @@ table.spec {
   &.table > :not(caption) > * > * {
     box-shadow: none;
     background-color: transparent;
+    color: var(--jh-ink);
   }
 
   th,
   td {
-    padding: 0.7rem 0.9rem 0.7rem 0;
+    padding: 0.75rem 0.9rem 0.75rem 0;
     border-bottom: 1px solid var(--jh-hairline);
     text-align: left;
     vertical-align: top;
   }
 
   th {
-    font-family: #{$font-family-monospace};
-    font-size: 0.66rem;
-    letter-spacing: 0.14em;
+    font-family: var(--jh-sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--jh-muted);
-    font-weight: 500;
-    width: 11rem;
+    color: var(--jh-accent);
+    width: 12rem;
   }
 
   td {
+    color: var(--jh-muted);
     font-variant-numeric: tabular-nums;
   }
 }
 
 // ── Footer ──────────────────────────────────────────────────────────────────
+// Carries the performance disclaimer. Load-bearing — do not shorten it.
 .nav-footer {
   border-top: 1px solid var(--jh-hairline);
+  background: var(--jh-slate-deep);
   font-size: 0.75rem;
   color: var(--jh-muted);
-  padding-block: 2rem;
+  padding-block: 2.2rem;
+  padding-inline: var(--jh-gutter);
 
   a {
     color: var(--jh-muted);
+
+    &:hover {
+      color: var(--jh-accent);
+    }
   }
 
   .nav-footer-center {
@@ -948,12 +1208,18 @@ table.spec {
 .sidebar nav[role="doc-toc"] {
   font-size: 0.8rem;
 
+  a {
+    color: var(--jh-muted);
+
+    &:hover {
+      color: var(--jh-accent);
+    }
+  }
+
   ul > li > a {
     border-left: 2px solid transparent;
   }
 
-  // Mirror the body's section numbers. Only the top level is numbered — the
-  // child selectors keep nested h3 entries out of the count.
   > ul {
     counter-reset: jh-toc;
   }
@@ -965,103 +1231,92 @@ table.spec {
   > ul > li > a::before {
     content: counter(jh-toc, decimal-leading-zero);
     display: inline-block;
-    width: 1.7em;
-    font-family: #{$font-family-monospace};
-    font-size: 0.82em;
-    letter-spacing: 0.06em;
-    color: var(--jh-muted);
+    width: 1.8em;
+    font-family: var(--jh-sans);
+    font-size: 0.8em;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.1em;
+    color: var(--jh-accent);
   }
 
   .toc-actions,
   > h2,
   .h2 {
-    font-family: #{$font-family-monospace};
-    font-size: 0.64rem;
-    letter-spacing: 0.16em;
+    font-family: var(--jh-sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
+    color: var(--jh-accent);
     border: 0;
   }
 }
 
-// ── Misc ────────────────────────────────────────────────────────────────────
-main.content {
-  padding-top: 1.4rem;
-}
-
-.rule {
-  border: 0;
-  border-top: 1px solid var(--jh-hairline);
-  margin: 3rem 0 0;
-  opacity: 1;
-}
-
+// ── Code ────────────────────────────────────────────────────────────────────
 code:not(.sourceCode) {
   font-size: 0.85em;
   padding: 0.12em 0.35em;
   border: 1px solid var(--jh-hairline);
+  color: var(--jh-accent);
 }
 
 div.sourceCode {
   border: 1px solid var(--jh-hairline);
 }
 
-// Quarto's github (light) highlight style has several tokens that miss AA on any
-// off-white block background. Darkened within the same hue family.
-//
-// Two things matter here. This file is loaded in the DARK bundle too, so these
-// MUST stay scoped to `body.quarto-light` or they would repaint the dark tokens
-// with light-mode reds. And the scope doubles as specificity: the syntax
-// highlighting stylesheet loads after this one, so a bare `code span.kw` would
-// lose the tie on source order.
-body.quarto-light {
-  code span.kw,
-  code span.cf,
-  code span.bu,
-  code span.pp {
-    color: #b31d28;
-  }
-
-  code span.va {
-    color: #a04100;
-  }
-
-  code span.co,
-  code span.do {
-    color: #57606a;
-  }
+// Quarto's github highlight tokens are unreadable on a dark well.
+code span.co,
+code span.do {
+  color: #8fa3b3 !important;
 }
 
-// Code-fold summary reads as a control, not prose.
 details > summary {
-  font-family: #{$font-family-monospace};
+  font-family: var(--jh-sans);
   font-size: 0.7rem;
-  letter-spacing: 0.1em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--jh-muted);
+  color: var(--jh-accent);
 }
 
 blockquote {
-  border-left: 2px solid var(--jh-ink);
+  border-left: 2px solid var(--jh-accent);
   padding-left: 1.1rem;
   color: var(--jh-muted);
   font-size: 0.95rem;
 }
 
-// In a monochrome palette a link cannot be signalled by colour, so inline links
-// are always underlined — quietly by default, at full ink on hover.
-// Exclusion list covers every component whose <a> is a block/card affordance
-// rather than an inline link. A new component with an anchor root must be added
-// here, or it inherits the underline.
+// ── Inline links ────────────────────────────────────────────────────────────
+// Accent plus an underline on prose links. Any block affordance whose root
+// element is an anchor must be excluded here, or the underline runs through its
+// whole body.
 main.content
-  a:not(.btn-jh):not(.work-card):not(.chip):not(.related-link):not(.anchorjs-link) {
-  color: var(--jh-ink);
+  a:not(.panel-link):not(.social-dot):not(.related-link):not(.scroll-cue):not(.chip):not(.anchorjs-link) {
+  color: var(--jh-accent);
   text-decoration: underline;
-  text-decoration-color: var(--jh-muted);
-  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(201, 179, 146, 0.45);
   text-underline-offset: 0.18em;
 
   &:hover {
-    text-decoration-color: var(--jh-ink);
-    text-decoration-thickness: 2px;
+    text-decoration-color: var(--jh-accent);
+  }
+}
+
+// ── Scroll arrivals ─────────────────────────────────────────────────────────
+// Gated on html.jh-js, set before first paint by an inline script in
+// _quarto.yml, so with JS off nothing is ever hidden.
+@media (prefers-reduced-motion: no-preference) {
+  html.jh-js {
+    .jh-rise {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.24, 1),
+        transform 0.7s cubic-bezier(0.22, 0.61, 0.24, 1);
+
+      &.is-in {
+        opacity: 1;
+        transform: none;
+      }
+    }
   }
 }

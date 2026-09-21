@@ -9,196 +9,275 @@ page-layout: full
 <style>#title-block-header { display: none; }</style>
 
 ```{=html}
-<div class="hero">
-<span class="availability">Open to Summer 2027 SWE &amp; quant internships</span>
-<h1 class="hero-name">Jeremy Hsu</h1>
-<div class="hero-line">I build systematic trading strategies and the infrastructure that runs them: research, validation, and live execution against real capital.</div>
-<div class="hero-sub">Computer Science at <strong>Penn State</strong> (B.S., May&nbsp;2028). Founder of <strong>Weaver Capital LP</strong>, where two systematic strategies I wrote run live against broker APIs. Undergraduate researcher in the <strong>Locomotion in Biology and Robotics Lab</strong>, building contact-dynamics simulations in MuJoCo under Dr.&nbsp;Baxi Chong.</div>
-<div class="hero-links">
-<a class="btn-jh btn-jh-primary" href="resume-engineering.pdf">Resume: engineering</a>
-<a class="btn-jh" href="resume-quant.pdf">Resume: quant</a>
-<a class="btn-jh" href="mailto:jeremyhsu2025@gmail.com">jeremyhsu2025@gmail.com</a>
-<a class="btn-jh" href="https://github.com/mrjerm">GitHub</a>
-<a class="btn-jh" href="https://www.linkedin.com/in/jerm04/">LinkedIn</a>
+<nav class="dot-nav" aria-label="Section navigation">
+<a href="#hero" aria-label="Top"><span class="dot-label">Top</span></a>
+<a href="#rime" aria-label="Rime"><span class="dot-label">Rime</span></a>
+<a href="#fifth-sanctuary" aria-label="Fifth Sanctuary"><span class="dot-label">Fifth Sanctuary</span></a>
+<a href="#kintoun" aria-label="Kintoun"><span class="dot-label">Kintoun</span></a>
+<a href="#robotics" aria-label="Robotics"><span class="dot-label">Robotics</span></a>
+<a href="#experience" aria-label="Experience"><span class="dot-label">Experience</span></a>
+<a href="#contact" aria-label="Contact"><span class="dot-label">Contact</span></a>
+</nav>
+
+<div class="panels">
+
+<section class="panel hero-panel" id="hero">
+<div id="particles-js" aria-hidden="true"></div>
+<div class="panel-inner">
+<h1 class="hero-name jh-rise">Jeremy Hsu</h1>
+<p class="hero-role jh-rise">Computer Science at Penn State. I build systematic trading strategies and the infrastructure that runs them.</p>
+<div class="hero-social jh-rise">
+<a class="social-dot" href="https://github.com/mrjerm" aria-label="GitHub"><i class="bi bi-github"></i></a>
+<a class="social-dot" href="https://www.linkedin.com/in/jerm04/" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+<a class="social-dot" href="mailto:jeremyhsu2025@gmail.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
 </div>
+<p class="hero-availability jh-rise">Open to Summer 2027 SWE &amp; quant internships</p>
+</div>
+<a class="scroll-cue" href="#rime">Scroll</a>
+</section>
+
+<section class="panel panel-teal" id="rime">
+<div class="panel-inner">
+<div class="panel-split">
+<div class="jh-rise">
+<div class="panel-eyebrow">Live &middot; deployed April 2026</div>
+<h2 class="panel-title">Rime</h2>
+<p class="panel-lede">Rime is a daily allocator for leveraged equity ETFs. Each morning it splits capital between leveraged exposure, a volatility hedge, and cash, using a shallow regime tree with a macro overlay on top of it. There is also a volatility circuit breaker that cuts leveraged exposure when volatility spikes. I wrote the research and the live system against the same decision function, so there is no separate notebook approximating what actually trades.</p>
+<div class="panel-meta">Python &middot; pandas &middot; NumPy &middot; Alpaca API &middot; Streamlit</div>
+<div class="panel-stats">
+<div class="panel-stat"><div class="stat-value">47</div><div class="stat-label">Pytest tests</div></div>
+<div class="panel-stat"><div class="stat-value">14&nbsp;yr</div><div class="stat-label">Simulated window</div></div>
+<div class="panel-stat"><div class="stat-value">~44%</div><div class="stat-label">Avg gross exposure, simulated</div></div>
+</div>
+<a class="panel-link" href="rime.html">Read the writeup <span aria-hidden="true">&rarr;</span></a>
+</div>
+<div class="panel-fig jh-rise">
+<svg class="jh-svg" viewBox="0 0 640 440" role="img" aria-label="Schematic of Rime. A regime signal crosses a circuit-breaker trip level and a lower reset level, so the breaker cannot chatter around a single threshold. Underneath, the allocation steps between leveraged ETF exposure, a volatility hedge and cash as the breaker changes state.">
+<text x="0" y="34" font-size="12" opacity=".9" text-anchor="start">Regime signal</text>
+<rect x="104" y="74" width="536" height="42" fill="currentColor" opacity=".07"/>
+<line x1="104" y1="74" x2="640" y2="74" stroke="currentColor" stroke-width="1" opacity=".55" stroke-dasharray="4 4"/>
+<line x1="104" y1="116" x2="640" y2="116" stroke="currentColor" stroke-width="1" opacity=".55" stroke-dasharray="4 4"/>
+<text x="0" y="78" font-size="10.5" opacity=".6" text-anchor="start">Trip</text>
+<text x="0" y="120" font-size="10.5" opacity=".6" text-anchor="start">Reset</text>
+<polyline fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" points="104.0,90.4 108.0,91.0 112.0,90.4 116.0,88.5 120.0,85.5 124.0,81.7 128.0,77.4 132.0,73.3 136.0,69.8 140.0,67.4 144.0,66.4 148.0,67.1 152.0,69.5 156.0,73.5 160.0,78.8 164.0,85.1 168.0,91.8 172.0,98.5 176.0,104.9 180.0,110.4 184.0,115.0 188.0,118.6 192.0,121.3 196.0,123.2 200.0,124.8 204.0,126.3 208.0,128.0 212.0,130.4 216.0,133.3 220.0,137.0 224.0,141.2 228.0,145.7 232.0,150.1 236.0,153.9 240.0,156.8 244.0,158.3 248.0,158.1 252.0,156.2 256.0,152.5 260.0,147.4 264.0,141.1 268.0,134.1 272.0,126.9 276.0,120.1 280.0,114.0 284.0,109.2 288.0,105.7 292.0,103.6 296.0,102.7 300.0,102.8 304.0,103.6 308.0,104.5 312.0,105.3 316.0,105.6 320.0,105.1 324.0,103.8 328.0,101.8 332.0,99.2 336.0,96.3 340.0,93.6 344.0,91.3 348.0,89.8 352.0,89.3 356.0,89.9 360.0,91.6 364.0,94.0 368.0,96.9 372.0,99.8 376.0,102.3 380.0,103.9 384.0,104.2 388.0,102.9 392.0,100.1 396.0,95.8 400.0,90.2 404.0,83.7 408.0,76.8 412.0,70.0 416.0,63.8 420.0,58.7 424.0,54.8 428.0,52.4 432.0,51.3 436.0,51.5 440.0,52.7 444.0,54.4 448.0,56.3 452.0,58.1 456.0,59.4 460.0,60.2 464.0,60.5 468.0,60.4 472.0,60.2 476.0,60.2 480.0,60.8 484.0,62.5 488.0,65.3 492.0,69.6 496.0,75.2 500.0,82.1 504.0,89.9 508.0,98.2 512.0,106.5 516.0,114.2 520.0,120.9 524.0,126.2 528.0,129.9 532.0,131.8 536.0,132.1 540.0,131.1 544.0,129.0 548.0,126.4 552.0,123.8 556.0,121.4 560.0,119.8 564.0,119.0 568.0,119.1 572.0,120.0 576.0,121.5 580.0,123.2 584.0,124.9 588.0,126.1 592.0,126.5 596.0,126.0 600.0,124.6 604.0,122.4 608.0,119.6 612.0,116.6 616.0,113.8 620.0,111.7 624.0,110.5 628.0,110.7 632.0,112.2 636.0,115.1 640.0,119.2"/>
+<text x="0" y="212" font-size="12" opacity=".9" text-anchor="start">Allocation</text>
+<text x="0" y="242" font-size="10.5" opacity=".7" text-anchor="start">Lev ETF</text>
+<line x1="104" y1="238" x2="640" y2="238" stroke="currentColor" stroke-width="1" opacity=".22" stroke-dasharray="2 5"/>
+<text x="0" y="290" font-size="10.5" opacity=".7" text-anchor="start">Vol hedge</text>
+<line x1="104" y1="286" x2="640" y2="286" stroke="currentColor" stroke-width="1" opacity=".22" stroke-dasharray="2 5"/>
+<text x="0" y="338" font-size="10.5" opacity=".7" text-anchor="start">Cash</text>
+<line x1="104" y1="334" x2="640" y2="334" stroke="currentColor" stroke-width="1" opacity=".22" stroke-dasharray="2 5"/>
+<rect x="104" y="280" width="28" height="12" fill="currentColor" opacity=".92"/>
+<rect x="132" y="328" width="56" height="12" fill="currentColor" opacity=".92"/>
+<line x1="132" y1="286" x2="132" y2="334" stroke="currentColor" stroke-width="1" opacity=".4"/>
+<rect x="188" y="232" width="92" height="12" fill="currentColor" opacity=".92"/>
+<line x1="188" y1="238" x2="188" y2="334" stroke="currentColor" stroke-width="1" opacity=".4"/>
+<rect x="280" y="280" width="132" height="12" fill="currentColor" opacity=".92"/>
+<line x1="280" y1="238" x2="280" y2="286" stroke="currentColor" stroke-width="1" opacity=".4"/>
+<rect x="412" y="328" width="108" height="12" fill="currentColor" opacity=".92"/>
+<line x1="412" y1="286" x2="412" y2="334" stroke="currentColor" stroke-width="1" opacity=".4"/>
+<rect x="520" y="232" width="96" height="12" fill="currentColor" opacity=".92"/>
+<line x1="520" y1="238" x2="520" y2="334" stroke="currentColor" stroke-width="1" opacity=".4"/>
+<rect x="616" y="280" width="24" height="12" fill="currentColor" opacity=".92"/>
+<line x1="616" y1="238" x2="616" y2="286" stroke="currentColor" stroke-width="1" opacity=".4"/>
+<rect x="640" y="232" width="2" height="12" fill="currentColor" opacity=".92"/>
+<line x1="640" y1="238" x2="640" y2="286" stroke="currentColor" stroke-width="1" opacity=".4"/>
+<text x="0" y="384" font-size="12" opacity=".9" text-anchor="start">Breaker</text>
+<line x1="104" y1="392" x2="640" y2="392" stroke="currentColor" stroke-width="1" opacity=".22"/>
+<line x1="132" y1="176" x2="132" y2="356" stroke="currentColor" stroke-width="1" opacity=".28" stroke-dasharray="3 4"/>
+<rect x="129.5" y="387" width="5" height="10" fill="currentColor" opacity=".75"/>
+<line x1="188" y1="176" x2="188" y2="356" stroke="currentColor" stroke-width="1" opacity=".28" stroke-dasharray="3 4"/>
+<rect x="185.5" y="387" width="5" height="10" fill="currentColor" opacity=".75"/>
+<line x1="412" y1="176" x2="412" y2="356" stroke="currentColor" stroke-width="1" opacity=".28" stroke-dasharray="3 4"/>
+<rect x="409.5" y="387" width="5" height="10" fill="currentColor" opacity=".75"/>
+<line x1="520" y1="176" x2="520" y2="356" stroke="currentColor" stroke-width="1" opacity=".28" stroke-dasharray="3 4"/>
+<rect x="517.5" y="387" width="5" height="10" fill="currentColor" opacity=".75"/>
+<text x="104" y="418" font-size="10.5" opacity=".5" text-anchor="start">Shaded band is hysteresis: trips at Trip, releases only at Reset, so it cannot chatter &middot; 2 trips here</text>
+</svg>
+<div class="panel-figcap">Schematic &middot; allocation states</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="panel" id="fifth-sanctuary">
+<div class="panel-inner">
+<div class="panel-split">
+<div class="jh-rise">
+<div class="panel-eyebrow">Live &middot; deployed January 2026</div>
+<h2 class="panel-title">Fifth Sanctuary</h2>
+<p class="panel-lede">An intraday volatility-expansion system on gold. It runs long and short as two separate sleeves, each sized by a macro state vector and filtered on its own. When I went looking at why the short sleeve was losing, it was not losing at random. It lost under a specific set of macro conditions, so I filtered it out of those conditions instead of tuning the parameters.</p>
+<div class="panel-meta">Python &middot; C#/NinjaScript &middot; MQL5 &middot; FRED</div>
+<div class="panel-stats">
+<div class="panel-stat"><div class="stat-value">22&nbsp;yr</div><div class="stat-label">Simulated window</div></div>
+<div class="panel-stat"><div class="stat-value">~18%</div><div class="stat-label">Time in market</div></div>
+<div class="panel-stat"><div class="stat-value">42%</div><div class="stat-label">Win rate, simulated</div></div>
+</div>
+<a class="panel-link" href="fifth-sanctuary.html">Read the writeup <span aria-hidden="true">&rarr;</span></a>
+</div>
+<div class="panel-fig jh-rise">
+<svg class="jh-svg" viewBox="0 0 640 440" role="img" aria-label="Schematic of Fifth Sanctuary. A macro state trace falls below a gate across parts of the window; in those spans the short sleeve is filtered out entirely while the long sleeve keeps trading. Below, long trades are drawn above the axis and short trades below it, hollow where filtered.">
+<text x="0" y="34" font-size="12" opacity=".9" text-anchor="start">Macro state</text>
+<line x1="104" y1="108" x2="640" y2="108" stroke="currentColor" stroke-width="1" opacity=".55" stroke-dasharray="4 4"/>
+<text x="0" y="112" font-size="10.5" opacity=".6" text-anchor="start">Gate</text>
+<rect x="104" y="22" width="112" height="136" fill="currentColor" opacity=".08"/>
+<rect x="104" y="196" width="112" height="190" fill="currentColor" opacity=".07"/>
+<rect x="260" y="22" width="40" height="136" fill="currentColor" opacity=".08"/>
+<rect x="260" y="196" width="40" height="190" fill="currentColor" opacity=".07"/>
+<rect x="584" y="22" width="56" height="136" fill="currentColor" opacity=".08"/>
+<rect x="584" y="196" width="56" height="190" fill="currentColor" opacity=".07"/>
+<polyline fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" points="104.0,119.6 108.0,124.3 112.0,128.3 116.0,131.3 120.0,133.2 124.0,134.0 128.0,133.7 132.0,132.3 136.0,130.2 140.0,127.3 144.0,124.1 148.0,120.8 152.0,117.5 156.0,114.6 160.0,112.2 164.0,110.5 168.0,109.4 172.0,108.9 176.0,109.0 180.0,109.5 184.0,110.2 188.0,111.0 192.0,111.6 196.0,112.0 200.0,112.0 204.0,111.5 208.0,110.5 212.0,109.1 216.0,107.4 220.0,105.5 224.0,103.7 228.0,102.1 232.0,100.9 236.0,100.3 240.0,100.4 244.0,101.2 248.0,102.7 252.0,104.8 256.0,107.4 260.0,110.2 264.0,113.1 268.0,115.6 272.0,117.7 276.0,119.0 280.0,119.4 284.0,118.8 288.0,117.0 292.0,114.3 296.0,110.6 300.0,106.1 304.0,101.0 308.0,95.7 312.0,90.2 316.0,85.0 320.0,80.2 324.0,76.0 328.0,72.5 332.0,69.6 336.0,67.5 340.0,66.0 344.0,64.9 348.0,64.1 352.0,63.5 356.0,62.8 360.0,61.9 364.0,60.8 368.0,59.3 372.0,57.5 376.0,55.5 380.0,53.4 384.0,51.3 388.0,49.6 392.0,48.3 396.0,47.7 400.0,47.9 404.0,49.1 408.0,51.2 412.0,54.2 416.0,58.0 420.0,62.5 424.0,67.4 428.0,72.4 432.0,77.4 436.0,82.0 440.0,86.0 444.0,89.2 448.0,91.4 452.0,92.7 456.0,93.0 460.0,92.5 464.0,91.3 468.0,89.6 472.0,87.6 476.0,85.6 480.0,83.8 484.0,82.3 488.0,81.4 492.0,81.2 496.0,81.5 500.0,82.4 504.0,83.8 508.0,85.5 512.0,87.3 516.0,89.1 520.0,90.7 524.0,92.0 528.0,92.8 532.0,93.1 536.0,93.1 540.0,92.7 544.0,92.1 548.0,91.4 552.0,91.0 556.0,91.0 560.0,91.6 564.0,92.9 568.0,95.1 572.0,98.1 576.0,102.0 580.0,106.6 584.0,111.6 588.0,117.0 592.0,122.4 596.0,127.6 600.0,132.2 604.0,136.1 608.0,139.1 612.0,141.0 616.0,141.8 620.0,141.5 624.0,140.2 628.0,138.1 632.0,135.4 636.0,132.3 640.0,129.0"/>
+<text x="0" y="214" font-size="12" opacity=".9" text-anchor="start">Sleeves</text>
+<text x="0" y="256" font-size="10.5" opacity=".7" text-anchor="start">Long</text>
+<text x="0" y="352" font-size="10.5" opacity=".7" text-anchor="start">Short</text>
+<line x1="104" y1="300" x2="640" y2="300" stroke="currentColor" stroke-width="1" opacity=".5"/>
+<rect x="104" y="266" width="13" height="34" fill="currentColor" opacity=".92"/>
+<rect x="135.265" y="300.5" width="12" height="39" fill="none" opacity=".5" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="165.529" y="248" width="13" height="52" fill="currentColor" opacity=".92"/>
+<rect x="196.294" y="278" width="13" height="22" fill="currentColor" opacity=".92"/>
+<rect x="227.059" y="300" width="13" height="30" fill="currentColor" opacity=".92"/>
+<rect x="257.824" y="259" width="13" height="41" fill="currentColor" opacity=".92"/>
+<rect x="258.324" y="300.5" width="12" height="34" fill="none" opacity=".5" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="289.088" y="300.5" width="12" height="23" fill="none" opacity=".5" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="319.353" y="272" width="13" height="28" fill="currentColor" opacity=".92"/>
+<rect x="319.353" y="300" width="13" height="32" fill="currentColor" opacity=".92"/>
+<rect x="350.118" y="242" width="13" height="58" fill="currentColor" opacity=".92"/>
+<rect x="380.882" y="283" width="13" height="17" fill="currentColor" opacity=".92"/>
+<rect x="411.647" y="300" width="13" height="26" fill="currentColor" opacity=".92"/>
+<rect x="442.412" y="263" width="13" height="37" fill="currentColor" opacity=".92"/>
+<rect x="442.412" y="300" width="13" height="44" fill="currentColor" opacity=".92"/>
+<rect x="473.176" y="276" width="13" height="24" fill="currentColor" opacity=".92"/>
+<rect x="503.941" y="300" width="13" height="29" fill="currentColor" opacity=".92"/>
+<rect x="534.706" y="254" width="13" height="46" fill="currentColor" opacity=".92"/>
+<rect x="565.471" y="300" width="13" height="36" fill="currentColor" opacity=".92"/>
+<rect x="596.235" y="269" width="13" height="31" fill="currentColor" opacity=".92"/>
+<rect x="627" y="280" width="13" height="20" fill="currentColor" opacity=".92"/>
+<rect x="627.5" y="300.5" width="12" height="41" fill="none" opacity=".5" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="104" y="404" width="12" height="12" fill="currentColor" opacity=".92"/>
+<text x="124" y="414" font-size="10.5" opacity=".6" text-anchor="start">Taken</text>
+<rect x="196.5" y="404.5" width="11" height="11" fill="none" opacity=".5" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="216" y="414" font-size="10.5" opacity=".6" text-anchor="start">Short sleeve filtered out</text>
+<text x="0" y="414" font-size="12" opacity=".9" text-anchor="start">Key</text>
+</svg>
+<div class="panel-figcap">Schematic &middot; sleeve structure</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="panel panel-teal" id="kintoun">
+<div class="panel-inner">
+<div class="panel-split">
+<div class="jh-rise">
+<div class="panel-eyebrow">Research &middot; December 2025</div>
+<h2 class="panel-title">Project Kintoun</h2>
+<p class="panel-lede">Standard opening range breakout strategies get chopped up by false breakouts. This notebook tests whether waiting for a retest of the breakout level, plus a VWAP trend check and a volume gate, filters enough of them out to be worth it on NQ futures. The methodology, the math, the code and the full trade log are public, including the parts that do not work.</p>
+<div class="panel-meta">Python &middot; event-driven simulation &middot; public repo</div>
+<div class="panel-stats">
+<div class="panel-stat"><div class="stat-value">1,062</div><div class="stat-label">Simulated trades</div></div>
+<div class="panel-stat"><div class="stat-value">2022&ndash;25</div><div class="stat-label">Sample window</div></div>
+<div class="panel-stat"><div class="stat-value">MIT</div><div class="stat-label">Licensed, source public</div></div>
+</div>
+<a class="panel-link" href="project_kintoun.html">Read the notebook <span aria-hidden="true">&rarr;</span></a>
+</div>
+<div class="panel-fig jh-rise">
+<svg class="jh-svg" viewBox="0 0 640 380" role="img" aria-label="Simulated equity curve from Project Kintoun published backtest trade log: 1,062 trades between June 2022 and October 2025, drawn with its running peak so drawdowns are visible. No axis values are shown.">
+<text x="0" y="34" font-size="12" opacity=".9" text-anchor="start">Simulated equity</text>
+<line x1="104" y1="317.439" x2="640" y2="317.439" stroke="currentColor" stroke-width="1" opacity=".38" stroke-dasharray="2 5"/>
+<text x="0" y="321.439" font-size="10.5" opacity=".6" text-anchor="start">Start</text>
+<polyline fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4" opacity=".4" points="104.0,317.4 105.8,316.3 107.6,316.3 109.4,316.3 111.2,316.0 113.0,314.5 114.8,314.5 116.5,314.5 118.3,314.5 120.1,314.1 121.9,314.1 123.7,314.1 125.5,308.3 127.3,307.2 129.1,305.2 130.9,303.3 132.7,300.7 134.5,300.7 136.3,300.7 138.1,300.3 139.9,298.6 141.6,298.6 143.4,298.6 145.2,298.6 147.0,298.6 148.8,298.6 150.6,298.6 152.4,298.6 154.2,298.6 156.0,298.6 157.8,298.6 159.6,298.6 161.4,298.6 163.2,298.6 164.9,298.6 166.7,298.6 168.5,298.6 170.3,298.6 172.1,295.4 173.9,294.0 175.7,294.0 177.5,294.0 179.3,294.0 181.1,294.0 182.9,292.5 184.7,291.3 186.5,291.3 188.3,291.0 190.0,288.7 191.8,288.7 193.6,288.6 195.4,284.5 197.2,283.6 199.0,282.7 200.8,281.9 202.6,281.9 204.4,280.3 206.2,280.3 208.0,280.3 209.8,280.3 211.6,280.3 213.4,280.3 215.1,280.3 216.9,280.3 218.7,280.3 220.5,280.3 222.3,280.3 224.1,280.3 225.9,280.3 227.7,280.2 229.5,280.2 231.3,279.8 233.1,279.6 234.9,279.6 236.7,279.6 238.4,279.6 240.2,279.6 242.0,279.6 243.8,279.6 245.6,279.6 247.4,279.0 249.2,278.5 251.0,276.5 252.8,275.5 254.6,275.5 256.4,274.2 258.2,274.2 260.0,274.2 261.8,271.0 263.5,271.0 265.3,271.0 267.1,271.0 268.9,271.0 270.7,271.0 272.5,271.0 274.3,271.0 276.1,271.0 277.9,269.9 279.7,267.5 281.5,267.5 283.3,265.0 285.1,261.1 286.8,261.1 288.6,261.1 290.4,261.1 292.2,260.4 294.0,260.1 295.8,260.1 297.6,260.1 299.4,259.5 301.2,259.5 303.0,259.5 304.8,259.5 306.6,259.5 308.4,259.5 310.2,259.5 311.9,259.5 313.7,259.5 315.5,259.5 317.3,259.5 319.1,259.5 320.9,259.5 322.7,259.5 324.5,259.5 326.3,259.5 328.1,259.5 329.9,259.5 331.7,259.5 333.5,259.5 335.3,259.5 337.0,259.5 338.8,259.5 340.6,259.5 342.4,256.7 344.2,256.7 346.0,256.7 347.8,256.7 349.6,256.7 351.4,256.7 353.2,256.7 355.0,256.7 356.8,255.5 358.6,255.5 360.3,252.4 362.1,252.4 363.9,252.4 365.7,252.0 367.5,250.4 369.3,250.4 371.1,250.4 372.9,250.4 374.7,250.4 376.5,250.4 378.3,250.4 380.1,250.4 381.9,250.4 383.7,250.4 385.4,248.1 387.2,248.1 389.0,248.1 390.8,248.1 392.6,248.1 394.4,247.8 396.2,247.8 398.0,247.8 399.8,247.8 401.6,247.0 403.4,247.0 405.2,247.0 407.0,247.0 408.7,247.0 410.5,247.0 412.3,246.3 414.1,246.3 415.9,245.8 417.7,245.8 419.5,245.8 421.3,245.8 423.1,245.8 424.9,244.7 426.7,241.9 428.5,240.2 430.3,240.2 432.1,240.2 433.8,240.2 435.6,236.6 437.4,236.6 439.2,235.8 441.0,235.8 442.8,235.8 444.6,230.0 446.4,229.0 448.2,229.0 450.0,229.0 451.8,229.0 453.6,229.0 455.4,229.0 457.2,229.0 458.9,229.0 460.7,229.0 462.5,229.0 464.3,229.0 466.1,229.0 467.9,229.0 469.7,229.0 471.5,229.0 473.3,229.0 475.1,229.0 476.9,229.0 478.7,229.0 480.5,229.0 482.2,229.0 484.0,229.0 485.8,229.0 487.6,229.0 489.4,229.0 491.2,229.0 493.0,229.0 494.8,229.0 496.6,229.0 498.4,229.0 500.2,229.0 502.0,229.0 503.8,229.0 505.6,229.0 507.3,229.0 509.1,229.0 510.9,229.0 512.7,229.0 514.5,226.3 516.3,226.3 518.1,226.3 519.9,226.3 521.7,225.0 523.5,216.9 525.3,212.1 527.1,212.1 528.9,212.1 530.6,208.8 532.4,208.8 534.2,208.8 536.0,208.8 537.8,206.2 539.6,199.3 541.4,186.1 543.2,186.0 545.0,186.0 546.8,186.0 548.6,183.5 550.4,183.5 552.2,176.4 554.0,141.7 555.7,132.0 557.5,130.5 559.3,129.9 561.1,124.2 562.9,117.7 564.7,114.5 566.5,110.3 568.3,106.3 570.1,106.3 571.9,94.8 573.7,91.0 575.5,88.3 577.3,88.3 579.1,88.3 580.8,88.3 582.6,88.3 584.4,88.3 586.2,79.4 588.0,79.4 589.8,79.4 591.6,79.4 593.4,76.0 595.2,75.7 597.0,71.9 598.8,71.9 600.6,71.9 602.4,71.9 604.1,66.6 605.9,61.1 607.7,61.1 609.5,61.1 611.3,61.1 613.1,58.4 614.9,58.4 616.7,58.4 618.5,53.4 620.3,53.0 622.1,53.0 623.9,53.0 625.7,53.0 627.5,53.0 629.2,49.3 631.0,49.3 632.8,46.0 634.6,43.5 636.4,43.5 638.2,40.0 640.0,40.0"/>
+<polyline fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" points="104.0,317.4 105.8,316.5 107.6,317.2 109.4,317.1 111.2,316.0 113.0,315.6 114.8,317.9 116.5,317.0 118.3,319.3 120.1,314.1 121.9,316.1 123.7,314.7 125.5,308.5 127.3,307.2 129.1,305.5 130.9,303.4 132.7,303.6 134.5,303.0 136.3,303.4 138.1,300.3 139.9,300.4 141.6,301.9 143.4,304.2 145.2,304.8 147.0,300.8 148.8,304.0 150.6,306.7 152.4,307.3 154.2,308.6 156.0,310.1 157.8,307.9 159.6,303.6 161.4,306.8 163.2,305.5 164.9,305.0 166.7,305.1 168.5,301.7 170.3,300.5 172.1,295.4 173.9,296.2 175.7,294.9 177.5,297.1 179.3,296.6 181.1,294.2 182.9,292.5 184.7,292.5 186.5,291.3 188.3,292.7 190.0,288.7 191.8,290.5 193.6,289.9 195.4,284.5 197.2,284.7 199.0,284.5 200.8,284.2 202.6,284.5 204.4,281.7 206.2,283.5 208.0,282.5 209.8,284.2 211.6,283.7 213.4,280.8 215.1,282.1 216.9,284.3 218.7,283.5 220.5,284.7 222.3,284.3 224.1,283.1 225.9,282.1 227.7,280.2 229.5,281.0 231.3,280.9 233.1,280.8 234.9,283.3 236.7,282.5 238.4,284.5 240.2,284.2 242.0,283.6 243.8,284.0 245.6,282.9 247.4,280.0 249.2,278.7 251.0,278.8 252.8,276.5 254.6,278.1 256.4,274.2 258.2,275.3 260.0,275.3 261.8,271.0 263.5,271.9 265.3,273.9 267.1,272.5 268.9,274.1 270.7,272.6 272.5,271.7 274.3,273.6 276.1,271.8 277.9,269.9 279.7,269.8 281.5,269.6 283.3,265.0 285.1,263.4 286.8,265.3 288.6,263.9 290.4,264.5 292.2,260.4 294.0,260.1 295.8,263.3 297.6,264.8 299.4,260.6 301.2,263.1 303.0,262.8 304.8,261.0 306.6,263.2 308.4,264.8 310.2,264.8 311.9,266.5 313.7,264.7 315.5,264.7 317.3,264.7 319.1,266.8 320.9,269.2 322.7,269.5 324.5,268.3 326.3,267.3 328.1,265.2 329.9,265.2 331.7,264.8 333.5,265.4 335.3,262.9 337.0,264.5 338.8,260.9 340.6,261.7 342.4,257.2 344.2,259.9 346.0,259.4 347.8,259.6 349.6,261.1 351.4,261.2 353.2,258.0 355.0,257.1 356.8,256.6 358.6,257.0 360.3,252.4 362.1,253.8 363.9,255.1 365.7,252.0 367.5,251.5 369.3,254.3 371.1,256.1 372.9,255.6 374.7,252.1 376.5,253.0 378.3,254.0 380.1,250.5 381.9,251.2 383.7,253.0 385.4,248.1 387.2,249.6 389.0,250.4 390.8,249.8 392.6,249.2 394.4,248.3 396.2,252.2 398.0,254.3 399.8,251.4 401.6,247.0 403.4,248.4 405.2,249.6 407.0,249.0 408.7,250.1 410.5,249.7 412.3,246.6 414.1,247.6 415.9,247.7 417.7,248.1 419.5,246.8 421.3,247.9 423.1,248.4 424.9,244.7 426.7,243.3 428.5,241.3 430.3,242.4 432.1,242.6 433.8,241.1 435.6,237.1 437.4,243.6 439.2,235.8 441.0,240.0 442.8,240.7 444.6,232.6 446.4,229.0 448.2,234.1 450.0,233.3 451.8,229.3 453.6,230.9 455.4,231.3 457.2,232.7 458.9,236.7 460.7,231.4 462.5,234.7 464.3,237.8 466.1,231.4 467.9,235.0 469.7,239.6 471.5,235.1 473.3,238.6 475.1,239.7 476.9,241.7 478.7,238.8 480.5,239.6 482.2,242.2 484.0,241.8 485.8,236.8 487.6,233.6 489.4,229.4 491.2,229.1 493.0,232.2 494.8,232.8 496.6,235.8 498.4,236.3 500.2,235.4 502.0,238.2 503.8,237.7 505.6,238.4 507.3,240.9 509.1,235.3 510.9,230.9 512.7,231.0 514.5,226.9 516.3,231.0 518.1,232.4 519.9,229.6 521.7,225.0 523.5,216.9 525.3,212.6 527.1,215.0 528.9,213.6 530.6,208.8 532.4,209.7 534.2,212.2 536.0,213.8 537.8,206.2 539.6,199.3 541.4,186.1 543.2,187.2 545.0,192.7 546.8,188.4 548.6,183.5 550.4,184.5 552.2,176.4 554.0,141.7 555.7,134.5 557.5,136.6 559.3,130.8 561.1,124.4 562.9,119.8 564.7,116.7 566.5,110.3 568.3,107.4 570.1,110.1 571.9,94.8 573.7,95.5 575.5,94.9 577.3,94.0 579.1,98.5 580.8,98.6 582.6,97.1 584.4,92.6 586.2,79.4 588.0,84.4 589.8,82.0 591.6,80.7 593.4,76.0 595.2,76.1 597.0,76.3 598.8,81.2 600.6,81.3 602.4,79.8 604.1,68.1 605.9,61.1 607.7,68.3 609.5,66.4 611.3,67.0 613.1,58.4 614.9,62.2 616.7,60.6 618.5,54.8 620.3,53.9 622.1,59.2 623.9,66.3 625.7,70.9 627.5,58.7 629.2,49.3 631.0,52.6 632.8,47.2 634.6,43.5 636.4,48.9 638.2,41.3 640.0,47.1"/>
+<line x1="104" y1="344" x2="640" y2="344" stroke="currentColor" stroke-width="1" opacity=".22"/>
+<text x="104" y="362" font-size="10.5" opacity=".55" text-anchor="start">Jun 2022</text>
+<text x="640" y="362" font-size="10.5" opacity=".55" text-anchor="end">Oct 2025</text>
+<text x="0" y="362" font-size="12" opacity=".9" text-anchor="start">Window</text>
+<text x="104" y="58" font-size="10.5" opacity=".5" text-anchor="start">Dashed line is the running peak &middot; the gap below it is drawdown</text>
+</svg>
+<div class="panel-figcap">Simulated &middot; 1,062 trades &middot; 2022&ndash;2025</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="panel" id="robotics">
+<div class="panel-inner">
+<div class="panel-split">
+<div class="jh-rise">
+<div class="panel-eyebrow">Archive &middot; FTC #16468 &middot; 2019 to 2025</div>
+<h2 class="panel-title">Green Lemons</h2>
+<p class="panel-lede">I started Green Lemons in 2019 and ran it for six seasons, growing it to fourteen members. I wrote the autonomous control software in Java: vision-based navigation, odometry, and path planning. OPR is a least-squares estimate of per-team scoring contribution, so #1 on it is a measured result, not a judged award.</p>
+<div class="panel-meta">Java &middot; OpenCV &middot; odometry &middot; path planning &middot; FIRST Tech Challenge</div>
+<div class="panel-stats">
+<div class="panel-stat"><div class="stat-value">#1</div><div class="stat-label">OPR worldwide</div></div>
+<div class="panel-stat"><div class="stat-value">8,000+</div><div class="stat-label">Teams</div></div>
+<div class="panel-stat"><div class="stat-value">6</div><div class="stat-label">Seasons led</div></div>
+</div>
+<a class="panel-link" href="robotics.html">Read more <span aria-hidden="true">&rarr;</span></a>
+</div>
+<div class="panel-fig jh-rise">
+<svg class="jh-svg" viewBox="0 0 640 400" role="img" aria-label="Schematic of an autonomous run: a competition field with obstacles, a planned path through a set of waypoints, and odometry tick marks spaced along the route.">
+<text x="0" y="34" font-size="12" opacity=".9" text-anchor="start">Autonomous run</text>
+<rect x="20.5" y="52.5" width="599" height="288" fill="none" opacity=".3" stroke="currentColor" stroke-width="1"/>
+<line x1="120" y1="52" x2="120" y2="340" stroke="currentColor" stroke-width="1" opacity=".12"/>
+<line x1="220" y1="52" x2="220" y2="340" stroke="currentColor" stroke-width="1" opacity=".12"/>
+<line x1="320" y1="52" x2="320" y2="340" stroke="currentColor" stroke-width="1" opacity=".12"/>
+<line x1="420" y1="52" x2="420" y2="340" stroke="currentColor" stroke-width="1" opacity=".12"/>
+<line x1="520" y1="52" x2="520" y2="340" stroke="currentColor" stroke-width="1" opacity=".12"/>
+<line x1="20" y1="124" x2="620" y2="124" stroke="currentColor" stroke-width="1" opacity=".12"/>
+<line x1="20" y1="196" x2="620" y2="196" stroke="currentColor" stroke-width="1" opacity=".12"/>
+<line x1="20" y1="268" x2="620" y2="268" stroke="currentColor" stroke-width="1" opacity=".12"/>
+<rect x="170" y="180" width="90" height="62" fill="currentColor" opacity=".13"/>
+<rect x="400" y="90" width="74" height="70" fill="currentColor" opacity=".13"/>
+<path d="M 40,330 C 150,330 165,120 285,120 S 430,340 510,230 S 570,110 620,150" fill="none" stroke="currentColor" stroke-width="9" stroke-dasharray="1 17" opacity=".45"/>
+<path d="M 40,330 C 150,330 165,120 285,120 S 430,340 510,230 S 570,110 620,150" fill="none" stroke="currentColor" stroke-width="1.6"/>
+<rect x="35" y="325" width="10" height="10" fill="currentColor" opacity=".95"/>
+<rect x="280" y="115" width="10" height="10" fill="currentColor" opacity=".95"/>
+<rect x="505" y="225" width="10" height="10" fill="currentColor" opacity=".95"/>
+<rect x="615" y="145" width="10" height="10" fill="currentColor" opacity=".95"/>
+<text x="104" y="378" font-size="10.5" opacity=".55" text-anchor="start">Waypoints, obstacles and odometry ticks along the plan</text>
+</svg>
+<div class="panel-figcap">Schematic &middot; autonomous path</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="panel panel-deep" id="experience">
+<div class="panel-inner">
+<div class="jh-rise">
+<div class="panel-eyebrow">Background</div>
+<h2 class="panel-title">Experience</h2>
+</div>
+<div class="roster jh-rise">
+<div class="roster-item"><div class="roster-when">Jan 2026 &ndash; present</div><div><div class="roster-role">Founder &amp; Quantitative Researcher</div><div class="roster-org">Weaver Capital LP &middot; West Chester, PA</div></div></div>
+<div class="roster-item"><div class="roster-when">Aug 2026 &ndash; present</div><div><div class="roster-role">Undergraduate Researcher</div><div class="roster-org">Locomotion in Biology and Robotics Lab, Penn State &middot; under Dr. Baxi Chong</div></div></div>
+<div class="roster-item"><div class="roster-when">Aug 2025 &ndash; present</div><div><div class="roster-role">Quantitative Research Lead</div><div class="roster-org">Penn State Quantitative Finance Club</div></div></div>
+<div class="roster-item"><div class="roster-when">Jun 2024 &ndash; Jul 2024</div><div><div class="roster-role">Research Intern</div><div class="roster-org">Robot Perception &amp; Navigation Group, University of Delaware</div></div></div>
+<div class="roster-item"><div class="roster-when">Jun 2019 &ndash; Apr 2025</div><div><div class="roster-role">Founder &amp; Technical Lead</div><div class="roster-org">FTC #16468 Green Lemons Robotics</div></div></div>
+</div>
+<p class="panel-lede jh-rise" style="margin-top:1.1rem;margin-bottom:1.2rem">Coursework in applied regression, discrete mathematics, linear algebra, and data structures. FIRST Dean&rsquo;s List Finalist, and top 100 in the US in the IMC Prosperity qualifiers.</p>
+<a class="panel-link jh-rise" href="about.html">Full background <span aria-hidden="true">&rarr;</span></a>
+</div>
+</section>
+
+<section class="panel" id="contact">
+<div class="panel-inner" style="text-align:center">
+<div class="jh-rise">
+<div class="panel-eyebrow" style="display:inline-block">Get in touch</div>
+<h2 class="panel-title">Summer 2027</h2>
+<p class="panel-lede" style="margin-inline:auto">I am looking for software engineering, quant dev, or quant research internships. I am most useful where the modelling and the systems work are the same problem: research infrastructure, backtesting and simulation frameworks, execution systems, and data pipelines that have to be correct.</p>
+</div>
+<div class="hero-social jh-rise">
+<a class="social-dot" href="https://github.com/mrjerm" aria-label="GitHub"><i class="bi bi-github"></i></a>
+<a class="social-dot" href="https://www.linkedin.com/in/jerm04/" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+<a class="social-dot" href="mailto:jeremyhsu2025@gmail.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
+</div>
+<div class="jh-rise" style="display:flex;gap:2rem;justify-content:center;flex-wrap:wrap">
+<a class="panel-link" href="resume-engineering.pdf">Engineering resume <span aria-hidden="true">&rarr;</span></a>
+<a class="panel-link" href="resume-quant.pdf">Quant resume <span aria-hidden="true">&rarr;</span></a>
+</div>
+</div>
+</section>
+
 </div>
 ```
-
-
-## Selected work
-
-```{=html}
-<div class="work-grid">
-<a class="work-card" href="rime.html">
-<div class="work-status">Live &middot; deployed</div>
-<div class="work-title">Rime</div>
-<div class="work-meta">Daily ETF regime allocator &middot; Python, pandas, Alpaca</div>
-<p>A daily allocator that splits capital between leveraged equity ETF exposure, a volatility hedge, and cash, using a shallow regime tree with a macro overlay and a volatility circuit breaker. Research and production call the same decision function, so live orders can't quietly drift from the backtest.</p>
-<div class="work-more">Read the writeup &rarr;</div>
-</a>
-<a class="work-card" href="fifth-sanctuary.html">
-<div class="work-status">Live &middot; deployed</div>
-<div class="work-title">Fifth Sanctuary</div>
-<div class="work-meta">Intraday gold volatility expansion &middot; Python, C#/NinjaScript</div>
-<p>An intraday gold system running long and short as two separate risk sleeves, each sized by a macro state vector and filtered independently. The research found one sleeve was losing money structurally rather than randomly, which changed the design more than any amount of tuning would have.</p>
-<div class="work-more">Read the writeup &rarr;</div>
-</a>
-<a class="work-card" href="project_kintoun.html">
-<div class="work-status is-archive">Research &middot; Dec 2025</div>
-<div class="work-title">Project Kintoun</div>
-<div class="work-meta">ORB microstructure study &middot; Python, event-driven sim</div>
-<p>A research notebook testing whether a break-and-retest microstructure filter plus VWAP trend confirmation can suppress false breakouts in Nasdaq-100 futures. Full methodology, math, and code are published, including where it doesn't work.</p>
-<div class="work-more">Read the notebook &rarr;</div>
-</a>
-<a class="work-card" href="robotics.html">
-<div class="work-status is-archive">2019 &ndash; 2025</div>
-<div class="work-title">Green Lemons Robotics</div>
-<div class="work-meta">FTC #16468 &middot; autonomous software, team leadership</div>
-<p>Founded and led a 14-member competitive robotics team across six seasons, writing the autonomous control stack in Java: vision-based navigation, odometry, and path planning. Finished #1 OPR globally out of more than 8,000 teams at the 2024 FTC World Championships.</p>
-<div class="work-more">Read more &rarr;</div>
-</a>
-</div>
-```
-
-
-## Experience
-
-```{=html}
-<div class="xp">
-<div class="xp-item">
-<div class="xp-when">Jan 2026 &ndash; present</div>
-<div class="xp-body">
-<div class="xp-role">Founder &amp; Quantitative Researcher</div>
-<div class="xp-org">Weaver Capital LP &middot; West Chester, PA</div>
-<ul>
-<li>Built and shipped two production trading systems in Python and C#, executing live against broker APIs with automated strategy synchronization, enforced position and drawdown limits, and sub-second order handling.</li>
-<li>Designed a shared decision path between research and production to prevent model/live divergence, persisting system state across restarts with atomic writes.</li>
-<li>Built data pipelines ingesting market and macroeconomic feeds with Parquet caching, data-quality checks, and lookahead-safe time alignment.</li>
-<li>Built portfolio optimization pipelines allocating capital across uncorrelated sleeves, sizing positions on realized and implied volatility.</li>
-<li>Shipped Streamlit and Plotly monitoring dashboards surfacing live positions, system state, and performance.</li>
-</ul>
-</div>
-</div>
-<div class="xp-item">
-<div class="xp-when">Aug 2026 &ndash; present</div>
-<div class="xp-body">
-<div class="xp-role">Undergraduate Researcher</div>
-<div class="xp-org">Locomotion in Biology and Robotics (LiBR) Lab, Penn State</div>
-<ul>
-<li>Building physics simulations of multi-body contact dynamics in MuJoCo, modeling an articulated three-section snake robot navigating confined tunnel geometry to evaluate gait strategies before hardware testing.</li>
-<li>Modeling scaling laws for computational versus mechanical cost of transport, under Dr. Baxi Chong.</li>
-</ul>
-</div>
-</div>
-<div class="xp-item">
-<div class="xp-when">Aug 2025 &ndash; present</div>
-<div class="xp-body">
-<div class="xp-role">Quantitative Research Lead</div>
-<div class="xp-org">Penn State Quantitative Finance Club</div>
-<ul>
-<li>Lead strategy research for the club's algorithmic paper portfolio: signal development, model validation, and execution.</li>
-<li>Develop forecasting models for equity indices and commodities, focused on macroeconomic cycles and regime shifts.</li>
-</ul>
-</div>
-</div>
-<div class="xp-item">
-<div class="xp-when">Jun 2024 &ndash; Jul 2024</div>
-<div class="xp-body">
-<div class="xp-role">Research Intern</div>
-<div class="xp-org">Robot Perception and Navigation Group, University of Delaware &middot; Newark, DE</div>
-<ul>
-<li>Built a 2D SLAM pipeline on a TurtleBot3 in C++ with ROS&nbsp;2 and Google Cartographer, mapping an indoor lab environment.</li>
-<li>Integrated Nav2 for autonomous waypoint navigation on the resulting map.</li>
-<li>Presented navigation and sensing results to graduate researchers and faculty.</li>
-</ul>
-</div>
-</div>
-<div class="xp-item">
-<div class="xp-when">Jun 2019 &ndash; Apr 2025</div>
-<div class="xp-body">
-<div class="xp-role">Founder &amp; Technical Lead</div>
-<div class="xp-org">FTC #16468 Green Lemons Robotics &middot; West Chester, PA</div>
-<ul>
-<li>Finished #1 OPR globally among 8,000+ teams at the 2024 FTC World Championships.</li>
-<li>Founded and led a 14-member team across six seasons, directing recruiting, training, and technical direction.</li>
-<li>Developed autonomous control software in Java, including vision-based navigation, odometry, and path planning.</li>
-</ul>
-</div>
-</div>
-</div>
-```
-
-
-## Education
-
-**Pennsylvania State University**, B.S. Computer Science, College of Engineering, Aug 2025 to May 2028, University Park, PA
-
-```{=html}
-<div class="skills">
-<div class="skill-row">
-<div class="skill-cat">Coursework</div>
-<div class="chips"><span class="chip">Applied Regression Analysis</span><span class="chip">Discrete Mathematics for CS</span><span class="chip">Linear Algebra</span><span class="chip">Multivariable Calculus &amp; Vector Analysis</span><span class="chip">Data Structures</span></div>
-</div>
-</div>
-```
-
-
-## Technical
-
-```{=html}
-<div class="skills">
-<div class="skill-row">
-<div class="skill-cat">Languages</div>
-<div class="chips"><span class="chip">Python</span><span class="chip">C++</span><span class="chip">C#</span><span class="chip">Java</span><span class="chip">SQL</span><span class="chip">Pine Script</span></div>
-</div>
-<div class="skill-row">
-<div class="skill-cat">ML / statistics</div>
-<div class="chips"><span class="chip">scikit-learn</span><span class="chip">Statsmodels</span><span class="chip">walk-forward validation</span><span class="chip">Monte Carlo</span><span class="chip">block bootstrap</span></div>
-</div>
-<div class="skill-row">
-<div class="skill-cat">Robotics</div>
-<div class="chips"><span class="chip">ROS 2</span><span class="chip">Cartographer SLAM</span><span class="chip">Nav2</span><span class="chip">MuJoCo</span><span class="chip">RViz2</span><span class="chip">LiDAR</span><span class="chip">OpenCV</span><span class="chip">path planning</span></div>
-</div>
-<div class="skill-row">
-<div class="skill-cat">Data</div>
-<div class="chips"><span class="chip">pandas</span><span class="chip">NumPy</span><span class="chip">SciPy</span><span class="chip">TA-Lib</span><span class="chip">Matplotlib</span><span class="chip">Plotly</span><span class="chip">Parquet</span></div>
-</div>
-<div class="skill-row">
-<div class="skill-cat">Platforms &amp; tools</div>
-<div class="chips"><span class="chip">Alpaca API</span><span class="chip">QuantConnect</span><span class="chip">Backtrader</span><span class="chip">NinjaTrader</span><span class="chip">Streamlit</span><span class="chip">pytest</span><span class="chip">Git</span><span class="chip">Linux</span></div>
-</div>
-</div>
-```
-
-
-## Awards
-
-```{=html}
-<div class="awards">
-<div class="award">
-<div class="award-name">#1 OPR, worldwide</div>
-<div class="award-detail">FTC World Championships &middot; 8,000+ teams &middot; 2024</div>
-</div>
-<div class="award">
-<div class="award-name">Dean&rsquo;s List Finalist</div>
-<div class="award-detail">FIRST Tech Challenge &middot; individual student award &middot; 2024</div>
-</div>
-<div class="award">
-<div class="award-name">Top 100, United States</div>
-<div class="award-detail">IMC Prosperity &middot; qualifying rounds</div>
-</div>
-<div class="award">
-<div class="award-name">4th Degree Black Belt</div>
-<div class="award-detail">Taekwondo &middot; Kukkiwon, World Taekwondo Headquarters &middot; 2025</div>
-</div>
-</div>
-```
-
-
-## Get in touch
-
-Best reached at [jeremyhsu2025@gmail.com](mailto:jeremyhsu2025@gmail.com). Code on
-[GitHub](https://github.com/mrjerm), background on
-[LinkedIn](https://www.linkedin.com/in/jerm04/). One-page versions:
-[software engineering](resume-engineering.pdf) or
-[quantitative research](resume-quant.pdf).

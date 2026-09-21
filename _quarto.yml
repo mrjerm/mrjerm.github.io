@@ -68,9 +68,10 @@ website:
 
 format:
   html:
-    theme:
-      light: [cosmo, theme.scss]
-      dark: [cosmo, theme.scss, theme-dark.scss]
+    # Single dark theme. The Sept 2026 redesign is dark-only, so there is no
+    # light bundle and consequently no colour-scheme toggle in the navbar.
+    # theme-dark.scss was deleted in the same pass.
+    theme: [cosmo, theme.scss]
     toc: true
     toc-depth: 3
     anchor-sections: true
@@ -78,6 +79,142 @@ format:
     code-fold: true
     code-tools: false
     highlight-style: github
+    # Set before first paint so the scroll-arrival rules in theme.scss can hide
+    # their targets without a flash of visible content. With JS disabled the
+    # class never lands and nothing is ever hidden.
+    include-in-header:
+      text: |
+        <script>document.documentElement.classList.add("jh-js");</script>
+    include-after-body:
+      text: |
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"
+          integrity="sha512-Kef5sc7gfTacR7TZKelcrRs15ipf7+t+n7Zh6mKNJbmW+/RRdCW9nwfLn4YX0s2nO6Kv5Y2ChqgIakaC6PW09A=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
+        <script>
+        (function () {
+          var html = document.documentElement;
+          var reduce = false;
+          try {
+            reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          } catch (e) {}
+
+          // Scroll arrivals.
+          try {
+            if (reduce) {
+              html.classList.remove("jh-js");
+            } else {
+              var rise = [].slice.call(document.querySelectorAll(".jh-rise"));
+              if (!rise.length || !("IntersectionObserver" in window)) {
+                html.classList.remove("jh-js");
+              } else {
+                var riseObs = new IntersectionObserver(function (entries) {
+                  entries.forEach(function (e) {
+                    if (!e.isIntersecting) return;
+                    var el = e.target;
+                    var sibs = el.parentNode
+                      ? [].slice.call(el.parentNode.children)
+                      : [];
+                    el.style.transitionDelay =
+                      Math.min(Math.max(sibs.indexOf(el), 0), 5) * 80 + "ms";
+                    el.classList.add("is-in");
+                    riseObs.unobserve(el);
+                  });
+                }, { rootMargin: "0px 0px -10% 0px", threshold: 0.08 });
+                rise.forEach(function (el) { riseObs.observe(el); });
+              }
+            }
+          } catch (err) {
+            // Never let a motion bug cost anyone the content.
+            html.classList.remove("jh-js");
+          }
+
+          // Dot navigation + navbar docking.
+          try {
+            var panels = [].slice.call(document.querySelectorAll(".panel[id]"));
+            var dots = [].slice.call(document.querySelectorAll(".dot-nav a"));
+            var navbar = document.querySelector(".navbar");
+
+            if (panels.length && "IntersectionObserver" in window) {
+              var navObs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                  if (!e.isIntersecting) return;
+                  var id = e.target.id;
+                  dots.forEach(function (d) {
+                    // `.hash` rather than getAttribute("href"): the rendered
+                    // href comes back resolved to an absolute URL, so a string
+                    // compare against "#id" never matched and no dot ever lit.
+                    var on = d.hash === "#" + id;
+                    d.classList.toggle("is-active", on);
+                    // The dot list is a nav landmark, so mark the current one
+                    // for assistive tech and not only visually.
+                    if (on) {
+                      d.setAttribute("aria-current", "true");
+                    } else {
+                      d.removeAttribute("aria-current");
+                    }
+                  });
+                  // The hero is the only panel the bar may float over
+                  // transparently; everything below it needs a ground.
+                  if (navbar) {
+                    navbar.classList.toggle("is-docked", id !== "hero");
+                  }
+                });
+              }, { threshold: 0.5 });
+              panels.forEach(function (p) { navObs.observe(p); });
+            }
+          } catch (err) {}
+
+          // Particle field. Guarded three ways: the container only exists on the
+          // home page, the library is absent if the CDN is blocked or the SRI
+          // check fails, and it is skipped entirely under reduced-motion (the
+          // hero still reads fine — this is a background, not content).
+          try {
+            if (!reduce &&
+                document.getElementById("particles-js") &&
+                typeof window.particlesJS === "function") {
+              window.particlesJS("particles-js", {
+                particles: {
+                  number: { value: 70, density: { enable: true, value_area: 900 } },
+                  color: { value: "#99aec2" },
+                  shape: { type: "circle" },
+                  opacity: { value: 0.5, random: true, anim: { enable: false } },
+                  size: { value: 2.2, random: true, anim: { enable: false } },
+                  line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#7d93a7",
+                    opacity: 0.32,
+                    width: 1
+                  },
+                  move: {
+                    enable: true,
+                    speed: 0.9,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                  }
+                },
+                interactivity: {
+                  detect_on: "canvas",
+                  // Pointer interaction is off: #particles-js is
+                  // pointer-events:none, so the canvas must never try to claim
+                  // clicks meant for the hero links above it.
+                  events: {
+                    onhover: { enable: false },
+                    onclick: { enable: false },
+                    resize: true
+                  }
+                },
+                retina_detect: true
+              });
+            }
+          } catch (err) {}
+        })();
+        </script>
 
 execute:
   enabled: false
