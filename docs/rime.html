@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-30a214b0a28c78e5b83563390856a0f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d920737f7039bea70f430d41cfb968fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-1c836e6e0ba5b7f37bcdb98f73f9540d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -228,42 +228,42 @@ ul.task-list li input[type="checkbox"] {
 <div class="eyebrow">
 <p>Weaver Capital LP · deployed strategy · Python, pandas, NumPy, Alpaca API, Streamlit</p>
 </div>
-<p><strong>Rime</strong> is a daily allocator. Each morning it splits capital between leveraged equity ETF exposure, a volatility hedge, and cash. It has been running live on Alpaca since April 2026.</p>
-<p>There are three parts to it: a base signal, a macro and risk overlay on top of that, and the infrastructure that runs the whole thing unattended. I take them in that order below.</p>
+<p><strong>Rime</strong> is a daily allocator. Each morning it splits capital between leveraged equity ETF exposure, a volatility hedge, and cash. It’s been running live on Alpaca since April 2026.</p>
+<p>There are three parts to it: a base signal, a macro and risk overlay on top of that, and the infrastructure that runs the whole thing unattended. I’ll go through them in that order.</p>
 <div class="metrics">
 <div class="metric"><div class="metric-value">1.86</div><div class="metric-label">Sharpe, simulated</div><div class="metric-note">2012–2025 · SPY 0.92</div></div>
-<div class="metric"><div class="metric-value">1.58</div><div class="metric-label">Sharpe excluding 2020</div><div class="metric-note">the honest number</div></div>
+<div class="metric"><div class="metric-value">1.58</div><div class="metric-label">Sharpe excluding 2020</div><div class="metric-note">ex-crisis number</div></div>
 <div class="metric"><div class="metric-value">−17%</div><div class="metric-label">Max drawdown, simulated</div><div class="metric-note">SPY −34% same window</div></div>
-<div class="metric"><div class="metric-value">~44%</div><div class="metric-label">Average gross exposure</div><div class="metric-note">not fully invested</div></div>
+<div class="metric"><div class="metric-value">~44%</div><div class="metric-label">Average gross exposure</div><div class="metric-note">capital efficient</div></div>
 </div>
-<p>The gap between those two Sharpe figures is 2020. The volatility hedge had a huge run during the COVID crash, and a stretch like that lifts the headline number for the entire period. I publish both because 1.58 is the better guide to what the strategy does in an ordinary year.</p>
+<p>The volatility hedge had a huge run during the 2020 COVID crash, and a stretch like that lifts the headline number for the entire period. I publish both because 1.58 is the better guide to what the strategy does in an ordinary year.</p>
 <div class="note-strip">
 <p>Figures above are <strong>simulated</strong> results from a historical backtest over 2012–2025, not live trading results. Simulated performance has inherent limitations: it is constructed with hindsight, does not reflect the impact of real order flow, and does not guarantee future results. A live track record is available on request.</p>
 </div>
 <section id="the-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem">The problem</h2>
-<p>Leveraged index ETFs decay in choppy markets. They rebalance daily, so the compounded return depends on the path and not just the endpoint. A sideways market grinds them down even when the index finishes flat. Holding one indefinitely is a bet that volatility stays low.</p>
-<p>So I asked something narrower: can I hold that exposure only while the drag is small, and sit somewhere else the rest of the time?</p>
+<p>Leveraged index ETFs rebalance daily, so the compounded return depends on the path and not just the endpoint. That’s what makes them decay in choppy markets. A sideways market grinds them down even when the index finishes flat. Holding one indefinitely is a bet that volatility stays low.</p>
+<p>Rime holds that exposure only while the drag is small, and sits somewhere else the rest of the time.</p>
 </section>
 <section id="how-it-decides" class="level2">
 <h2 class="anchored" data-anchor-id="how-it-decides">How it decides</h2>
-<p><strong>The base signal.</strong> A shallow decision tree over a set of trend and volatility state variables. I kept it shallow on purpose. Fourteen years of daily bars is not a big sample, and every extra split is another chance to fit noise.</p>
-<p><strong>The macro and risk overlay.</strong> The macro layer uses cross-asset series that tend to move ahead of equities instead of alongside them. On top of that sits a volatility circuit breaker that cuts leveraged exposure when volatility spikes. It runs on hysteresis, so the level that switches it on is not the level that switches it off. Without that, the allocation thrashes around a single threshold. A rebalance deadband covers everything else: if the target has not moved much, nothing trades.</p>
+<p><strong>The base signal.</strong> A shallow decision tree over a set of trend and volatility state variables. I kept it shallow on purpose. Fourteen years of daily bars isn’t a big sample, and every extra split is another chance to fit noise.</p>
+<p><strong>The macro and risk overlay.</strong> The macro layer uses cross-asset series that tend to move ahead of equities instead of alongside them. On top of that sits a volatility circuit breaker that cuts leveraged exposure when volatility spikes. It runs on hysteresis, so the level that switches it on isn’t the level that switches it off. That stops a noisy signal near the threshold from triggering it repeatedly. A rebalance deadband covers everything else: if the target hasn’t moved much, nothing trades.</p>
 <div class="note-strip">
-<p>I do not publish the specific state variables, macro series, or thresholds here. Happy to walk through them in an interview.</p>
+<p>I don’t publish the specific state variables, macro series, or thresholds here. Happy to walk through them in an interview.</p>
 </div>
 </section>
 <section id="the-infrastructure" class="level2">
 <h2 class="anchored" data-anchor-id="the-infrastructure">The infrastructure</h2>
-<p><strong>One decision function.</strong> Research and production call the same function. There is no separate notebook that approximates the live system. That gap is how a backtested strategy quietly stops being the strategy you tested.</p>
-<p><strong>State that survives a crash.</strong> State persists between runs in a JSON-backed store written atomically, so an interrupted run resumes cleanly instead of rebuilding its view of the current regime from a truncated window. Order handling is idempotent, so a retry after a partial failure does not double-submit.</p>
+<p><strong>One decision function.</strong> Research and production call the same function. There’s no separate notebook that approximates the live system. That gap is where live behavior starts diverging from what I tested.</p>
+<p><strong>State that survives a crash.</strong> State persists between runs in a JSON-backed store written atomically, so an interrupted run resumes cleanly instead of rebuilding its view of the current regime from a truncated window. Order handling is idempotent, so a retry after a partial failure doesn’t double-submit.</p>
 <p><strong>Data quality gates.</strong> Market and macro feeds come through a pipeline with Parquet caching, data-quality checks, and lookahead-safe time alignment. Bad ticks, stale bars, and missing sessions get caught before anything reaches the allocator. If the feed looks wrong, the system sits out.</p>
 <p><strong>47 pytest tests</strong> across the decision tree, state transitions, gating logic, and the risk overlays. They cover regime transitions, breaker behavior at the hysteresis boundaries, and deadband logic. Mostly they exist so I can change things without guessing.</p>
-<p><strong>Monitoring.</strong> A Streamlit and Plotly dashboard surfaces live positions, system state, and performance. Anything running unattended needs to be legible when it looks wrong.</p>
+<p><strong>Monitoring.</strong> A Streamlit and Plotly dashboard surfaces live positions, system state, and performance. I need to be able to see what it is doing when something looks wrong.</p>
 </section>
 <section id="validation" class="level2">
 <h2 class="anchored" data-anchor-id="validation">Validation</h2>
-<p>One backtest number does not tell you much, so I put it through a few things that could have killed it:</p>
+<p>One backtest number doesn’t tell you much, so I put it through a few things that could have killed it:</p>
 <table class="spec caption-top table">
 <tbody>
 <tr class="odd">

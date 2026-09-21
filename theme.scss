@@ -16,7 +16,7 @@
 //     #92A1AF, #99AEC2, #83A5BD.
 //   · Full-viewport panels. The home page is a one-pager: each panel fills the
 //     screen, alternates slate/teal, and is tracked by a fixed dot nav.
-//   · A Didone display serif (Bodoni Moda) for names and panel titles, Inter
+//   · A humanist display serif (Newsreader) for names and panel titles, Inter
 //     for everything else, and letterspaced uppercase for eyebrow labels.
 //   · Contrast is managed PER PANEL. Secondary text that passes on slate fails
 //     on teal, so every panel declares its own ink/muted pair and components
@@ -24,15 +24,27 @@
 // ═══════════════════════════════════════════════════════════════════════════
 
 // ── Type ────────────────────────────────────────────────────────────────────
-// Bodoni Moda is the closest free Didone to the reference's display face:
-// vertical stress, extreme thick/thin, ball terminals. It is optical-size aware
-// (6..96) so it holds up at both 18px and 120px. Display sizes only — never set
-// body copy in it.
+// Approximates Anthropic's brand stack using only freely licensed faces.
+// Anthropic serves three custom typefaces of its own (Anthropic Serif, Sans and
+// Mono) from its CDN; those are proprietary and are NOT used here. What is used:
+//
+//   Newsreader      stands in for Anthropic Serif. Humanist, moderate contrast,
+//                   sturdy at both text and display size, optical-size aware
+//                   (6..72). Replaced Bodoni Moda, whose Didone hairlines
+//                   disappeared at small sizes on the dark ground.
+//   Inter           stands in for Anthropic Sans.
+//   JetBrains Mono  is what Anthropic itself pairs with its faces, and is free.
+//
+// NOTE: do not pick a family whose name ends in a digit ("Source Serif 4" was
+// tried first). Quarto's CSS minifier strips the quotes from the custom
+// property, and an unquoted family name cannot contain a bare number — the
+// whole font-family then fails at computed-value time and silently inherits the
+// sans stack, with no error anywhere.
 $font-family-sans-serif: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
   "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
 $font-family-monospace: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
   Consolas, monospace !default;
-$font-family-serif: "Bodoni Moda", Didot, "Bodoni MT", Georgia, serif !default;
+$font-family-serif: "Newsreader", "Iowan Old Style", Georgia, serif !default;
 $headings-font-family: $font-family-serif !default;
 
 $font-size-root: 17px !default;
@@ -80,7 +92,7 @@ $link-hover-decoration: none !default;
 
 /*-- scss:rules --*/
 
-@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap");
 
 :root {
   --jh-slate: #{$slate};
@@ -660,7 +672,7 @@ body.nav-fixed:has(#quarto-content.page-layout-full) {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 0.25rem 2rem;
-  padding: 0.7rem 0;
+  padding: 0.42rem 0;
   border-bottom: 1px solid var(--panel-rule);
 
   @media (min-width: 760px) {
@@ -865,7 +877,7 @@ header.quarto-title-block {
     border-right: none;
   }
 
-  // Sans, not Bodoni: a Didone's hairlines wash out at this size in tan on a
+  // Sans, not the serif: tabular numerals read more cleanly at tile size on a
   // dark ground. Same reason .stat-value is sans on the one-pager.
   .metric-value {
     font-family: var(--jh-sans);
@@ -1014,50 +1026,53 @@ header.quarto-title-block {
 }
 
 // ── Awards ──────────────────────────────────────────────────────────────────
+// Reads --panel-* so the same component works on slate, teal or the deep panel.
+// Rules sit between columns only, so it reads as a row of facts rather than a
+// boxed table.
 .awards {
   display: grid;
   grid-template-columns: 1fr;
-  border: 1px solid var(--jh-hairline);
-  margin: 2rem 0 0;
+  gap: 0;
+  margin: 1.6rem 0 0;
+  border-top: 1px solid var(--panel-rule, var(--jh-hairline));
 
-  @media (min-width: 700px) {
+  @media (min-width: 620px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (min-width: 980px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
 .award {
-  padding: 1.3rem 1.4rem 1.2rem;
-  border-bottom: 1px solid var(--jh-hairline);
+  padding: 0.85rem 1.3rem 0.85rem 0;
+  border-bottom: 1px solid var(--panel-rule, var(--jh-hairline));
 
-  @media (min-width: 700px) {
-    &:nth-child(odd) {
-      border-right: 1px solid var(--jh-hairline);
+  @media (min-width: 980px) {
+    border-bottom: 0;
+    border-right: 1px solid var(--panel-rule, var(--jh-hairline));
+    padding-left: 1.3rem;
+
+    &:first-child {
+      padding-left: 0;
     }
-    &:last-child:nth-child(odd) {
+    &:last-child {
       border-right: 0;
     }
   }
 
-  &:last-child {
-    border-bottom: 0;
-  }
-
   .award-name {
     font-family: var(--jh-serif);
-    font-size: 1.32rem;
-    line-height: 1.15;
-    color: var(--jh-ink);
-    margin-bottom: 0.4rem;
+    font-size: 1.28rem;
+    line-height: 1.1;
+    color: var(--jh-accent);
+    margin-bottom: 0.45rem;
   }
 
   .award-detail {
-    font-family: var(--jh-sans);
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    line-height: 1.5;
-    color: var(--jh-muted);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--panel-muted, var(--jh-muted));
   }
 }
 

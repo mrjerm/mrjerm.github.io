@@ -30,10 +30,10 @@ Two reasons. The autonomous period is a control and estimation problem on a hard
 deadline, and OPR is a statistic.
 
 **OPR**, Offensive Power Rating, is a least-squares estimate. Alliance scores are
-observed and individual contributions are not, so you solve for the per-team
-contribution vector that best explains the observed alliance totals across the match
-schedule. Finishing #1 on it among 8,000+ teams means the model attributed more scoring
-to this robot than to any other, over a season of matches nobody got to choose.
+observed and individual contributions aren't, so you solve for the per-team contribution
+vector that best explains the observed alliance totals across the match schedule.
+Finishing #1 on it among 8,000+ teams means the model attributed more scoring to this
+robot than to any other, over a season of matches nobody got to choose.
 
 **The autonomous stack** was a real software problem. Thirty seconds, no driver input,
 and a robot that has to localize itself, decide, and act. Vision-based navigation meant
@@ -49,7 +49,7 @@ under it.
 
 I still care about the failure modes. Sensor input is noisy, occasionally corrupt, and
 never quite what you calibrated against. The system has to keep working when a component
-returns something wrong instead of acting on it confidently. And there is a gap between
+returns something wrong instead of acting on it confidently. And there's a gap between
 the practice field and the competition field that behaves a lot like the gap between a
 backtest and live execution.
 

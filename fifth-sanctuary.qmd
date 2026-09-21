@@ -12,7 +12,7 @@ Weaver Capital LP · deployed strategy · Python, C#/NinjaScript, MQL5
 :::
 
 **Fifth Sanctuary** is an intraday volatility-expansion system on gold. It runs long and
-short as two separate sleeves, each sized by a macro state vector, and it is flat most of
+short as two separate sleeves, each sized by a macro state vector, and it's flat most of
 the time. Live since January 2026.
 
 ```{=html}
@@ -27,24 +27,24 @@ the time. Live since January 2026.
 ::: {.note-strip}
 Figures above are **simulated** results from a historical backtest on spot XAU hourly
 bars, 2004–2025, not live trading results. Simulated performance is constructed with
-hindsight, does not reflect real order flow, and does not guarantee future results.
-A live track record is available on request.
+hindsight, does not reflect real order flow, and does not guarantee future results. A
+live track record is available on request.
 :::
 
 ## The asymmetry that shaped the design
 
 My first version treated long and short the same way. That was a mistake.
 
-Gold does not behave symmetrically, and the research was blunt about it. The short sleeve
-was not just weaker. It lost money consistently under a particular set of macro
-conditions, for a reason that made sense once I went looking for it. So instead of tuning
-the shorts, I filtered them out of those conditions entirely.
+Gold doesn't behave symmetrically, and the results showed it clearly. The short sleeve
+wasn't just weaker. It lost money consistently under a particular set of macro
+conditions, for a reason that made sense once I went looking for it. So instead of
+tuning the shorts, I filtered them out of those conditions entirely.
 
 That one change did more for the system than anything else I tried. I found it by asking
 why a component was losing, instead of going straight to parameter tuning.
 
 ::: {.note-strip}
-I do not publish which conditions, or the macro series behind them. Happy to go through
+I don't publish which conditions, or the macro series behind them. Happy to go through
 the research in an interview.
 :::
 
@@ -56,8 +56,7 @@ where each job belongs.
 **The macro layer, in Python.** A daily script pulls a handful of macro series from FRED
 and Yahoo and turns them into sleeve weights. Everything is T+1 shifted, so a given
 trading day can only see data that was actually published before it began. Getting this
-wrong is the standard way a macro overlay produces a beautiful backtest that dies on
-contact with production.
+wrong is the standard way a macro overlay backtests well and then fails live.
 
 **The execution layer, in C#/NinjaScript.** The live strategy takes the daily sleeve
 weights and handles bar-by-bar execution, order management, and risk limits.
@@ -79,13 +78,13 @@ account size constrains position granularity.
 
 ## Reading the numbers honestly
 
-A 42% win rate means this thing is wrong more often than it is right. For a
-volatility-expansion system that is expected. It takes a lot of small losses waiting for
+A 42% win rate means this thing is wrong more often than it's right. For a
+volatility-expansion system that's expected. It takes a lot of small losses waiting for
 an expansion and makes its money on the ones that follow through, at roughly 2:1. The
-number I actually watch is the payoff ratio, since that is what would erode first if
+number I actually watch is the payoff ratio, since that's what would erode first if
 market character changed.
 
-Being flat 82% of the time is a feature. The capital is not committed, which is what lets
+Being flat 82% of the time is a feature. The capital isn't committed, which is what lets
 this sit alongside other sleeves at the portfolio level.
 
 The 22-year window matters more to me than either ratio. It covers 2008, the 2011–2015

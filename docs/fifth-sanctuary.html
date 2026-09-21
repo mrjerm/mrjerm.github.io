@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-30a214b0a28c78e5b83563390856a0f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d920737f7039bea70f430d41cfb968fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-1c836e6e0ba5b7f37bcdb98f73f9540d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -227,7 +227,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="eyebrow">
 <p>Weaver Capital LP · deployed strategy · Python, C#/NinjaScript, MQL5</p>
 </div>
-<p><strong>Fifth Sanctuary</strong> is an intraday volatility-expansion system on gold. It runs long and short as two separate sleeves, each sized by a macro state vector, and it is flat most of the time. Live since January 2026.</p>
+<p><strong>Fifth Sanctuary</strong> is an intraday volatility-expansion system on gold. It runs long and short as two separate sleeves, each sized by a macro state vector, and it’s flat most of the time. Live since January 2026.</p>
 <div class="metrics">
 <div class="metric"><div class="metric-value">1.48</div><div class="metric-label">Profit factor, simulated</div><div class="metric-note">2004–2025 · 22 years</div></div>
 <div class="metric"><div class="metric-value">1.38</div><div class="metric-label">Sharpe, simulated</div><div class="metric-note">spot XAU, hourly bars</div></div>
@@ -240,16 +240,16 @@ ul.task-list li input[type="checkbox"] {
 <section id="the-asymmetry-that-shaped-the-design" class="level2">
 <h2 class="anchored" data-anchor-id="the-asymmetry-that-shaped-the-design">The asymmetry that shaped the design</h2>
 <p>My first version treated long and short the same way. That was a mistake.</p>
-<p>Gold does not behave symmetrically, and the research was blunt about it. The short sleeve was not just weaker. It lost money consistently under a particular set of macro conditions, for a reason that made sense once I went looking for it. So instead of tuning the shorts, I filtered them out of those conditions entirely.</p>
+<p>Gold doesn’t behave symmetrically, and the results showed it clearly. The short sleeve wasn’t just weaker. It lost money consistently under a particular set of macro conditions, for a reason that made sense once I went looking for it. So instead of tuning the shorts, I filtered them out of those conditions entirely.</p>
 <p>That one change did more for the system than anything else I tried. I found it by asking why a component was losing, instead of going straight to parameter tuning.</p>
 <div class="note-strip">
-<p>I do not publish which conditions, or the macro series behind them. Happy to go through the research in an interview.</p>
+<p>I don’t publish which conditions, or the macro series behind them. Happy to go through the research in an interview.</p>
 </div>
 </section>
 <section id="architecture" class="level2">
 <h2 class="anchored" data-anchor-id="architecture">Architecture</h2>
 <p>The system runs across a language boundary. That was deliberate, and it comes down to where each job belongs.</p>
-<p><strong>The macro layer, in Python.</strong> A daily script pulls a handful of macro series from FRED and Yahoo and turns them into sleeve weights. Everything is T+1 shifted, so a given trading day can only see data that was actually published before it began. Getting this wrong is the standard way a macro overlay produces a beautiful backtest that dies on contact with production.</p>
+<p><strong>The macro layer, in Python.</strong> A daily script pulls a handful of macro series from FRED and Yahoo and turns them into sleeve weights. Everything is T+1 shifted, so a given trading day can only see data that was actually published before it began. Getting this wrong is the standard way a macro overlay backtests well and then fails live.</p>
 <p><strong>The execution layer, in C#/NinjaScript.</strong> The live strategy takes the daily sleeve weights and handles bar-by-bar execution, order management, and risk limits.</p>
 <p><strong>Dual-series routing.</strong> I analyze the full-size gold futures contract, where the liquidity and the cleanest price signal are, but execute on micro contracts because account size constrains position granularity.</p>
 <table class="spec caption-top table">
@@ -283,8 +283,8 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="reading-the-numbers-honestly" class="level2">
 <h2 class="anchored" data-anchor-id="reading-the-numbers-honestly">Reading the numbers honestly</h2>
-<p>A 42% win rate means this thing is wrong more often than it is right. For a volatility-expansion system that is expected. It takes a lot of small losses waiting for an expansion and makes its money on the ones that follow through, at roughly 2:1. The number I actually watch is the payoff ratio, since that is what would erode first if market character changed.</p>
-<p>Being flat 82% of the time is a feature. The capital is not committed, which is what lets this sit alongside other sleeves at the portfolio level.</p>
+<p>A 42% win rate means this thing is wrong more often than it’s right. For a volatility-expansion system that’s expected. It takes a lot of small losses waiting for an expansion and makes its money on the ones that follow through, at roughly 2:1. The number I actually watch is the payoff ratio, since that’s what would erode first if market character changed.</p>
+<p>Being flat 82% of the time is a feature. The capital isn’t committed, which is what lets this sit alongside other sleeves at the portfolio level.</p>
 <p>The 22-year window matters more to me than either ratio. It covers 2008, the 2011–2015 gold bear market, 2020, and the 2022 rate shock. Those are four regimes different enough that surviving all of them is harder to write off as an artifact of one.</p>
 </section>
 <section id="what-id-do-next" class="level2">
