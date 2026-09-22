@@ -195,6 +195,25 @@ pre {
     background: rgba(26, 38, 48, 0.92);
     backdrop-filter: blur(8px);
   }
+
+  // The collapsed menu opens inside the bar, so on the hero it dropped its
+  // links straight onto the name with no ground under them.
+  &:has(.navbar-collapse.show),
+  &:has(.navbar-collapse.collapsing) {
+    background: rgba(26, 38, 48, 0.97);
+    backdrop-filter: blur(8px);
+  }
+}
+
+// `.is-docked` is set by the panel observer, which only exists on the home page.
+// On the project pages headroom re-shows the bar on every upward scroll, and it
+// came back transparent over running text. Headroom's own not-top class is the
+// equivalent signal there.
+body:not(:has(#quarto-content.page-layout-full))
+  #quarto-header.headroom--not-top
+  .navbar {
+  background: rgba(26, 38, 48, 0.92);
+  backdrop-filter: blur(8px);
 }
 
 .navbar > .navbar-container {
@@ -1518,5 +1537,156 @@ main.content
         transform: none;
       }
     }
+  }
+}
+
+// ── Touch and portrait layout ───────────────────────────────────────────────
+// Last block in the file on purpose. The one-pager is built for a landscape
+// viewport — copy in a left column, schematic running full-bleed behind it —
+// and most of those assumptions break on a phone. Several rules below restate a
+// declaration made in an earlier media block (the max-height rhythm,
+// `.panel-stats`, `.stat-label`), so they have to come last to win on source
+// order. Note `1rem` is 17px here, not 16px.
+//
+// The three conditions are deliberately different from each other: snapping is
+// a TOUCH problem, the cropped schematic is an ASPECT RATIO problem, and the
+// type rhythm is a WIDTH problem. Gating all three on width alone left landscape
+// phones snapping and portrait tablets showing a cropped fragment.
+
+// 1. SNAPPING OFF ON TOUCH. Panels taller than the viewport (experience always,
+// and every panel on a landscape phone) turn `scroll-snap-align: start` into a
+// trap: the browser keeps pulling back to the top of the panel while the reader
+// is trying to reach its bottom. Mobile URL bars make it worse by resizing the
+// viewport mid-gesture, which moves the snap target under the finger. A mouse
+// scrolls in discrete notches and does not suffer from this, so pointer-fine
+// desktops keep the snap.
+@media (pointer: coarse), (max-height: 600px) {
+  html {
+    scroll-snap-type: none;
+  }
+
+  .panel {
+    scroll-snap-align: none;
+  }
+}
+
+// 2. THE SCHEMATIC LEAVES THE BACKGROUND. The drawings are 1100x440, and
+// `slice` scales them to cover the panel. The visible fraction is the panel's
+// own aspect ratio over 2.5, so a 390x844 phone showed about 17% of each drawing
+// and a 768x1024 tablet about 29% — a zoomed fragment that reads as grey blocks
+// rather than as a chart. A band pinned to the bottom of the panel was tried
+// next and failed differently: it ran behind the stats and the call to action,
+// and under the scrim it was all but invisible.
+//
+// So on portrait screens, and on landscape phones (whose panels are several
+// screens tall, so the viewport's aspect says nothing about the panel's), the
+// drawing drops into the flow under the copy as an ordinary full-bleed figure,
+// with the provenance caption directly beneath it. Giving the SVG the viewBox's
+// own aspect ratio makes `slice` crop nothing. The panel may now run past one
+// screen; that is fine, because snapping is off on these devices (block 1).
+@media (max-aspect-ratio: 5/4), (max-height: 600px) {
+  .panel-immersive {
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+
+    // No copy sits on the drawing any more, so there is nothing to scrim.
+    &::before {
+      display: none;
+    }
+
+    .panel-inner {
+      order: 1;
+    }
+
+    .panel-figcap {
+      position: static;
+      order: 3;
+      align-self: flex-end;
+      margin-top: 0.7rem;
+    }
+  }
+
+  .panel-canvas {
+    position: relative;
+    inset: auto;
+    order: 2;
+    // Bleed to the panel edges, as the backdrop did.
+    margin: clamp(1.6rem, 4vh, 2.4rem) calc(-1 * var(--jh-gutter)) 0;
+    opacity: 0.55;
+
+    .jh-svg {
+      height: auto;
+      aspect-ratio: 1100 / 440;
+      // On a landscape phone full width is ~340px of drawing on a 390px screen.
+      width: min(100%, 55svh * 2.5);
+      margin-inline: auto;
+    }
+  }
+}
+
+// 3. TIGHTEN THE RHYTHM ON NARROW SCREENS. Desktop leading and gaps left a lot
+// of dead space on a phone and pushed the copy well down each panel. The
+// savings come out of leading and label tracking, not out of copy.
+@media (max-width: 700px) {
+  .panel {
+    // 8vh of a tall phone screen is a lot of dead space above the fold.
+    padding-block: clamp(2.6rem, 6vh, 5rem) clamp(2rem, 4vh, 3.5rem);
+  }
+
+  .panel-lede {
+    font-size: 0.94rem;
+    line-height: 1.6;
+    margin-bottom: 1.3rem;
+  }
+
+  .panel-meta {
+    margin-bottom: 1.4rem;
+  }
+
+  .panel-stats {
+    margin-bottom: 1.7rem;
+    row-gap: 1rem;
+    align-content: start;
+  }
+
+  // "AVG GROSS EXPOSURE, SIMULATED" ran to three lines in a 160px track at the
+  // desktop tracking, which is what left the stat rows at uneven heights.
+  .panel-stat .stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    margin-top: 0.4rem;
+  }
+}
+
+// Small phones (iPhone SE, and the 360px Android class). The step above gets the
+// panels close; at 320-430px the lede is simply running more lines, so the rest
+// comes out of leading and the gaps between blocks.
+@media (max-width: 430px) {
+  .panel {
+    padding-block: clamp(2.2rem, 5vh, 4rem) clamp(1.6rem, 3.2vh, 3rem);
+  }
+
+  .panel-eyebrow {
+    margin-bottom: 0.7rem;
+
+    &::after {
+      margin-top: 0.7rem;
+    }
+  }
+
+  .panel-lede {
+    font-size: 0.88rem;
+    line-height: 1.52;
+    margin-bottom: 1.1rem;
+  }
+
+  .panel-meta {
+    margin-bottom: 1.1rem;
+  }
+
+  .panel-stats {
+    margin-bottom: 1.3rem;
+    row-gap: 0.85rem;
   }
 }
