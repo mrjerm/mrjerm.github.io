@@ -291,8 +291,8 @@ page-layout: full
 <a class="social-dot" href="mailto:jeremyhsu2025@gmail.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
 </div>
 <div class="jh-rise" style="display:flex;gap:2rem;justify-content:center;flex-wrap:wrap">
-<a class="panel-link" href="resume-engineering.pdf">Engineering resume <span aria-hidden="true">&rarr;</span></a>
-<a class="panel-link" href="resume-quant.pdf">Quant resume <span aria-hidden="true">&rarr;</span></a>
+<a class="panel-link" href="resume-engineering.pdf" target="_blank" rel="noopener">Engineering resume <span aria-hidden="true">&rarr;</span></a>
+<a class="panel-link" href="resume-quant.pdf" target="_blank" rel="noopener">Quant resume <span aria-hidden="true">&rarr;</span></a>
 </div>
 </div>
 </section>

@@ -43,8 +43,10 @@ website:
       - text: Resume
         menu:
           - href: resume-engineering.pdf
+            target: _blank
             text: "Software engineering"
           - href: resume-quant.pdf
+            target: _blank
             text: "Quantitative research"
     right:
       - icon: github

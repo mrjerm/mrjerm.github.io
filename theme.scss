@@ -520,8 +520,14 @@ body.nav-fixed:has(#quarto-content.page-layout-full) {
 }
 
 // ── Link affordance ─────────────────────────────────────────────────────────
-// The reference underlines nothing; it signals with the accent and a rule that
-// widens on hover. Used for the "read the writeup" links out of each panel.
+// The "read the writeup" link out of each panel. It was an accent rule under
+// the label, which the reference's own treatment is, but on a full panel of
+// copy it read as another line of text rather than as the way out of the panel.
+// A boxed button carries further, and filling it on hover is a stronger arrival
+// than recolouring a hairline was.
+//
+// The box is sized so it clears the 44px touch target on its own, which the
+// underlined version did not.
 .panel-link {
   display: inline-flex;
   align-items: center;
@@ -533,15 +539,30 @@ body.nav-fixed:has(#quarto-content.page-layout-full) {
   text-transform: uppercase;
   color: var(--jh-accent);
   text-decoration: none;
-  padding-bottom: 0.4rem;
-  border-bottom: 1px solid currentColor;
-  transition: gap 0.18s ease, color 0.18s ease;
+  padding: 0.82rem 1.2rem;
+  border: 1px solid currentColor;
+  transition: color 0.18s ease, background-color 0.18s ease,
+    border-color 0.18s ease;
+
+  // The arrow moves rather than the gap, so the box does not resize under the
+  // pointer.
+  span {
+    transition: transform 0.18s ease;
+  }
 
   &:hover,
   &:focus-visible {
-    color: var(--panel-ink);
-    gap: 1rem;
+    background: var(--jh-accent);
+    border-color: var(--jh-accent);
+    // Reversed out against the accent fill, so it cannot be --panel-ink. Nor
+    // can it be --panel-bg: teal on the accent is only 3.9:1. The deep slate
+    // clears 7:1 on the fill and reads as ink on every panel colour.
+    color: var(--jh-slate-deep);
     text-decoration: none;
+
+    span {
+      transform: translateX(0.3rem);
+    }
   }
 }
 

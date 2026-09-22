@@ -61,13 +61,7 @@ systems, and data pipelines that have to be correct.
 <tr><th>Code</th><td><a href="https://github.com/mrjerm">github.com/mrjerm</a></td></tr>
 <tr><th>Background</th><td><a href="https://www.linkedin.com/in/jerm04/">linkedin.com/in/jerm04</a></td></tr>
 <tr><th>Email</th><td><a href="mailto:jeremyhsu2025@gmail.com">jeremyhsu2025@gmail.com</a></td></tr>
-<tr><th>Resume, SWE</th><td><a href="resume-engineering.pdf">resume-engineering.pdf</a> &middot; software engineering and robotics</td></tr>
-<tr><th>Resume, quant</th><td><a href="resume-quant.pdf">resume-quant.pdf</a> &middot; quantitative research and trading</td></tr>
+<tr><th>Resume, SWE</th><td><a href="resume-engineering.pdf" target="_blank" rel="noopener">resume-engineering.pdf</a> &middot; software engineering and robotics</td></tr>
+<tr><th>Resume, quant</th><td><a href="resume-quant.pdf" target="_blank" rel="noopener">resume-quant.pdf</a> &middot; quantitative research and trading</td></tr>
 </table>
 ```
-
-## About this site
-
-Built with [Quarto](https://quarto.org), hosted on GitHub Pages, source at
-[github.com/mrjerm/mrjerm.github.io](https://github.com/mrjerm/mrjerm.github.io).
-Project writeups are rendered from the same notebooks the analysis was done in.
